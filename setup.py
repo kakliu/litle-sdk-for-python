@@ -10,7 +10,7 @@ setup(name='LitleSdkPython',
       url='https://developer.vantiv.com/community/ecommerce',
       packages=['litleSdkPython'],
       install_requires=[
-                        'PyXB==1.1.5',
+                        'PyXB==1.2.5',
                         'paramiko==1.14.0'],
       classifiers=[
           'Development Status :: 5 - Production/Stable',
