@@ -1,7 +1,7 @@
 # ./litleXmlFields/py.py
 # -*- coding: utf-8 -*-
 # PyXB bindings for NM:f03bd2be92cca0df00d3d054794f8a47756ec009
-# Generated 2017-02-07 13:09:22.840997 by PyXB version 1.2.5 using Python 3.4.6.final.0
+# Generated 2017-02-07 13:56:35.267159 by PyXB version 1.2.5 using Python 3.4.6.final.0
 # Namespace http://www.litle.com/schema
 
 from __future__ import unicode_literals
@@ -14,7 +14,7 @@ import pyxb.utils.domutils
 import sys
 import pyxb.utils.six as _six
 # Unique identifier for bindings created at the same time
-_GenerationUID = pyxb.utils.utility.UniqueIdentifier('urn:uuid:8c9ba6fa-ed60-11e6-90d4-001a4a01063e')
+_GenerationUID = pyxb.utils.utility.UniqueIdentifier('urn:uuid:250f21cc-ed67-11e6-8998-001a4a01063e')
 
 # Version of PyXB used to generate the bindings
 _PyXBVersion = '1.2.5'
@@ -109,7 +109,7 @@ class STD_ANON_2 (pyxb.binding.datatypes.string, pyxb.binding.basis.enumeration_
     _ExpandedName = None
     _XSDLocation = pyxb.utils.utility.Location('SchemaCombined910-edited.xsd', 447, 20)
     _Documentation = None
-STD_ANON_2._CF_enumeration = pyxb.binding.facets.CF_enumeration(enum_prefix=None, value_datatype=STD_ANON_2)
+STD_ANON_2._CF_enumeration = pyxb.binding.facets.CF_enumeration(value_datatype=STD_ANON_2, enum_prefix=None)
 STD_ANON_2.New = STD_ANON_2._CF_enumeration.addEnumeration(unicode_value='New', tag='New')
 STD_ANON_2.Existing = STD_ANON_2._CF_enumeration.addEnumeration(unicode_value='Existing', tag='Existing')
 STD_ANON_2._InitializeFacetMap(STD_ANON_2._CF_enumeration)
@@ -123,7 +123,7 @@ class STD_ANON_3 (pyxb.binding.datatypes.string, pyxb.binding.basis.enumeration_
     _ExpandedName = None
     _XSDLocation = pyxb.utils.utility.Location('SchemaCombined910-edited.xsd', 461, 20)
     _Documentation = None
-STD_ANON_3._CF_enumeration = pyxb.binding.facets.CF_enumeration(enum_prefix=None, value_datatype=STD_ANON_3)
+STD_ANON_3._CF_enumeration = pyxb.binding.facets.CF_enumeration(value_datatype=STD_ANON_3, enum_prefix=None)
 STD_ANON_3.Own = STD_ANON_3._CF_enumeration.addEnumeration(unicode_value='Own', tag='Own')
 STD_ANON_3.Rent = STD_ANON_3._CF_enumeration.addEnumeration(unicode_value='Rent', tag='Rent')
 STD_ANON_3.Other = STD_ANON_3._CF_enumeration.addEnumeration(unicode_value='Other', tag='Other')
@@ -222,7 +222,7 @@ class STD_ANON_11 (pyxb.binding.datatypes.string, pyxb.binding.basis.enumeration
     _ExpandedName = None
     _XSDLocation = pyxb.utils.utility.Location('SchemaCombined910-edited.xsd', 957, 20)
     _Documentation = None
-STD_ANON_11._CF_enumeration = pyxb.binding.facets.CF_enumeration(enum_prefix=None, value_datatype=STD_ANON_11)
+STD_ANON_11._CF_enumeration = pyxb.binding.facets.CF_enumeration(value_datatype=STD_ANON_11, enum_prefix=None)
 STD_ANON_11.CNC = STD_ANON_11._CF_enumeration.addEnumeration(unicode_value='CNC', tag='CNC')
 STD_ANON_11.DIG = STD_ANON_11._CF_enumeration.addEnumeration(unicode_value='DIG', tag='DIG')
 STD_ANON_11.PHY = STD_ANON_11._CF_enumeration.addEnumeration(unicode_value='PHY', tag='PHY')
@@ -263,10 +263,10 @@ class STD_ANON_14 (pyxb.binding.datatypes.string):
     _ExpandedName = None
     _XSDLocation = pyxb.utils.utility.Location('SchemaCombined910-edited.xsd', 2025, 16)
     _Documentation = None
-STD_ANON_14._CF_maxLength = pyxb.binding.facets.CF_maxLength(value=pyxb.binding.datatypes.nonNegativeInteger(20))
 STD_ANON_14._CF_minLength = pyxb.binding.facets.CF_minLength(value=pyxb.binding.datatypes.nonNegativeInteger(5))
-STD_ANON_14._InitializeFacetMap(STD_ANON_14._CF_maxLength,
-   STD_ANON_14._CF_minLength)
+STD_ANON_14._CF_maxLength = pyxb.binding.facets.CF_maxLength(value=pyxb.binding.datatypes.nonNegativeInteger(20))
+STD_ANON_14._InitializeFacetMap(STD_ANON_14._CF_minLength,
+   STD_ANON_14._CF_maxLength)
 _module_typeBindings.STD_ANON_14 = STD_ANON_14
 
 # Atomic simple type: [anonymous]
