@@ -151,8 +151,8 @@ def fix_paypal_in_credit(_path_to_edited_xsd):
             ori_xsd_w.writelines(lines)
 
 
-def clear_simple_type(_path_to_edited_xsd):
-    """Delete all simple types that have names.
+def remove_simple_type(_path_to_edited_xsd):
+    """remove all simple types that have names.
 
     The xml validation will be performed on server. The purpose is to reduce the complexity of the xsd.
     Delete all simple types that have names, the elements used those will be replaced by build-in type.
@@ -239,5 +239,5 @@ else:
     # Fix PayPal in Credit
     fix_paypal_in_credit(path_to_edited_xsd)
 
-    # Fix PayPal in Credit
-    clear_simple_type(path_to_edited_xsd)
+    # Remove simple type
+    remove_simple_type(path_to_edited_xsd)
