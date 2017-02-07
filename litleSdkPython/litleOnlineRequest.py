@@ -27,6 +27,7 @@ import pyxb
 import os
 from Communications import *
 from Configuration import *
+import xml
 
 class litleOnlineRequest:
         
@@ -40,13 +41,13 @@ class litleOnlineRequest:
         self.printXml = Configuration.printXml
 
     def _litleToXml(self,litleOnline):
-        try :
-            dom = litleOnline.toDOM()
-            temp = dom.toxml('utf-8')
-            temp= temp.replace('ns1:','')
-            return temp.replace(':ns1','')
-        except pyxb.BindingValidationError,e:
-            raise Exception("Invalid Number of Choices, Fill Out One and Only One Choice",e)
+        # try :
+        dom = litleOnline.toDOM()
+        temp = dom.toxml('utf-8')
+        temp= temp.replace('ns1:','')
+        return temp.replace(':ns1','')
+        # except pyxb.BindingValidationError,e:
+        #     raise Exception("Invalid Number of Choices, Fill Out One and Only One Choice",e)
         
     def sendRequest(self,transaction, user=None, password=None, version=None, merchantId=None, reportGroup=None,
                     timeout=None, url=None, proxy=None):
@@ -95,11 +96,19 @@ class litleOnlineRequest:
         return responseXml
     
     def _processResponse(self, responseXml):
-        temp = self._addNamespace(responseXml)
-        try:
-            response =litleXmlFields.CreateFromDocument(temp)
-        except Exception, e:
-            raise Exception("Error Processing Response", e)    
+        # temp = self._addNamespace(responseXml)
+        dom = pyxb.utils.domutils.StringToDOM(responseXml)
+        node = dom.documentElement
+        if xml.dom.Node.DOCUMENT_NODE == node.nodeType:
+            node = node.documentElement
+        expanded_name = pyxb.namespace.ExpandedName(node)
+        elt = expanded_name.elementBinding()
+        if elt is None:
+            return
+        assert isinstance(elt, pyxb.binding.basis.element)
+        response = elt._createFromDOM(node, expanded_name)
+
+        # response =litleXmlFields.CreateFromDocument(temp)
         if (response.response == '0'):
             return response.transactionResponse
         else:
