@@ -24,8 +24,17 @@ import os
 import re
 
 
-def remove_absolute_path(_path_to_edited_xsd):
-    with open(_path_to_edited_xsd, 'r') as ori_xsd:
+def remove_absolute_path(_path_to_generated_py):
+    """Remove all absolute path in generated file by pyxbgen.
+
+    Args:
+        _path_to_generated_py: path of generated file by pyxbgen.
+
+    Returns:
+        None
+
+    """
+    with open(_path_to_generated_py, 'r') as ori_xsd:
         lines = ori_xsd.readlines()
 
         lines_index = -1
@@ -40,9 +49,9 @@ def remove_absolute_path(_path_to_edited_xsd):
                 print('+', new_line)
                 print()
         # TODO Not a good way, have to open the file twice.
-        with open(_path_to_edited_xsd, 'w') as ori_xsd_w:
+        with open(_path_to_generated_py, 'w') as ori_xsd_w:
             ori_xsd_w.writelines(lines)
 
 
-lib_path = os.path.abspath('litleSdkPython/litleXmlFields.py')
+lib_path = os.path.abspath('litle_sdk_python/litle_xml_fields.py')
 remove_absolute_path(lib_path)
