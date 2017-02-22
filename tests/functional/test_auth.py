@@ -43,7 +43,7 @@ class TestAuth(unittest.TestCase):
         authorization.card = card
 
         response = online.request(authorization, conf)
-        self.assertEquals("000", response.response)
+        self.assertEquals("000", response.transactionResponse.response)
 
 
     def test_simple_auth_with_android_pay(self):
@@ -61,9 +61,9 @@ class TestAuth(unittest.TestCase):
         authorization.card = card
 
         response = online.request(authorization, conf)
-        self.assertEquals("000", response.response)
-        # Base 64 code or string?
-        # self.assertEquals("aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1kUXc0dzlXZ1hjUQ0K", response.androidpayResponse.cryptogram);
+        self.assertEquals("000", response.transactionResponse.response)
+        self.assertEquals("aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1kUXc0dzlXZ1hjUQ0K",
+                          response.transactionResponse.androidpayResponse.cryptogram);
 
 
 if __name__ == '__main__':

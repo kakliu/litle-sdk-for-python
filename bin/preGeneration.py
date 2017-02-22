@@ -151,7 +151,7 @@ def fix_paypal_in_credit(_path_to_edited_xsd):
             ori_xsd_w.writelines(lines)
 
 
-def remove_simple_type(_path_to_edited_xsd):
+def remove_named_simple_type(_path_to_edited_xsd):
     """remove all simple types that have names.
 
     The xml validation will be performed on server. The purpose is to reduce the complexity of the xsd.
@@ -184,6 +184,8 @@ def remove_simple_type(_path_to_edited_xsd):
                     old_content += lines[lines_index]
                     type_name = 'xp:' + re.search(' name="(.*)"', line).group(1).strip()
                     base_type_name = re.search(' base="(.*)"', lines[lines_index + 1]).group(1).strip()
+                    if base_type_name == 'xs:base64Binary':
+                        base_type_name = 'xs:string'
                     type_dict[type_name] = base_type_name
                     lines[lines_index] = ''
             else:
@@ -222,6 +224,102 @@ def remove_simple_type(_path_to_edited_xsd):
             ori_xsd_w.writelines(lines)
 
 
+def remove_anonymous_simple_type(_path_to_edited_xsd):
+    """remove anonymous simple types
+
+    The xml validation will be performed on server. The purpose is to reduce the complexity of the xsd.
+    Delete all anonymous simple types, the elements used those will be replaced by build-in type.
+
+    Args:
+        _path_to_edited_xsd: Path to edited combined xsd.
+
+    Returns: None
+
+    """
+    with open(_path_to_edited_xsd, 'r') as xsd_file:
+        lines = xsd_file.readlines()
+
+        lines_index = -1
+        element_head = re.compile('<xs:element.*?(?<!/)>')
+        simple_type_head = re.compile('<xs:simpleType>')
+        simple_type_restriction = re.compile('<xs:restriction')
+        element_end = re.compile('</xs:element>')
+        found_simple_type_head = False
+        old_content = ''
+        new_content = ''
+        for line in lines:
+            lines_index += 1
+            if not found_simple_type_head:
+                if simple_type_head.search(line) and simple_type_restriction.search(lines[lines_index + 1]) \
+                        and element_head.search(lines[lines_index - 1]):
+                    found_simple_type_head = True
+                    base_type_name = re.search(' base="(.*)"', lines[lines_index + 1]).group(1).strip()
+                    if base_type_name == 'xs:base64Binary':
+                        base_type_name = 'xs:string'
+                    old_content += lines[lines_index - 1]
+                    old_content += lines[lines_index]
+                    new_content = lines[lines_index - 1].replace('>', ' type="%s" />' % base_type_name)
+                    lines[lines_index - 1] = new_content
+                    lines[lines_index] = ''
+            else:
+                old_content += lines[lines_index]
+                lines[lines_index] = ''
+                if element_end.search(line):
+                    found_simple_type_head = False
+                    print('-', old_content)
+                    print('+', new_content)
+
+        # TODO Not a good way, have to open the file twice.
+        with open(_path_to_edited_xsd, 'w') as xsd_file_w:
+            xsd_file_w.writelines(lines)
+
+
+def set_min_occurs_0(_path_to_edited_xsd):
+    """Set min occurs to 0 for elements that not memeber of choice.
+
+    The xml validation will be performed on server.
+
+    Args:
+        _path_to_edited_xsd: Path to edited combined xsd.
+
+    Returns:
+        None
+    """
+    with open(_path_to_edited_xsd, 'r') as xsd_file:
+        lines = xsd_file.readlines()
+
+        lines_index = -1
+        element_head = re.compile('<xs:element.*?/>')
+        min_occurs = re.compile('minOccurs="\d"')
+        choice_head = re.compile('<xs:choice')
+        choice_end = re.compile('</xs:choice>')
+        ancestor_is_choice = False
+        for line in lines:
+            lines_index += 1
+            if choice_head.search(line):
+                ancestor_is_choice = True
+
+            if choice_end.search(line):
+                ancestor_is_choice = False
+
+            if ancestor_is_choice:
+                continue
+
+            if element_head.search(line):
+                re_search = min_occurs.search(line)
+                if re_search:
+                    new_line = line.replace(re_search.group(0), 'minOccurs="0"')
+                else:
+                    new_line = line.replace('/>', ' minOccurs="0"/>')
+                lines[lines_index] = new_line
+                print('-', lines_index, line)
+                print('+', lines_index, new_line)
+
+        # TODO Not a good way, have to open the file twice.
+        with open(_path_to_edited_xsd, 'w') as xsd_file_w:
+            xsd_file_w.writelines(lines)
+
+
 if len(sys.argv) != 2:
     print('Wrong arguments! please using: "python preGeneration.py PATH-TO-COMBINED_XMLSCHEMA"')
 elif not os.path.isfile(os.path.abspath(sys.argv[1])):
@@ -239,5 +337,11 @@ else:
     # Fix PayPal in Credit
     fix_paypal_in_credit(path_to_edited_xsd)
 
-    # Remove simple type
-    remove_simple_type(path_to_edited_xsd)
+    # Remove named simple type
+    remove_named_simple_type(path_to_edited_xsd)
+
+    # Remove anonymous simple type
+    remove_anonymous_simple_type(path_to_edited_xsd)
+
+    # Set min occurs to 0
+    set_min_occurs_0(path_to_edited_xsd)

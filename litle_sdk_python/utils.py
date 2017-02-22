@@ -24,6 +24,8 @@
 
 import json
 import os
+import tempfile
+import pyxb
 
 
 class Configuration(object):
@@ -44,10 +46,10 @@ class Configuration(object):
         timeout:         Timeout
     """
 
-    _VERSION = '9.10'
-    _MERCHANTSDK = 'Python 9.10.0'
-    _CONFIG_FILE_PATH = os.path.join(os.environ['VANTIV_SDK_CONFIG'], ".VANTIV_PYTHON_SDK.CONF") \
-        if 'VANTIV_SDK_CONFIG' in os.environ else os.path.join(os.path.expanduser("~"), ".VANTIV_PYTHON_SDK.CONF")
+    VERSION = '9.10'
+    MERCHANTSDK = 'Python 9.10.0'
+    _CONFIG_FILE_PATH = os.path.join(os.environ['VANTIV_SDK_CONFIG'], ".vantiv_python_sdk.conf") \
+        if 'VANTIV_SDK_CONFIG' in os.environ else os.path.join(os.path.expanduser("~"), ".vantiv_python_sdk.conf")
 
     def __init__(self):
         """ Initial Configuration
@@ -63,10 +65,13 @@ class Configuration(object):
         self.sftp_username = ''
         self.sftp_password = ''
         self.sftp_url = ''
+        self.batch_requests_path = os.path.join(tempfile.gettempdir(), 'vantiv_sdk_batch_request')
+        self.batch_response_path = os.path.join(tempfile.gettempdir(), 'vantiv_sdk_batch_response')
         self.fast_url = ''
+        self.fast_ssl = True
         self.fast_port = ''
         self.print_xml = False
-        self.timeout = 500
+        self.id = ''
         # Load Configuration from local file system.
         try:
             with open(self._CONFIG_FILE_PATH, 'r') as config_file:
@@ -81,9 +86,15 @@ class Configuration(object):
                 self.sftp_password = config_json["sftp_password"] if "sftp_password" in config_json else ""
                 self.sftp_url = config_json["sftp_url"] if "sftp_url" in config_json else ""
                 self.fast_url = config_json["fast_url"] if "fast_url" in config_json else ""
+                self.fast_ssl = config_json["fast_ssl"] if "fast_ssl" in config_json else self.fast_ssl
                 self.fast_port = config_json["fast_port"] if "fast_port" in config_json else ""
                 self.print_xml = config_json["print_xml"] if "print_xml" in config_json else self.print_xml
-                self.timeout = config_json["timeout"] if "timeout" in config_json else self.timeout
+                self.id = config_json["id"] if "id" in config_json else self.id
+                self.batch_requests_path = config_json["batch_requests_path"] if "batch_requests_path" in config_json \
+                    else self.batch_requests_path
+                self.batch_response_path = config_json["batch_response_path"] if "batch_response_path" in config_json \
+                    else self.batch_response_path
+        # TODO narrow the exception.
         except Exception:
             # If get any exception just pass.
             pass
@@ -103,30 +114,12 @@ class Configuration(object):
             json.dump(vars(self), config_file)
         return True
 
-
-def http_post(post_data, conf):
-    """Post xml to server via https using requests
-
-    Args:
-        post_data: Request XML String
-        conf: Instances of Configuration
-
-    Returns:
-        XML string for server response.
-
-    Raise:
-        When can't communicate with server, Error with Https Request, Please Check Proxy and Url configuration
-        When the server response code is not 200, Error with Https Response, Status code: xxx
-    """
-    import requests
-    headers = {'Content-type': 'application/xml'}
-    proxies = {'https': conf.proxy} if (conf.proxy is not None and conf.proxy != '') else None
+def obj_to_xml(obj):
+    # TODO convert object to xml without default namespace gracefully.
     try:
-        response = requests.post(conf.url, data=post_data, headers=headers, proxies=proxies)
-    except Exception as e:
-        # TODO Change to custom Vantiv Exception.
-        raise Exception("Error with Https Request, Please Check Proxy and Url configuration", e.message)
-    if response.status_code != 200:
-        # TODO Change to custom Vantiv Exception.
-        raise Exception("Error with Https Response, Status code: ", response.status_code)
-    return response.text
+        xml = obj.toxml('utf-8')
+    except pyxb.ValidationError as e:
+        # TODO customized exceptions
+        raise Exception(e.details())
+    xml = xml.replace('ns1:', '').replace(':ns1', '')
+    return xml
