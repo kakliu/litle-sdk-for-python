@@ -49,31 +49,23 @@ conf = utils.Configuration()
 # self.id = ''
 
 # Initial Transaction.
-transaction = fields.authorization()
-transaction.orderId = '1'
-transaction.amount = 10010
-transaction.reportGroup = 'Planets'
-transaction.orderSource = 'ecommerce'
+transaction = fields.echeckVerification()
+transaction.orderId = '12345'
+transaction.amount = 123456
+transaction.orderSource = 'telephone'
 
-# Create contact object
-contact = fields.contact()
-contact.name = 'John & Mary Smith'
-contact.addressLine1 = '1 Main St.'
-contact.city = 'Burlington'
-contact.state = 'MA'
-contact.zip = '01803-3747'
-contact.country = 'USA'
-# The type of billToAddress is contact
-transaction.billToAddress = contact
+billtoaddress = fields.contact()
+billtoaddress.firstName = 'Peter'
+billtoaddress.lastName = 'Green'
+billtoaddress.companyName = 'Green Co'
+billtoaddress.phone = '999-999-9999'
+transaction.billToAddress = billtoaddress
 
-# Create cardType object
-card = fields.cardType()
-card.number = '375001010000003'
-card.expDate = '0112'
-card.cardValidationNum = '349'
-card.type = 'VI'
-# The type of card is cardType
-transaction.card = card
+echeck = fields.echeck()
+echeck.accType = 'Checking'
+echeck.accNum = '12345657890'
+echeck.routingNum = '123456789'
+transaction.echeckOrEcheckToken = echeck
 
 # Send request to server and get response as object
 response = online.request(transaction, conf)

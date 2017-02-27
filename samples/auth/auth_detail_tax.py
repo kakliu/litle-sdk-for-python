@@ -24,6 +24,7 @@
 from __future__ import print_function
 
 from litle_sdk_python import *
+import pyxb
 
 # Initial Configuration object. If you have saved configuration in '.vantiv_python_sdk.conf' at system environment
 # variable: VANTIV_SDK_CONFIG or user home directory, the saved configuration will be automatically load.
@@ -52,7 +53,6 @@ conf = utils.Configuration()
 transaction = fields.authorization()
 transaction.orderId = '1'
 transaction.amount = 10010
-transaction.reportGroup = 'Planets'
 transaction.orderSource = 'ecommerce'
 
 # Create contact object
@@ -68,12 +68,24 @@ transaction.billToAddress = contact
 
 # Create cardType object
 card = fields.cardType()
-card.number = '375001010000003'
-card.expDate = '0112'
+card.number = '4100000000000000'
+card.expDate = '1215'
 card.cardValidationNum = '349'
 card.type = 'VI'
 # The type of card is cardType
 transaction.card = card
+
+# detail tax
+enhancedData = fields.enhancedData()
+enhancedData.customerReference = 'Litle'
+enhancedData.deliveryType = 'TBD'
+detailTax = fields.detailTax()
+detailTax.taxAmount = 100
+detailTax2 = fields.detailTax()
+detailTax2.taxAmount = 200
+# pyxb cannot bind multi occurs item, have to use pyxb.BIND
+enhancedData = pyxb.BIND(enhancedData.customerReference, enhancedData.deliveryType, detailTax, detailTax2)
+transaction.enhancedData = enhancedData
 
 # Send request to server and get response as object
 response = online.request(transaction, conf)

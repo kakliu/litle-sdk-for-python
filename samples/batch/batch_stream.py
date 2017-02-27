@@ -48,45 +48,82 @@ conf = utils.Configuration()
 # self.print_xml = False
 # self.id = ''
 
-# Initial Transaction.
-transaction = fields.authorization()
-transaction.orderId = '1'
-transaction.amount = 10010
-transaction.reportGroup = 'Planets'
-transaction.orderSource = 'ecommerce'
+# Initial Transactions container
+transactions = batch.Transactions()
 
-# Create contact object
-contact = fields.contact()
-contact.name = 'John & Mary Smith'
-contact.addressLine1 = '1 Main St.'
-contact.city = 'Burlington'
-contact.state = 'MA'
-contact.zip = '01803-3747'
-contact.country = 'USA'
-# The type of billToAddress is contact
-transaction.billToAddress = contact
-
-# Create cardType object
+# Card
 card = fields.cardType()
-card.number = '375001010000003'
-card.expDate = '0112'
+card.number = '4457010000000009'
+card.expDate = '0121'
 card.cardValidationNum = '349'
 card.type = 'VI'
-# The type of card is cardType
-transaction.card = card
 
-# Send request to server and get response as object
-response = online.request(transaction, conf)
+# eCheck
+echeck = fields.echeck()
+echeck.accType = 'Checking'
+echeck.accNum = '4099999992'
+echeck.routingNum = '011075150'
 
-# Print results
-print('Get response as object\n')
-print('Message: %s' % response.transactionResponse.message)
-print('LitleTransaction ID: %s' % response.transactionResponse.litleTxnId)
+# billtoaddress
+billtoaddress = fields.contact()
+billtoaddress.firstName = 'Mike'
+billtoaddress.middleInitial = 'J'
+billtoaddress.lastName = 'Hammer'
+billtoaddress.phone = '999-999-9999'
 
-# Send request to server and get response as XML
-# response = online.request(transaction, conf, 'xml')
-# print('Get response as XML:\n %s' % response)
+# Initial authorization
+authorization = fields.authorization()
+authorization.orderId = '1'
+authorization.amount = 10010
+authorization.reportGroup = 'Planets'
+authorization.orderSource = 'ecommerce'
+authorization.card = card
+authorization.billtoaddress = billtoaddress
+# Add transaction to container
+transactions.add(authorization)
+
+# Initial authorization
+sale = fields.sale()
+sale.orderId = '1'
+sale.amount = 10010
+sale.reportGroup = 'Planets'
+sale.orderSource = 'ecommerce'
+sale.card = card
+sale.billtoaddress = billtoaddress
+# Add transaction to container
+transactions.add(sale)
+
+# stream to Vaitiv eCommerce and get object as response
+response = batch.stream(transactions, conf)
+
+# Return as xml string
+# response = batch.stream(transactions, conf, 'xml')
+
+for batchresponse in response.batchResponse:
+    for txn in batchresponse.transactionResponse:
+        print('Message: %s' % txn.message)
+        print('LitleTransaction ID: %s' % txn.litleTxnId)
 
 # In your sample, you can ignore this
-if response.transactionResponse.message != 'Approved':
+if response.message != 'Valid Format':
+    raise Exception('the example does not give the right response')
+
+# Example for RFRRequest
+RFRRequest = fields.RFRRequest()
+RFRRequest.litleSessionId = response.litleSessionId
+
+# Initial Transactions container, because RFRRequest and batchRequest cannot be in same session file
+transactions = batch.Transactions()
+transactions.add(RFRRequest)
+
+# stream to Vaitiv eCommerce and get object as response
+response = batch.stream(transactions, conf)
+
+for batchresponse in response.batchResponse:
+    for txn in batchresponse.transactionResponse:
+        print('Message: %s' % txn.message)
+        print('LitleTransaction ID: %s' % txn.litleTxnId)
+
+# In your sample, you can ignore this
+if response.message != 'Valid Format':
     raise Exception('the example does not give the right response')

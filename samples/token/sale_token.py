@@ -49,37 +49,25 @@ conf = utils.Configuration()
 # self.id = ''
 
 # Initial Transaction.
-transaction = fields.authorization()
+transaction = fields.sale()
 transaction.orderId = '1'
 transaction.amount = 10010
 transaction.reportGroup = 'Planets'
 transaction.orderSource = 'ecommerce'
 
-# Create contact object
-contact = fields.contact()
-contact.name = 'John & Mary Smith'
-contact.addressLine1 = '1 Main St.'
-contact.city = 'Burlington'
-contact.state = 'MA'
-contact.zip = '01803-3747'
-contact.country = 'USA'
-# The type of billToAddress is contact
-transaction.billToAddress = contact
-
 # Create cardType object
-card = fields.cardType()
-card.number = '375001010000003'
-card.expDate = '0112'
-card.cardValidationNum = '349'
-card.type = 'VI'
+token = fields.cardTokenType()
+token.litleToken = '1111222233334000'
+token.expDate = '1214'
+token.cardValidationNum = '349'
+token.type = 'VI'
 # The type of card is cardType
-transaction.card = card
+transaction.token = token
 
 # Send request to server and get response as object
 response = online.request(transaction, conf)
 
 # Print results
-print('Get response as object\n')
 print('Message: %s' % response.transactionResponse.message)
 print('LitleTransaction ID: %s' % response.transactionResponse.litleTxnId)
 

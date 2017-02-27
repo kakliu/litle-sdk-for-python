@@ -49,7 +49,7 @@ conf = utils.Configuration()
 # self.id = ''
 
 # Initial Transaction.
-transaction = fields.authorization()
+transaction = fields.sale()
 transaction.orderId = '1'
 transaction.amount = 10010
 transaction.reportGroup = 'Planets'

@@ -47,46 +47,7 @@ conf = utils.Configuration()
 # self.fast_port = ''
 # self.print_xml = False
 # self.id = ''
-
-# Initial Transaction.
-transaction = fields.authorization()
-transaction.orderId = '1'
-transaction.amount = 10010
-transaction.reportGroup = 'Planets'
-transaction.orderSource = 'ecommerce'
-
-# Create contact object
-contact = fields.contact()
-contact.name = 'John & Mary Smith'
-contact.addressLine1 = '1 Main St.'
-contact.city = 'Burlington'
-contact.state = 'MA'
-contact.zip = '01803-3747'
-contact.country = 'USA'
-# The type of billToAddress is contact
-transaction.billToAddress = contact
-
-# Create cardType object
-card = fields.cardType()
-card.number = '375001010000003'
-card.expDate = '0112'
-card.cardValidationNum = '349'
-card.type = 'VI'
-# The type of card is cardType
-transaction.card = card
-
-# Send request to server and get response as object
-response = online.request(transaction, conf)
-
-# Print results
-print('Get response as object\n')
-print('Message: %s' % response.transactionResponse.message)
-print('LitleTransaction ID: %s' % response.transactionResponse.litleTxnId)
-
-# Send request to server and get response as XML
-# response = online.request(transaction, conf, 'xml')
-# print('Get response as XML:\n %s' % response)
-
-# In your sample, you can ignore this
-if response.transactionResponse.message != 'Approved':
-    raise Exception('the example does not give the right response')
+try:
+    batch.download('batch_sample_submit.xml.asc',conf)
+except:
+    pass

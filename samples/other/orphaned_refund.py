@@ -31,25 +31,25 @@ conf = utils.Configuration()
 
 # Configuration has following attributes:
 # attributes = default value
-# self.user = ''
-# self.password = ''
-# self.merchantId = ''
-# self.reportGroup = 'Default Report Group'
-# self.url = 'https://www.testlitle.com/sandbox/communicator/online'
-# self.proxy = ''
-# self.sftp_username = ''
-# self.sftp_password = ''
-# self.sftp_url = ''
-# self.batch_requests_path = tempdir + '/vantiv_sdk_batch_request'
-# self.batch_response_path = tempdir + '/vantiv_sdk_batch_response'
-# self.fast_url = ''
-# self.fast_ssl = True
-# self.fast_port = ''
-# self.print_xml = False
-# self.id = ''
+# conf.user = ''
+# conf.password = ''
+# conf.merchantId = ''
+# conf.reportGroup = 'Default Report Group'
+# conf.url = 'https://www.testlitle.com/sandbox/communicator/online'
+# conf.proxy = ''
+# conf.sftp_username = ''
+# conf.sftp_password = ''
+# conf.sftp_url = ''
+# conf.batch_requests_path = tempdir + '/vantiv_sdk_batch_request'
+# conf.batch_response_path = tempdir + '/vantiv_sdk_batch_response'
+# conf.fast_url = ''
+# conf.fast_ssl = True
+# conf.fast_port = ''
+# conf.print_xml = False
+conf.id = '789'
 
 # Initial Transaction.
-transaction = fields.authorization()
+transaction = fields.credit()
 transaction.orderId = '1'
 transaction.amount = 10010
 transaction.reportGroup = 'Planets'
@@ -79,7 +79,6 @@ transaction.card = card
 response = online.request(transaction, conf)
 
 # Print results
-print('Get response as object\n')
 print('Message: %s' % response.transactionResponse.message)
 print('LitleTransaction ID: %s' % response.transactionResponse.litleTxnId)
 

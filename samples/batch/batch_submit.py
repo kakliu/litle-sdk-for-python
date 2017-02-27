@@ -48,45 +48,63 @@ conf = utils.Configuration()
 # self.print_xml = False
 # self.id = ''
 
-# Initial Transaction.
-transaction = fields.authorization()
-transaction.orderId = '1'
-transaction.amount = 10010
-transaction.reportGroup = 'Planets'
-transaction.orderSource = 'ecommerce'
+# Initial Transactions container
+transactions = batch.Transactions()
 
-# Create contact object
-contact = fields.contact()
-contact.name = 'John & Mary Smith'
-contact.addressLine1 = '1 Main St.'
-contact.city = 'Burlington'
-contact.state = 'MA'
-contact.zip = '01803-3747'
-contact.country = 'USA'
-# The type of billToAddress is contact
-transaction.billToAddress = contact
-
-# Create cardType object
+# Card
 card = fields.cardType()
-card.number = '375001010000003'
-card.expDate = '0112'
+card.number = '4457010000000009'
+card.expDate = '0121'
 card.cardValidationNum = '349'
 card.type = 'VI'
-# The type of card is cardType
-transaction.card = card
 
-# Send request to server and get response as object
-response = online.request(transaction, conf)
+# eCheck
+echeck = fields.echeck()
+echeck.accType = 'Checking'
+echeck.accNum = '4099999992'
+echeck.routingNum = '011075150'
 
-# Print results
-print('Get response as object\n')
-print('Message: %s' % response.transactionResponse.message)
-print('LitleTransaction ID: %s' % response.transactionResponse.litleTxnId)
+# billtoaddress
+billtoaddress = fields.contact()
+billtoaddress.firstName = 'Mike'
+billtoaddress.middleInitial = 'J'
+billtoaddress.lastName = 'Hammer'
+billtoaddress.phone = '999-999-9999'
 
-# Send request to server and get response as XML
-# response = online.request(transaction, conf, 'xml')
-# print('Get response as XML:\n %s' % response)
+# Initial authorization
+authorization = fields.authorization()
+authorization.orderId = '1'
+authorization.amount = 10010
+authorization.reportGroup = 'Planets'
+authorization.orderSource = 'ecommerce'
+authorization.card = card
+authorization.billtoaddress = billtoaddress
+# Add transaction to container
+transactions.add(authorization)
 
-# In your sample, you can ignore this
-if response.transactionResponse.message != 'Approved':
-    raise Exception('the example does not give the right response')
+# Initial authorization
+authorization2 = fields.authorization()
+authorization2.orderId = '2'
+authorization2.amount = 1001
+authorization2.reportGroup = 'Planets'
+authorization2.orderSource = 'ecommerce'
+authorization2.card = card
+authorization2.billtoaddress = billtoaddress
+# Add transaction to container
+transactions.add(authorization2)
+
+# Initial authorization
+sale = fields.sale()
+sale.orderId = '1'
+sale.amount = 10010
+sale.reportGroup = 'Planets'
+sale.orderSource = 'ecommerce'
+sale.card = card
+sale.billtoaddress = billtoaddress
+# Add transaction to container
+transactions.add(sale)
+
+# stream to Vaitiv eCommerce and get object as response
+response = batch.submit(transactions, conf, 'batch_sample_submit')
+
+print('Filename in remote server: %s' % response)

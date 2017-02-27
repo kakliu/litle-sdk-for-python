@@ -23,6 +23,8 @@
 # OTHER DEALINGS IN THE SOFTWARE.
 from __future__ import print_function
 
+import datetime
+
 from litle_sdk_python import *
 
 # Initial Configuration object. If you have saved configuration in '.vantiv_python_sdk.conf' at system environment
@@ -49,22 +51,17 @@ conf = utils.Configuration()
 # self.id = ''
 
 # Initial Transaction.
-transaction = fields.authorization()
-transaction.orderId = '1'
-transaction.amount = 10010
-transaction.reportGroup = 'Planets'
+transaction = fields.captureGivenAuth()
+transaction.amount = 106
+transaction.orderId = '12344'
 transaction.orderSource = 'ecommerce'
 
-# Create contact object
-contact = fields.contact()
-contact.name = 'John & Mary Smith'
-contact.addressLine1 = '1 Main St.'
-contact.city = 'Burlington'
-contact.state = 'MA'
-contact.zip = '01803-3747'
-contact.country = 'USA'
-# The type of billToAddress is contact
-transaction.billToAddress = contact
+# Create authInformation
+authInformation = fields.authInformation()
+authInformation.authDate = datetime.datetime.now().strftime("%Y-%m-%d")
+authInformation.authCode = '543216'
+authInformation.authAmount = 12345
+transaction.authInformation = authInformation
 
 # Create cardType object
 card = fields.cardType()
@@ -79,7 +76,6 @@ transaction.card = card
 response = online.request(transaction, conf)
 
 # Print results
-print('Get response as object\n')
 print('Message: %s' % response.transactionResponse.message)
 print('LitleTransaction ID: %s' % response.transactionResponse.litleTxnId)
 

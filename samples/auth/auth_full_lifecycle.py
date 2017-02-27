@@ -52,7 +52,6 @@ conf = utils.Configuration()
 transaction = fields.authorization()
 transaction.orderId = '1'
 transaction.amount = 10010
-transaction.reportGroup = 'Planets'
 transaction.orderSource = 'ecommerce'
 
 # Create contact object
@@ -79,14 +78,33 @@ transaction.card = card
 response = online.request(transaction, conf)
 
 # Print results
-print('Get response as object\n')
 print('Message: %s' % response.transactionResponse.message)
 print('LitleTransaction ID: %s' % response.transactionResponse.litleTxnId)
 
-# Send request to server and get response as XML
-# response = online.request(transaction, conf, 'xml')
-# print('Get response as XML:\n %s' % response)
+# capture
+capture = fields.capture()
+capture.litleTxnId = response.transactionResponse.litleTxnId
+captureresponse = online.request(capture, conf)
+print('Message: %s' % captureresponse.transactionResponse.message)
+print('LitleTransaction ID: %s' % captureresponse.transactionResponse.litleTxnId)
+
+# credit
+credit = fields.credit()
+credit.litleTxnId = captureresponse.transactionResponse.litleTxnId
+creditresponse = online.request(credit, conf)
+print('Message: %s' % creditresponse.transactionResponse.message)
+print('LitleTransaction ID: %s' % creditresponse.transactionResponse.litleTxnId)
+
+# void
+void = fields.void()
+void.litleTxnId = creditresponse.transactionResponse.litleTxnId
+voidresponse = online.request(void, conf)
+print('Message: %s' % voidresponse.transactionResponse.message)
+print('LitleTransaction ID: %s' % voidresponse.transactionResponse.litleTxnId)
 
 # In your sample, you can ignore this
-if response.transactionResponse.message != 'Approved':
+if response.transactionResponse.message != 'Approved' or \
+                captureresponse.transactionResponse.message != 'Approved' or \
+                creditresponse.transactionResponse.message != 'Approved' or \
+                voidresponse.transactionResponse.message != 'Approved':
     raise Exception('the example does not give the right response')
