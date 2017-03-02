@@ -27,26 +27,14 @@ import os
 import re
 import sys
 
+from litle_sdk_python import utils
+
 # Require Python 2.7.9 or higher or Python 3.4 or higher
 if (sys.version_info[:3] < (2, 7 ,9)) or ((sys.version_info[0] == 3) and sys.version_info[:2] < (3, 4)):
     raise ValueError('''PyXB requires:
   Python2 version 2.7.9 or later; or
   Python3 version 3.4 or later
 (You have %s.)''' % (sys.version,))
-
-def get_version(_package_root):
-    _schema_folder = os.path.join(_package_root, 'schema')
-    v = ''
-    for _, _, files in os.walk(_schema_folder):
-        for f in files:
-            find_common = re.search('litleCommon_v(.*?)\.xsd', f)
-            if find_common:
-                v = find_common.group(1)
-                break
-    if not v:
-        raise Exception('Do not find xsd files in schema folder!')
-    return v
-
 
 def combine_xsd(_version, _package_root):
     schema_file_names = [
@@ -61,12 +49,12 @@ def combine_xsd(_version, _package_root):
     for _, _, files in os.walk(schema_folder):
         for f in files:
             match = re.search('(\w+)_v(.*?)\.xsd', f)
-            if match and match.group(2) == version and match.group(1) in schema_file_names:
+            if match and match.group(2) == _version and match.group(1) in schema_file_names:
                 schema_files[match.group(1)] = os.path.join(schema_folder, f)
 
         for key in schema_file_names:
             if key not in schema_files:
-                raise Exception('cannot find "%s_v%s.xsd"' % (key, version))
+                raise Exception('cannot find "%s_v%s.xsd"' % (key, _version))
 
     with open(schema_files[schema_file_names[0]], 'r') as file_r:
         combined_xsd_str = file_r.read().replace('</xs:schema>', '')
@@ -382,7 +370,7 @@ def set_min_occurs_0(_path_to_edited_xsd):
 if __name__ == '__main__':
     package_root = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 
-    version = get_version(package_root)
+    version = utils.Configuration().VERSION
 
     path_to_edited_xsd = combine_xsd(version, package_root)
 

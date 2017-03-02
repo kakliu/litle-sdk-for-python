@@ -25,7 +25,6 @@ import os
 import re
 import sys
 import inspect
-import preGeneration
 
 # Require Python 2.7.9 or higher or Python 3.4 or higher
 if (sys.version_info[:3] < (2, 7 ,9)) or ((sys.version_info[0] == 3) and sys.version_info[:2] < (3, 4)):
@@ -37,7 +36,7 @@ if (sys.version_info[:3] < (2, 7 ,9)) or ((sys.version_info[0] == 3) and sys.ver
 package_root = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 
 sys.path.insert(0, package_root)
-from litle_sdk_python import fields
+from litle_sdk_python import fields,utils
 
 def remove_absolute_path(_package_root):
     """Remove all absolute path in generated file by pyxbgen.
@@ -67,7 +66,7 @@ def remove_absolute_path(_package_root):
 
 
 def generate_index_rst(_package_root):
-    _version = preGeneration.get_version(_package_root)
+    _version = utils.Configuration().MERCHANTSDK
     _path_to_edited_xsd = os.path.join(_package_root, 'SchemaCombined_v%s.xsd' % _version)
     _index_rst_path = os.path.join(_package_root, 'docs/source/index.rst')
     # base string for index.rst
