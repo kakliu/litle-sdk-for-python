@@ -1069,6 +1069,7 @@ class TestCertAuths(unittest.TestCase):
         transaction.orderId = '10'
         transaction.amount = 40000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
         card = fields.cardType()
         card.number = '4457010140000141'
