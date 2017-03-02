@@ -21,5 +21,10 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
-__all__ = ['test_cert_auth', 'test_cert_auth_enhanced', 'test_cert_auth_reversal', 'test_cert_echeck',
-           'test_cert_token']
+__all__ = [
+    'test_cert_auth',
+    'test_cert_auth_enhanced',
+    'test_cert_auth_reversal',
+    'test_cert_echeck',
+    'test_cert_token'
+]

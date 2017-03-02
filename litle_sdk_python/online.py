@@ -26,8 +26,10 @@ from __future__ import print_function
 
 import requests
 
-import litle_xml_fields
+import fields
 import utils
+
+import re
 
 
 def request(transaction, conf, return_format='object', timeout=30):
@@ -38,7 +40,7 @@ def request(transaction, conf, return_format='object', timeout=30):
         conf: An instance of utils.Configuration
         return_format: Return format. The default is 'object'. Could be either 'object' or 'xml'.
         timeout: timeout for the request in seconds. timeout is not a time limit on the entire response.
-                 It's the time that server has not issued a response.
+        It's the time that server has not issued a response.
 
     Returns:
         response XML in desired format.
@@ -46,8 +48,8 @@ def request(transaction, conf, return_format='object', timeout=30):
     Raises:
         Vantiv Exceptions.
     """
-    if not (isinstance(transaction, litle_xml_fields.recurringTransactionType)
-            or isinstance(transaction, litle_xml_fields.transactionType)):
+    if not (isinstance(transaction, fields.recurringTransactionType)
+            or isinstance(transaction, fields.transactionType)):
         raise TypeError('transaction must be either litle_xml_fields.recurringTransactionType or transactionType')
 
     if not isinstance(conf, utils.Configuration):
@@ -55,18 +57,17 @@ def request(transaction, conf, return_format='object', timeout=30):
 
     request_xml = _create_request_xml(transaction, conf)
     response_xml = _http_post(request_xml, conf, timeout)
+    response_code = utils.get_response_code(response_xml, 'litleOnlineResponse')
 
-    # Assuming that the xml returned from server is valid.
-    response = litle_xml_fields.CreateFromDocument(response_xml)
-
-    if response.response == '0':
+    if response_code == '0':
         if return_format.lower() == 'xml':
             return response_xml
         else:
-            return response
+            return fields.CreateFromDocument(response_xml)
     else:
-        # TODO Change to custom Vantiv Exception.
-        raise Exception(response.message)
+        # Using pyxb to get
+        msg = fields.CreateFromDocument(response_xml).message
+        raise utils.VantivException(msg)
 
 
 def _create_request_xml(transaction, conf):
@@ -121,11 +122,11 @@ def _create_request_obj(transaction, conf):
     Returns:
         an instance of litleOnlineRequest object
     """
-    request_obj = litle_xml_fields.litleOnlineRequest()
+    request_obj = fields.litleOnlineRequest()
     request_obj.merchantId = conf.merchantId
     request_obj.version = conf.VERSION
     request_obj.merchantSdk = conf.MERCHANTSDK
-    authentication = litle_xml_fields.authentication()
+    authentication = fields.authentication()
     authentication.user = conf.user
     authentication.password = conf.password
     request_obj.authentication = authentication
@@ -136,7 +137,7 @@ def _create_request_obj(transaction, conf):
     #     <xs:element ref="xp:transaction" />
     #     <xs:element ref="xp:recurringTransaction" />
     # </xs:choice>
-    if isinstance(transaction, litle_xml_fields.recurringTransactionType):
+    if isinstance(transaction, fields.recurringTransactionType):
         request_obj.recurringTransaction = transaction
     else:
         request_obj.transaction = transaction

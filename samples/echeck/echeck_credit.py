@@ -51,6 +51,7 @@ conf = utils.Configuration()
 # Initial Transaction.
 transaction = fields.echeckCredit()
 transaction.litleTxnId = '123456789101112'
+transaction.id = 'ThisIsRequiredby11'
 
 # Send request to server and get response as object
 response = online.request(transaction, conf)

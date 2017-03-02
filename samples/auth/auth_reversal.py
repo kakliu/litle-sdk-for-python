@@ -51,6 +51,7 @@ conf = utils.Configuration()
 # Initial Transaction.
 transaction = fields.authReversal()
 transaction.litleTxnId = '100000000000000000L'
+transaction.id = 'ThisIsRequiredby11'
 
 # Send request to server and get response as object
 response = online.request(transaction, conf)

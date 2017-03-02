@@ -30,14 +30,14 @@ import os
 import paramiko
 import six
 
-import litle_xml_fields
+import fields
 import utils
 
 # Key: transaction name
 # Value: array of batchRequest attributes according to transactions
 _supported_transaction_types = {
     'activate': ['numActivates', 'activateAmount'],
-    'auth': ['numAuths', 'authAmount'],
+    'authorization': ['numAuths', 'authAmount'],
     'authReversal': ['numAuthReversals', 'authReversalAmount'],
     'balanceInquiry': ['numBalanceInquirys', ''],
     'cancelSubscription': ['numCancelSubscriptions', ''],
@@ -74,6 +74,20 @@ _supported_transaction_types = {
     'physicalCheckCredit': ['numPhysicalCheckCredit', 'physicalCheckCreditAmount'],
 }
 
+_batch_attributes_num_dict = dict()
+_batch_attributes_amount_dict = dict()
+for key in _supported_transaction_types:
+    if _supported_transaction_types[key][0]:
+        _batch_attributes_num_dict[_supported_transaction_types[key][0]] = 0
+    if _supported_transaction_types[key][1]:
+        _batch_attributes_amount_dict[_supported_transaction_types[key][1]] = 0
+
+_class_transaction_dict = dict()
+for key in _supported_transaction_types:
+    obj = getattr(fields, key)()
+    typename = type(obj).__name__
+    _class_transaction_dict[typename] = _supported_transaction_types[key]
+
 
 def submit(transactions, conf, filename='', timeout=60):
     """Submitting a Session File for Processing to server via sFTP
@@ -97,7 +111,7 @@ def submit(transactions, conf, filename='', timeout=60):
     if not isinstance(transactions, Transactions):
         raise TypeError('transactions must be an instance of batch.Transactions')
 
-    if transactions.num_transactions < 1:
+    if len(transactions.transactions) < 1:
         raise ValueError('transactions must have at least 1 transaction')
 
     if not isinstance(conf, utils.Configuration):
@@ -120,7 +134,7 @@ def submit(transactions, conf, filename='', timeout=60):
     return remote_filename
 
 
-def download(filename, conf, timeout=60):
+def download(filename, conf, delete_remote=True, timeout=60):
     """Download Processed Session File from server via sFTP
 
     Get xml file from server and save to local file system
@@ -128,6 +142,7 @@ def download(filename, conf, timeout=60):
     Args:
         filename: filename of file in outbound folder at remote server with '.asc' as extension.
         conf:  An instance of utils.Configuration.
+        delete_remote: If delete the remote file after download. The default is True
         timeout: Timeout in second for ssh connection for sftp.
 
     Returns:
@@ -145,10 +160,10 @@ def download(filename, conf, timeout=60):
     if not isinstance(timeout, six.integer_types) or timeout < 0:
         raise ValueError('timeout must be an positive int')
 
-    return _get_file_from_sftp(filename, conf, timeout)
+    return _get_file_from_sftp(filename, conf, delete_remote, timeout)
 
 
-def retrieve(filename, conf, return_format='object', save_to_local=False, timeout=60):
+def retrieve(filename, conf, return_format='object', save_to_local=False, delete_remote=True, timeout=60):
     """Retrieving Processed Session File from server via sFTP
 
     1. Get xml file string from server and return object
@@ -159,6 +174,7 @@ def retrieve(filename, conf, return_format='object', save_to_local=False, timeou
         conf:  An instance of utils.Configuration.
         return_format: Return format. The default is 'object'. Could be either 'object' or 'xml'.
         save_to_local: whether save file to local. default is false.
+        delete_remote: If delete the remote file after download. The default is True
         timeout: Timeout in second for ssh connection for sftp.
 
     Returns:
@@ -176,17 +192,24 @@ def retrieve(filename, conf, return_format='object', save_to_local=False, timeou
     if not isinstance(timeout, six.integer_types) or timeout < 0:
         raise ValueError('timeout must be an positive int')
 
-    xml_str = _get_file_str_from_sftp(filename, conf, timeout)
-    if save_to_local:
-        _save_str_file(xml_str, conf.batch_response_path, filename)
+    xml_str = _get_file_str_from_sftp(filename, conf, delete_remote, timeout)
 
-    if return_format.lower() == 'xml':
-        return xml_str
+    response_code = utils.get_response_code(xml_str, 'litleResponse')
+
+    if response_code == '0':
+        if save_to_local:
+            _save_str_file(xml_str, conf.batch_response_path, filename)
+        if return_format.lower() == 'xml':
+            return xml_str
+        else:
+            return fields.CreateFromDocument(xml_str)
     else:
-        return litle_xml_fields.CreateFromDocument(xml_str)
+        # Using pyxb to get
+        msg = fields.CreateFromDocument(xml_str)
+        raise utils.VantivException(msg)
 
 
-def stream(transactions, conf, return_format='object', timeout_send=60, timeout_rev=1):
+def stream(transactions, conf, return_format='object', timeout_send=60, timeout_rev=2):
     """stream batch request to IBC (inbound batch communicator) via socket and get return object
 
     Args:
@@ -203,7 +226,7 @@ def stream(transactions, conf, return_format='object', timeout_send=60, timeout_
     if not isinstance(transactions, Transactions):
         raise TypeError('transactions must be an instance of batch.Transactions')
 
-    if transactions.num_transactions < 1:
+    if len(transactions.transactions) < 1:
         raise ValueError('transactions must have at least 1 transaction')
 
     if not isinstance(conf, utils.Configuration):
@@ -218,10 +241,20 @@ def stream(transactions, conf, return_format='object', timeout_send=60, timeout_
     xml_str = _create_batch_xml(transactions, conf)
     response_xml = _stream_socket(xml_str, conf, timeout_send, timeout_rev)
 
-    if return_format.lower() == 'xml':
-        return response_xml
+    if not response_xml.strip():
+        raise utils.VantivException('Cannot get response from vantiv, please tray again later.')
+
+    response_code = utils.get_response_code(response_xml, 'litleResponse')
+
+    if response_code == '0':
+        if return_format.lower() == 'xml':
+            return response_xml
+        else:
+            return fields.CreateFromDocument(response_xml)
     else:
-        return litle_xml_fields.CreateFromDocument(response_xml)
+        # Using pyxb to get
+        msg = fields.CreateFromDocument(response_xml).message
+        raise utils.VantivException(msg)
 
 
 def _stream_socket(xml_str, conf, timeout_send, timeout_rev):
@@ -326,12 +359,13 @@ def _put_file_to_sftp(file_path, conf, timeout):
     return os.path.basename(remote_path_asc)
 
 
-def _get_file_from_sftp(filename, conf, timeout):
+def _get_file_from_sftp(filename, conf, delete_remote, timeout):
     """Download file from server via sftp
 
     Args:
         filename: filename in outbound folder
         conf: An instance of utils.Configuration.
+        delete_remote: If delete the remote file after download.
         timeout: Timeout in second for ssh connection for sftp.
 
     Returns:
@@ -352,6 +386,8 @@ def _get_file_from_sftp(filename, conf, timeout):
         channel.settimeout(timeout)
         sftp = paramiko.SFTPClient.from_transport(transport)
         sftp.get(remote_path_asc, local_path)
+        if delete_remote:
+            sftp.remove(remote_path_asc)
         transport.close()
     except Exception as e:
         # noinspection PyBroadException
@@ -365,12 +401,13 @@ def _get_file_from_sftp(filename, conf, timeout):
     return local_path
 
 
-def _get_file_str_from_sftp(filename, conf, timeout):
+def _get_file_str_from_sftp(filename, conf, delete_remote, timeout):
     """read file from server via sftp
 
     Args:
         filename: filename in outbound folder
         conf: An instance of utils.Configuration.
+        delete_remote: If delete the remote file after download.
         timeout: Timeout in second for ssh connection for sftp.
 
     Returns:
@@ -387,6 +424,8 @@ def _get_file_str_from_sftp(filename, conf, timeout):
         sftp = paramiko.SFTPClient.from_transport(transport)
         remote_file = sftp.open(remote_path_asc)
         return_str = remote_file.read()
+        if delete_remote:
+            sftp.remove(remote_path_asc)
         transport.close()
     except Exception as e:
         # noinspection PyBroadException
@@ -453,29 +492,66 @@ def _create_batch_xml(transactions, conf):
     Returns:
         litleRequest xml string
     """
-    xml_str = '<?xml version="1.0" encoding="utf-8"?>'
-    xml_str += '<litleRequest version="%s" xmlns="http://www.litle.com/schema" id="%s" numBatchRequests="%d">' \
-               % (conf.VERSION, conf.id, transactions.num_transactions)
 
-    authentication = litle_xml_fields.authentication()
+    authentication = fields.authentication()
     authentication.user = conf.user
     authentication.password = conf.password
 
-    xml_str += _obj_to_xml_element(authentication)
+    txns = transactions.transactions
 
+    request_str = ''
+    num_batch_requests = 0
     if transactions.is_rfr_request:
-        xml_str += _obj_to_xml_element(transactions.transactions.pop())
+        request_str += _obj_to_xml_element(txns[0])
     else:
-        attributes_dict = transactions.attributes_dict
-        attributes_str = ''
-        for key in attributes_dict.keys():
-            if attributes_dict[key]:
-                attributes_str += ' %s ="%d"' % (key, attributes_dict[key])
-        xml_str += '<batchRequest merchantId="%s"%s>' % (conf.merchantId, attributes_str)
-        trans_set = transactions.transactions
-        while trans_set:
-            xml_str += _obj_to_xml_element(trans_set.pop())
-        xml_str += '</batchRequest>'
+        attributes_num_dict = _batch_attributes_num_dict.copy()
+        attributes_amount_dict = _batch_attributes_amount_dict.copy()
+        txn_count = 0
+        txns_str = ''
+        for txn in txns:
+            txn_count += 1
+            type_name = type(txn).__name__
+            attributes_num_dict[_class_transaction_dict[type_name][0]] += 1
+            if hasattr(txn, 'amount'):
+                attributes_amount_dict[_class_transaction_dict[type_name][1]] += int(getattr(txn, 'amount'))
+            txns_str += _obj_to_xml_element(txn)
+            if txn_count == 20000:
+                attributes_str = ''
+                for k in attributes_num_dict:
+                    if attributes_num_dict[k]:
+                        attributes_str += ' %s ="%d"' % (k, attributes_num_dict[k])
+                for k in attributes_amount_dict:
+                    if attributes_amount_dict[k]:
+                        attributes_str += ' %s ="%d"' % (k, attributes_amount_dict[k])
+                batch_request_str = '<batchRequest merchantId="%s"%s>' % (conf.merchantId, attributes_str)
+                batch_request_str += txns_str
+                batch_request_str += '</batchRequest>'
+                request_str += batch_request_str
+                num_batch_requests += 1
+                txn_count = 0
+                txns_str = ''
+                attributes_num_dict = _batch_attributes_num_dict.copy()
+                attributes_amount_dict = _batch_attributes_amount_dict.copy()
+        if txn_count:
+            attributes_str = ''
+            for k in attributes_num_dict:
+                if attributes_num_dict[k]:
+                    attributes_str += ' %s ="%d"' % (k, attributes_num_dict[k])
+            for k in attributes_amount_dict:
+                if attributes_amount_dict[k]:
+                    attributes_str += ' %s ="%d"' % (k, attributes_amount_dict[k])
+            batch_request_str = '<batchRequest merchantId="%s"%s>' % (conf.merchantId, attributes_str)
+            batch_request_str += txns_str
+            batch_request_str += '</batchRequest>'
+            request_str += batch_request_str
+            num_batch_requests += 1
+
+    xml_str = '<?xml version="1.0" encoding="utf-8"?>'
+    # noinspection PyProtectedMember
+    xml_str += '<litleRequest version="%s" xmlns="http://www.litle.com/schema" id="%s" numBatchRequests="%d">' \
+               % (conf.VERSION, conf.id, num_batch_requests)
+    xml_str += _obj_to_xml_element(authentication)
+    xml_str += request_str
     xml_str += '</litleRequest>'
 
     if conf.print_xml:
@@ -484,76 +560,75 @@ def _create_batch_xml(transactions, conf):
     return xml_str
 
 
-def _obj_to_xml_element(obj):
+def _obj_to_xml_element(_obj):
     """Convert obj to xml
 
     Args:
-        obj: Object
+        _obj: Object
 
     Returns:
         xml string
     """
-    xml = utils.obj_to_xml(obj)
+    xml = utils.obj_to_xml(_obj)
     xml = xml.replace('<?xml version="1.0" encoding="utf-8"?>', '')
     xml = xml.replace(' xmlns="http://www.litle.com/schema"', '')
     return xml
 
 
 class Transactions(object):
-    """Container class for all transactions for batch
+    """Container of transactions for batch request
+
+    Then transactions could be RFRRequest and any batch request supported transactions and recurringTransaction.
+    RFRRequest cannot exist in the same instance with any other transactions.
+
+    A instance cannot contain more than 1,000,000 transactions.
 
     """
-    _RFRRequest = False
-    _transactions = set()
-    _cls_attribute = {}
 
     @property
     def is_rfr_request(self):
+        """A property, whether current instanc include a RFRRequest
+
+        Returns:
+            Boolean
+        """
         return self._RFRRequest
 
     @property
     def transactions(self):
+        """A property, return a new list of transactions.
+
+        Returns:
+            list of transactions
+        """
         # The purpose to do this is to avoid giving directly access to _transactions
-        return self._transactions.copy()
-
-    @property
-    def num_transactions(self):
-        num = 0 if self._RFRRequest else len(self._transactions)
-        return num
-
-    @property
-    def attributes_dict(self):
-        attributes_dict = vars(self)
-        attributes_dict.pop('_RFRRequest_cls_name', None)
-        return attributes_dict
+        return list(self._transactions)
 
     def __init__(self):
-        for key in _supported_transaction_types.keys():
-            obj = getattr(litle_xml_fields, key)()
-            typename = type(obj).__name__
-            self._cls_attribute[typename] = _supported_transaction_types[key]
-            for attr_name in _supported_transaction_types[key]:
-                if attr_name != '':
-                    self.__setattr__(attr_name, 0)
-        obj = getattr(litle_xml_fields, 'RFRRequest')()
-        self._RFRRequest_cls_name = type(obj).__name__
+        self._RFRRequest = False
+        self._transactions = set()
+        obje = getattr(fields, 'RFRRequest')()
+        self._RFRRequest_cls_name = type(obje).__name__
 
     def add(self, transaction):
         """Add transaction to the container class.
 
         Args:
-            transaction: an instance of Transactions which could process by Batch.
+            transaction: an instance of Transactions or RFRRequest which could process by Batch.
 
         Returns:
             None
+
+        Raises:
+            Exceptions.
         """
-        typename = type(transaction).__name__
 
-        # A Batch should not exceed 20,000 transactions.
-        if len(self._transactions) > 20000:
-            raise Exception('A Batch should not exceed 20,000 transactions.')
+        # A Batch should not exceed 1,000,000 transactions.
+        if len(self._transactions) > 1000000:
+            raise Exception('A session should not exceed 1,000,000 transactions.')
 
-        if self._RFRRequest_cls_name == typename:
+        type_name = type(transaction).__name__
+        if self._RFRRequest_cls_name == type_name:
             if self._RFRRequest:
                 raise Exception('only can add one RFRRequest')
             else:
@@ -563,21 +638,13 @@ class Transactions(object):
                 else:
                     raise Exception('cannot mix transactions and RFRRequest')
         else:
-            if typename in self._cls_attribute.keys() and not self._RFRRequest:
+            if self._RFRRequest:
+                raise Exception('cannot mix transactions and RFRRequest')
+            if typename in _class_transaction_dict:
                 if transaction not in self._transactions:
                     # Add transaction
                     self._transactions.add(transaction)
-                    # increase num attribute if has
-                    num_attr_name = self._cls_attribute[typename][0]
-                    if num_attr_name:
-                        setattr(self, num_attr_name, getattr(self, num_attr_name) + 1)
-                    # increase amount attribute if has
-                    amount_attr_name = self._cls_attribute[typename][1]
-                    if amount_attr_name and hasattr(transaction, 'amount'):
-                        setattr(self, amount_attr_name,
-                                # getattr(self, amount_attr_name) + int(getattr(transaction, 'amount')) * 100)
-                                getattr(self, amount_attr_name) + int(getattr(transaction, 'amount')))
                 else:
                     raise Exception('duplicate transaction cannot be added to a batch')
             else:
-                raise Exception('transaction cannot be added to a batch')
+                raise Exception('transaction not support by batch')

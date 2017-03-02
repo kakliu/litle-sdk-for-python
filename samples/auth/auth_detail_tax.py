@@ -54,6 +54,7 @@ transaction = fields.authorization()
 transaction.orderId = '1'
 transaction.amount = 10010
 transaction.orderSource = 'ecommerce'
+transaction.id = 'ThisIsRequiredby11'
 
 # Create contact object
 contact = fields.contact()

@@ -77,6 +77,7 @@ authorization.orderId = '1'
 authorization.amount = 10010
 authorization.reportGroup = 'Planets'
 authorization.orderSource = 'ecommerce'
+authorization.id = 'ThisIsRequiredby11'
 authorization.card = card
 authorization.billtoaddress = billtoaddress
 # Add transaction to container
@@ -88,6 +89,7 @@ authorization2.orderId = '2'
 authorization2.amount = 1001
 authorization2.reportGroup = 'Planets'
 authorization2.orderSource = 'ecommerce'
+authorization2.id = 'ThisIsRequiredby11'
 authorization2.card = card
 authorization2.billtoaddress = billtoaddress
 # Add transaction to container
@@ -99,6 +101,7 @@ sale.orderId = '1'
 sale.amount = 10010
 sale.reportGroup = 'Planets'
 sale.orderSource = 'ecommerce'
+sale.id = 'ThisIsRequiredby11'
 sale.card = card
 sale.billtoaddress = billtoaddress
 # Add transaction to container

@@ -53,6 +53,7 @@ transaction = fields.authorization()
 transaction.orderId = '1'
 transaction.amount = 10010
 transaction.orderSource = 'ecommerce'
+transaction.id = 'ThisIsRequiredby11'
 
 token = fields.cardTokenType()
 token.litleToken = '1111222233334000'

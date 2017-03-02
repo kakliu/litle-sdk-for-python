@@ -46,7 +46,6 @@ conf = utils.Configuration()
 # conf.fast_ssl = True
 # conf.fast_port = ''
 # conf.print_xml = False
-conf.id = '789'
 
 # Initial Transaction.
 transaction = fields.credit()
@@ -54,6 +53,7 @@ transaction.orderId = '1'
 transaction.amount = 10010
 transaction.reportGroup = 'Planets'
 transaction.orderSource = 'ecommerce'
+transaction.id = 'ThisIsRequiredby11'
 
 # Create contact object
 contact = fields.contact()

@@ -37,12 +37,13 @@ if __name__ == '__main__':
 class TestCertAuths(unittest.TestCase):
     def test_table_2_1_1_auth(self):
         # orderId 1
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '1'
         transaction.amount = 10010
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'John & Mary Smith'
         contact.addressLine1 = '1 Main St.'
         contact.city = 'Burlington'
@@ -51,7 +52,7 @@ class TestCertAuths(unittest.TestCase):
         contact.country = 'USA'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '4457010000000009'
         card.expDate = '0121'
         card.cardValidationNum = '349'
@@ -67,21 +68,23 @@ class TestCertAuths(unittest.TestCase):
         self.assertEquals('M', response.transactionResponse.fraudResult.cardValidationResult)
 
         # orderId 1A
-        capture = litle_xml_fields.capture()
+        capture = fields.capture()
         capture.litleTxnId = response.transactionResponse.litleTxnId
+        capture.id = 'ThisIsID'
         captureresponse = online.request(capture, conf)
         self.assertEquals('000', captureresponse.transactionResponse.response)
         self.assertEquals('Approved', captureresponse.transactionResponse.message)
 
         # orderId 1B
-        credit = litle_xml_fields.credit()
+        credit = fields.credit()
+        credit.id = 'ThisIsID'
         credit.litleTxnId = captureresponse.transactionResponse.litleTxnId
         creditresponse = online.request(credit, conf)
         self.assertEquals('000', creditresponse.transactionResponse.response)
         self.assertEquals('Approved', creditresponse.transactionResponse.message)
 
         # orderId 1C
-        void = litle_xml_fields.void()
+        void = fields.void()
         void.litleTxnId = creditresponse.transactionResponse.litleTxnId
         voidresponse = online.request(void, conf)
         self.assertEquals('000', voidresponse.transactionResponse.response)
@@ -90,12 +93,13 @@ class TestCertAuths(unittest.TestCase):
     def test_table_2_1_1_avs(self):
 
         # orderId 1
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '1'
         transaction.amount = 000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'John & Mary Smith'
         contact.addressLine1 = '1 Main St.'
         contact.city = 'Burlington'
@@ -104,7 +108,7 @@ class TestCertAuths(unittest.TestCase):
         contact.country = 'USA'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '4457010000000009'
         card.expDate = '0121'
         card.cardValidationNum = '349'
@@ -120,12 +124,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_1_sale(self):
         # orderId 1
-        transaction = litle_xml_fields.sale()
+        transaction = fields.sale()
         transaction.orderId = '1'
         transaction.amount = 10010
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'John Smith'
         contact.addressLine1 = '1 Main St.'
         contact.city = 'Burlington'
@@ -134,7 +139,7 @@ class TestCertAuths(unittest.TestCase):
         contact.country = 'USA'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '4457010000000009'
         card.expDate = '0121'
         card.cardValidationNum = '349'
@@ -149,14 +154,16 @@ class TestCertAuths(unittest.TestCase):
         self.assertEquals('M', response.transactionResponse.fraudResult.cardValidationResult)
 
         # orderId 1B
-        credit = litle_xml_fields.credit()
+        credit = fields.credit()
+        credit.id = 'thisisid'
         credit.litleTxnId = response.transactionResponse.litleTxnId
         creditresponse = online.request(credit, conf)
         self.assertEquals('000', creditresponse.transactionResponse.response)
         self.assertEquals('Approved', creditresponse.transactionResponse.message)
 
         # orderId 1C
-        void = litle_xml_fields.void()
+        void = fields.void()
+        void.id = 'thisisid'
         void.litleTxnId = creditresponse.transactionResponse.litleTxnId
         voidresponse = online.request(void, conf)
         self.assertEquals('000', voidresponse.transactionResponse.response)
@@ -164,12 +171,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_2_auth(self):
         # orderId 2
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '2'
         transaction.amount = 10100
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'Mike J. Hammer'
         contact.addressLine1 = '2 Main St.'
         contact.addressLine2 = 'Apt. 222'
@@ -179,14 +187,14 @@ class TestCertAuths(unittest.TestCase):
         contact.country = 'US'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '5112010000000003'
         card.expDate = '0221'
         card.cardValidationNum = '261'
         card.type = 'MC'
         transaction.card = card
 
-        cardholderauthentication = litle_xml_fields.fraudCheckType()
+        cardholderauthentication = fields.fraudCheckType()
         cardholderauthentication.authenticationValue = 'BwABBJQ1AgAAAAAgJDUCAAAAAAA='
         # TODO <message>3-D Secure transaction not supported by merchant</message>
         # transaction.cardholderAuthentication = cardholderauthentication
@@ -200,21 +208,24 @@ class TestCertAuths(unittest.TestCase):
         self.assertRaises(response.transactionResponse.fraudResult.authenticationResult)
 
         # orderId 2A
-        capture = litle_xml_fields.capture()
+        capture = fields.capture()
+        capture.id = 'thisisid'
         capture.litleTxnId = response.transactionResponse.litleTxnId
         captureresponse = online.request(capture, conf)
         self.assertEquals('000', captureresponse.transactionResponse.response)
         self.assertEquals('Approved', captureresponse.transactionResponse.message)
 
         # orderId 2B
-        credit = litle_xml_fields.credit()
+        credit = fields.credit()
+        credit.id = 'thisisid'
         credit.litleTxnId = captureresponse.transactionResponse.litleTxnId
         creditresponse = online.request(credit, conf)
         self.assertEquals('000', creditresponse.transactionResponse.response)
         self.assertEquals('Approved', creditresponse.transactionResponse.message)
 
         # orderId 2C
-        void = litle_xml_fields.void()
+        void = fields.void()
+        void.id = 'thisisid'
         void.litleTxnId = creditresponse.transactionResponse.litleTxnId
         voidresponse = online.request(void, conf)
         self.assertEquals('000', voidresponse.transactionResponse.response)
@@ -222,12 +233,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_2_avs(self):
         # orderId 2
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '2'
         transaction.amount = 000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'Mike J. Hammer'
         contact.addressLine1 = '2 Main St.'
         contact.addressLine2 = 'Apt. 222'
@@ -237,14 +249,14 @@ class TestCertAuths(unittest.TestCase):
         contact.country = 'US'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '5112010000000003'
         card.expDate = '0221'
         card.cardValidationNum = '261'
         card.type = 'MC'
         transaction.card = card
 
-        cardholderauthentication = litle_xml_fields.fraudCheckType()
+        cardholderauthentication = fields.fraudCheckType()
         cardholderauthentication.authenticationValue = 'BwABBJQ1AgAAAAAgJDUCAAAAAAA='
         # TODO <message>3-D Secure transaction not supported by merchant</message>
         # transaction.cardholderAuthentication = cardholderauthentication
@@ -259,12 +271,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_2_sale(self):
         # orderId 2
-        transaction = litle_xml_fields.sale()
+        transaction = fields.sale()
         transaction.orderId = '2'
         transaction.amount = 10100
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'Mike J. Hammer'
         contact.addressLine1 = '2 Main St.'
         contact.addressLine2 = 'Apt. 222'
@@ -274,14 +287,14 @@ class TestCertAuths(unittest.TestCase):
         contact.country = 'US'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '5112010000000003'
         card.expDate = '0221'
         card.cardValidationNum = '261'
         card.type = 'MC'
         transaction.card = card
 
-        cardholderauthentication = litle_xml_fields.fraudCheckType()
+        cardholderauthentication = fields.fraudCheckType()
         cardholderauthentication.authenticationValue = 'BwABBJQ1AgAAAAAgJDUCAAAAAAA='
         # TODO <message>3-D Secure transaction not supported by merchant</message>
         # transaction.cardholderAuthentication = cardholderauthentication
@@ -295,21 +308,23 @@ class TestCertAuths(unittest.TestCase):
         self.assertRaises(response.transactionResponse.fraudResult.authenticationResult)
 
         # orderId *A
-        # capture = litle_xml_fields.capture()
+        # capture = fields.capture()
         # capture.litleTxnId = response.transactionResponse.litleTxnId
         # captureresponse = online.request(capture, conf)
         # self.assertEquals('000', captureresponse.transactionResponse.response)
         # self.assertEquals('Approved', captureresponse.transactionResponse.message)
 
         # orderId *B
-        credit = litle_xml_fields.credit()
+        credit = fields.credit()
+        credit.id = 'thisisid'
         credit.litleTxnId = response.transactionResponse.litleTxnId
         creditresponse = online.request(credit, conf)
         self.assertEquals('000', creditresponse.transactionResponse.response)
         self.assertEquals('Approved', creditresponse.transactionResponse.message)
 
         # orderId *C
-        void = litle_xml_fields.void()
+        void = fields.void()
+        credit.id = 'thisisid'
         void.litleTxnId = creditresponse.transactionResponse.litleTxnId
         voidresponse = online.request(void, conf)
         self.assertEquals('000', voidresponse.transactionResponse.response)
@@ -317,12 +332,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_3_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '3'
         transaction.amount = 10010
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'Eileen Jones'
         contact.addressLine1 = '3 Main St.'
         contact.city = 'Bloomfield'
@@ -331,7 +347,7 @@ class TestCertAuths(unittest.TestCase):
         contact.country = 'US'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '6011010000000003'
         card.expDate = '0321'
         card.cardValidationNum = '758'
@@ -346,21 +362,24 @@ class TestCertAuths(unittest.TestCase):
         self.assertEquals('M', response.transactionResponse.fraudResult.cardValidationResult)
 
         # orderId *A
-        capture = litle_xml_fields.capture()
+        capture = fields.capture()
+        capture.id = 'thisisid'
         capture.litleTxnId = response.transactionResponse.litleTxnId
         captureresponse = online.request(capture, conf)
         self.assertEquals('000', captureresponse.transactionResponse.response)
         self.assertEquals('Approved', captureresponse.transactionResponse.message)
 
         # orderId *B
-        credit = litle_xml_fields.credit()
+        credit = fields.credit()
+        credit.id = 'thisisid'
         credit.litleTxnId = captureresponse.transactionResponse.litleTxnId
         creditresponse = online.request(credit, conf)
         self.assertEquals('000', creditresponse.transactionResponse.response)
         self.assertEquals('Approved', creditresponse.transactionResponse.message)
 
         # orderId *C
-        void = litle_xml_fields.void()
+        void = fields.void()
+        void.id = 'thisisid'
         void.litleTxnId = creditresponse.transactionResponse.litleTxnId
         voidresponse = online.request(void, conf)
         self.assertEquals('000', voidresponse.transactionResponse.response)
@@ -368,12 +387,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_3_avs(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '3'
         transaction.amount = 000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'Eileen Jones'
         contact.addressLine1 = '3 Main St.'
         contact.city = 'Bloomfield'
@@ -382,7 +402,7 @@ class TestCertAuths(unittest.TestCase):
         contact.country = 'US'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '6011010000000003'
         card.expDate = '0321'
         card.cardValidationNum = '758'
@@ -398,12 +418,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_3_sale(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '3'
         transaction.amount = 10010
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'Eileen Jones'
         contact.addressLine1 = '3 Main St.'
         contact.city = 'Bloomfield'
@@ -412,7 +433,7 @@ class TestCertAuths(unittest.TestCase):
         contact.country = 'US'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '6011010000000003'
         card.expDate = '0321'
         card.cardValidationNum = '758'
@@ -427,21 +448,24 @@ class TestCertAuths(unittest.TestCase):
         self.assertEquals('M', response.transactionResponse.fraudResult.cardValidationResult)
 
         # orderId *A
-        capture = litle_xml_fields.capture()
+        capture = fields.capture()
+        capture.id = 'thisisid'
         capture.litleTxnId = response.transactionResponse.litleTxnId
         captureresponse = online.request(capture, conf)
         self.assertEquals('000', captureresponse.transactionResponse.response)
         self.assertEquals('Approved', captureresponse.transactionResponse.message)
 
         # orderId *B
-        credit = litle_xml_fields.credit()
+        credit = fields.credit()
+        credit.id = 'thisisid'
         credit.litleTxnId = captureresponse.transactionResponse.litleTxnId
         creditresponse = online.request(credit, conf)
         self.assertEquals('000', creditresponse.transactionResponse.response)
         self.assertEquals('Approved', creditresponse.transactionResponse.message)
 
         # orderId *C
-        void = litle_xml_fields.void()
+        void = fields.void()
+        void.id = 'thisisid'
         void.litleTxnId = creditresponse.transactionResponse.litleTxnId
         voidresponse = online.request(void, conf)
         self.assertEquals('000', voidresponse.transactionResponse.response)
@@ -449,12 +473,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_4_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '4'
         transaction.amount = 10010
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'Bob Black'
         contact.addressLine1 = '4 Main St.'
         contact.city = 'Laurel'
@@ -463,7 +488,7 @@ class TestCertAuths(unittest.TestCase):
         contact.country = 'US'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '375001000000005'
         card.expDate = '0421'
         card.type = 'AX'
@@ -477,21 +502,24 @@ class TestCertAuths(unittest.TestCase):
         self.assertEquals('13', response.transactionResponse.fraudResult.avsResult)
 
         # orderId *A
-        capture = litle_xml_fields.capture()
+        capture = fields.capture()
+        capture.id = 'thisisid'
         capture.litleTxnId = response.transactionResponse.litleTxnId
         captureresponse = online.request(capture, conf)
         self.assertEquals('000', captureresponse.transactionResponse.response)
         self.assertEquals('Approved', captureresponse.transactionResponse.message)
 
         # orderId *B
-        credit = litle_xml_fields.credit()
+        credit = fields.credit()
+        credit.id = 'thisisid'
         credit.litleTxnId = captureresponse.transactionResponse.litleTxnId
         creditresponse = online.request(credit, conf)
         self.assertEquals('000', creditresponse.transactionResponse.response)
         self.assertEquals('Approved', creditresponse.transactionResponse.message)
 
         # orderId *C
-        void = litle_xml_fields.void()
+        void = fields.void()
+        void.id = 'thisisid'
         void.litleTxnId = creditresponse.transactionResponse.litleTxnId
         voidresponse = online.request(void, conf)
         self.assertEquals('000', voidresponse.transactionResponse.response)
@@ -499,12 +527,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_4_avs(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '4'
         transaction.amount = 000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'Bob Black'
         contact.addressLine1 = '4 Main St.'
         contact.city = 'Laurel'
@@ -513,7 +542,7 @@ class TestCertAuths(unittest.TestCase):
         contact.country = 'US'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '375001000000005'
         card.expDate = '0421'
         card.type = 'AX'
@@ -527,12 +556,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_4_sale(self):
         # orderId *
-        transaction = litle_xml_fields.sale()
+        transaction = fields.sale()
         transaction.orderId = '4'
         transaction.amount = 10010
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'Bob Black'
         contact.addressLine1 = '4 Main St.'
         contact.city = 'Laurel'
@@ -541,7 +571,7 @@ class TestCertAuths(unittest.TestCase):
         contact.country = 'US'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '375001000000005'
         card.expDate = '0421'
         card.type = 'AX'
@@ -554,14 +584,16 @@ class TestCertAuths(unittest.TestCase):
         self.assertEquals('13', response.transactionResponse.fraudResult.avsResult)
 
         # orderId *A
-        capture = litle_xml_fields.capture()
+        capture = fields.capture()
+        capture.id = 'thisisid'
         capture.litleTxnId = response.transactionResponse.litleTxnId
         captureresponse = online.request(capture, conf)
         self.assertEquals('000', captureresponse.transactionResponse.response)
         self.assertEquals('Approved', captureresponse.transactionResponse.message)
 
         # orderId *B
-        credit = litle_xml_fields.credit()
+        credit = fields.credit()
+        credit.id = 'thisisid'
         credit.litleTxnId = captureresponse.transactionResponse.litleTxnId
         creditresponse = online.request(credit, conf)
         self.assertEquals('000', creditresponse.transactionResponse.response)
@@ -569,19 +601,20 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_5_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '5'
         transaction.amount = 10010
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '4100200300011001'
         card.expDate = '0521'
         card.type = 'VI'
         card.cardValidationNum = '463'
         transaction.card = card
 
-        cardholderauthentication = litle_xml_fields.fraudCheckType()
+        cardholderauthentication = fields.fraudCheckType()
         cardholderauthentication.authenticationValue = 'BwABBJQ1AgAAAAAgJDUCAAAAAAA='
         # TODO <message>3-D Secure transaction not supported by merchant</message>
         # transaction.cardholderAuthentication = cardholderauthentication
@@ -594,21 +627,24 @@ class TestCertAuths(unittest.TestCase):
         self.assertEquals('M', response.transactionResponse.fraudResult.cardValidationResult)
 
         # orderId *A
-        capture = litle_xml_fields.capture()
+        capture = fields.capture()
+        capture.id = 'thisisid'
         capture.litleTxnId = response.transactionResponse.litleTxnId
         captureresponse = online.request(capture, conf)
         self.assertEquals('000', captureresponse.transactionResponse.response)
         self.assertEquals('Approved', captureresponse.transactionResponse.message)
 
         # orderId *B
-        credit = litle_xml_fields.credit()
+        credit = fields.credit()
+        credit.id = 'thisisid'
         credit.litleTxnId = captureresponse.transactionResponse.litleTxnId
         creditresponse = online.request(credit, conf)
         self.assertEquals('000', creditresponse.transactionResponse.response)
         self.assertEquals('Approved', creditresponse.transactionResponse.message)
 
         # orderId *C
-        void = litle_xml_fields.void()
+        void = fields.void()
+        void.id = 'thisisid'
         void.litleTxnId = creditresponse.transactionResponse.litleTxnId
         voidresponse = online.request(void, conf)
         self.assertEquals('000', voidresponse.transactionResponse.response)
@@ -616,19 +652,20 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_5_avs(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '5'
         transaction.amount = 000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '4100200300011001'
         card.expDate = '0521'
         card.type = 'VI'
         card.cardValidationNum = '463'
         transaction.card = card
 
-        cardholderauthentication = litle_xml_fields.fraudCheckType()
+        cardholderauthentication = fields.fraudCheckType()
         cardholderauthentication.authenticationValue = 'BwABBJQ1AgAAAAAgJDUCAAAAAAA='
         # TODO <message>3-D Secure transaction not supported by merchant</message>
         # transaction.cardholderAuthentication = cardholderauthentication
@@ -642,19 +679,20 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_5_sale(self):
         # orderId *
-        transaction = litle_xml_fields.sale()
+        transaction = fields.sale()
         transaction.orderId = '5'
         transaction.amount = 10010
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '4100200300011001'
         card.expDate = '0521'
         card.type = 'VI'
         card.cardValidationNum = '463'
         transaction.card = card
 
-        cardholderauthentication = litle_xml_fields.fraudCheckType()
+        cardholderauthentication = fields.fraudCheckType()
         cardholderauthentication.authenticationValue = 'BwABBJQ1AgAAAAAgJDUCAAAAAAA='
         # TODO <message>3-D Secure transaction not supported by merchant</message>
         # transaction.cardholderAuthentication = cardholderauthentication
@@ -667,14 +705,16 @@ class TestCertAuths(unittest.TestCase):
         self.assertEquals('M', response.transactionResponse.fraudResult.cardValidationResult)
 
         # orderId *B
-        credit = litle_xml_fields.credit()
+        credit = fields.credit()
+        credit.id = 'thisisid'
         credit.litleTxnId = response.transactionResponse.litleTxnId
         creditresponse = online.request(credit, conf)
         self.assertEquals('000', creditresponse.transactionResponse.response)
         self.assertEquals('Approved', creditresponse.transactionResponse.message)
 
         # orderId *C
-        void = litle_xml_fields.void()
+        void = fields.void()
+        void.id = 'thisisid'
         void.litleTxnId = creditresponse.transactionResponse.litleTxnId
         voidresponse = online.request(void, conf)
         self.assertEquals('000', voidresponse.transactionResponse.response)
@@ -682,12 +722,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_6_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '6'
         transaction.amount = 10010
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'Joe Green'
         contact.addressLine1 = '6 Main St.'
         contact.city = 'Derry'
@@ -696,7 +737,7 @@ class TestCertAuths(unittest.TestCase):
         contact.country = 'US'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '4457010100000008'
         card.expDate = '0621'
         card.cardValidationNum = '992'
@@ -711,12 +752,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_6_sale(self):
         # orderId *
-        transaction = litle_xml_fields.sale()
+        transaction = fields.sale()
         transaction.orderId = '6'
         transaction.amount = 10010
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'Joe Green'
         contact.addressLine1 = '6 Main St.'
         contact.city = 'Derry'
@@ -725,7 +767,7 @@ class TestCertAuths(unittest.TestCase):
         contact.country = 'US'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '4457010100000008'
         card.expDate = '0621'
         card.cardValidationNum = '992'
@@ -739,7 +781,8 @@ class TestCertAuths(unittest.TestCase):
         self.assertEquals('P', response.transactionResponse.fraudResult.cardValidationResult)
 
         # orderId *A
-        void = litle_xml_fields.void()
+        void = fields.void()
+        void.id = 'thisisid'
         void.litleTxnId = response.transactionResponse.litleTxnId
         voidresponse = online.request(void, conf)
         self.assertEquals('360', voidresponse.transactionResponse.response)
@@ -747,12 +790,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_7_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '7'
         transaction.amount = 10010
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'Jane Murray'
         contact.addressLine1 = '7 Main St.'
         contact.city = 'Amesbury'
@@ -761,7 +805,7 @@ class TestCertAuths(unittest.TestCase):
         contact.country = 'US'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '5112010100000002'
         card.expDate = '0721'
         card.cardValidationNum = '251'
@@ -776,12 +820,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_7_avs(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '7'
         transaction.amount = 000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'Jane Murray'
         contact.addressLine1 = '7 Main St.'
         contact.city = 'Amesbury'
@@ -790,7 +835,7 @@ class TestCertAuths(unittest.TestCase):
         contact.country = 'US'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '5112010100000002'
         card.expDate = '0721'
         card.cardValidationNum = '251'
@@ -805,12 +850,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_7_sale(self):
         # orderId *
-        transaction = litle_xml_fields.sale()
+        transaction = fields.sale()
         transaction.orderId = '7'
         transaction.amount = 10010
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'Jane Murray'
         contact.addressLine1 = '7 Main St.'
         contact.city = 'Amesbury'
@@ -819,7 +865,7 @@ class TestCertAuths(unittest.TestCase):
         contact.country = 'US'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '5112010100000002'
         card.expDate = '0721'
         card.cardValidationNum = '251'
@@ -834,12 +880,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_8_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '8'
         transaction.amount = 10010
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'Mark Johnson'
         contact.addressLine1 = '8 Main St.'
         contact.city = 'Manchester'
@@ -848,7 +895,7 @@ class TestCertAuths(unittest.TestCase):
         contact.country = 'US'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '6011010100000002'
         card.expDate = '0821'
         card.cardValidationNum = '184'
@@ -863,12 +910,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_8_avs(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '8'
         transaction.amount = 000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'Mark Johnson'
         contact.addressLine1 = '8 Main St.'
         contact.city = 'Manchester'
@@ -877,7 +925,7 @@ class TestCertAuths(unittest.TestCase):
         contact.country = 'US'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '6011010100000002'
         card.expDate = '0821'
         card.cardValidationNum = '184'
@@ -892,12 +940,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_8_sale(self):
         # orderId *
-        transaction = litle_xml_fields.sale()
+        transaction = fields.sale()
         transaction.orderId = '8'
         transaction.amount = 10010
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'Mark Johnson'
         contact.addressLine1 = '8 Main St.'
         contact.city = 'Manchester'
@@ -906,7 +955,7 @@ class TestCertAuths(unittest.TestCase):
         contact.country = 'US'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '6011010100000002'
         card.expDate = '0821'
         card.cardValidationNum = '184'
@@ -921,12 +970,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_9_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '9'
         transaction.amount = 10010
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'James Miller'
         contact.addressLine1 = '9 Main St.'
         contact.city = 'Boston'
@@ -935,7 +985,7 @@ class TestCertAuths(unittest.TestCase):
         contact.country = 'US'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '375001010000003'
         card.expDate = '0921'
         card.cardValidationNum = '0421'
@@ -950,12 +1000,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_9_avs(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '9'
         transaction.amount = 000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'James Miller'
         contact.addressLine1 = '9 Main St.'
         contact.city = 'Boston'
@@ -964,7 +1015,7 @@ class TestCertAuths(unittest.TestCase):
         contact.country = 'US'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '375001010000003'
         card.expDate = '0921'
         card.cardValidationNum = '0421'
@@ -979,12 +1030,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_9_sale(self):
         # orderId *
-        transaction = litle_xml_fields.sale()
+        transaction = fields.sale()
         transaction.orderId = '9'
         transaction.amount = 10010
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'James Miller'
         contact.addressLine1 = '9 Main St.'
         contact.city = 'Boston'
@@ -993,7 +1045,7 @@ class TestCertAuths(unittest.TestCase):
         contact.country = 'US'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '375001010000003'
         card.expDate = '0921'
         card.cardValidationNum = '0421'
@@ -1008,12 +1060,12 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_10_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '10'
         transaction.amount = 40000
         transaction.orderSource = 'ecommerce'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '4457010140000141'
         card.expDate = '0921'
         card.type = 'VI'
@@ -1028,12 +1080,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_11_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '11'
         transaction.amount = 60000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '5112010140000004'
         card.expDate = '1121'
         card.type = 'MC'
@@ -1048,12 +1101,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_12_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '12'
         transaction.amount = 50000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '375001014000009'
         card.expDate = '0421'
         card.type = 'AX'
@@ -1068,12 +1122,13 @@ class TestCertAuths(unittest.TestCase):
 
     def test_table_2_1_13_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '13'
         transaction.amount = 15000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '6011010140000004'
         card.expDate = '0821'
         card.type = 'DI'

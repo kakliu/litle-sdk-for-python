@@ -55,6 +55,7 @@ transaction = fields.captureGivenAuth()
 transaction.amount = 106
 transaction.orderId = '12344'
 transaction.orderSource = 'ecommerce'
+transaction.id = 'ThisIsRequiredby11'
 
 # Create authInformation
 authInformation = fields.authInformation()

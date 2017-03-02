@@ -54,6 +54,7 @@ transaction.orderId = '12344'
 transaction.amount = 106
 transaction.reportGroup = 'Planets'
 transaction.orderSource = 'ecommerce'
+transaction.id = 'ThisIsRequiredby11'
 
 # Create cardType object
 card = fields.cardType()

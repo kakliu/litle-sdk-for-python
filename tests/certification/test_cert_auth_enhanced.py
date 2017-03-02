@@ -35,7 +35,7 @@ class TestCertEnhancedAuths(unittest.TestCase):
 
     # response sample for orderId 14 through 20
     #
-    # <litleOnlineResponse version="9.10" xmlns="http://www.litle.com/schema"
+    # <litleOnlineResponse version="9.10" xmlns="http://www.litle.com/fields.
     #     response="0" message="Valid Format">
     #     <authorizationResponse reportGroup="Default Report Group">
     #         <litleTxnId>82919994154434833</litleTxnId>
@@ -69,12 +69,13 @@ class TestCertEnhancedAuths(unittest.TestCase):
 
     def test_table_2_1_14_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '14'
         transaction.amount = 10100
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.type = 'VI'
         card.number = '4457010200000247'
         card.expDate = '0821'
@@ -88,12 +89,13 @@ class TestCertEnhancedAuths(unittest.TestCase):
 
     def test_table_2_1_15_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '15'
         transaction.amount = 10100
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.type = 'MC'
         card.number = '5500000254444445'
         card.expDate = '0321'
@@ -106,12 +108,13 @@ class TestCertEnhancedAuths(unittest.TestCase):
 
     def test_table_2_1_16_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '16'
         transaction.amount = 10100
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.type = 'MC'
         card.number = '5592106621450897'
         card.expDate = '0321'
@@ -124,12 +127,13 @@ class TestCertEnhancedAuths(unittest.TestCase):
 
     def test_table_2_1_17_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '17'
         transaction.amount = 10100
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.type = 'MC'
         card.number = '5590409551104142'
         card.expDate = '0321'
@@ -142,12 +146,13 @@ class TestCertEnhancedAuths(unittest.TestCase):
 
     def test_table_2_1_18_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '18'
         transaction.amount = 10100
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.type = 'MC'
         card.number = '5587755665222179'
         card.expDate = '0321'
@@ -161,12 +166,13 @@ class TestCertEnhancedAuths(unittest.TestCase):
 
     def test_table_2_1_19_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '19'
         transaction.amount = 10100
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.type = 'MC'
         card.number = '5445840176552850'
         card.expDate = '0321'
@@ -179,12 +185,13 @@ class TestCertEnhancedAuths(unittest.TestCase):
 
     def test_table_2_1_20_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '20'
         transaction.amount = 10100
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.type = 'MC'
         card.number = '5390016478904678'
         card.expDate = '0321'
@@ -196,7 +203,7 @@ class TestCertEnhancedAuths(unittest.TestCase):
         self.assertEquals('MCPREP', response.transactionResponse.authCode)
 
     # response sample for orderId 21 through 24
-    #  <litleOnlineResponse version="9.10" xmlns="http://www.litle.com/schema"
+    #  <litleOnlineResponse version="9.10" xmlns="http://www.litle.com/fields.
     #     response="0" message="Valid Format">
     #     <authorizationResponse reportGroup="Default Report Group">
     #         <litleTxnId>82919994227425701</litleTxnId>
@@ -225,12 +232,13 @@ class TestCertEnhancedAuths(unittest.TestCase):
     # Can't test affluence, add test for authCode
     def test_table_2_1_21_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '21'
         transaction.amount = 10100
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.type = 'VI'
         card.number = '4100200300012009'
         card.expDate = '0921'
@@ -243,12 +251,13 @@ class TestCertEnhancedAuths(unittest.TestCase):
 
     def test_table_2_1_22_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '22'
         transaction.amount = 10100
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.type = 'VI'
         card.number = '4100200300013007'
         card.expDate = '1121'
@@ -262,12 +271,13 @@ class TestCertEnhancedAuths(unittest.TestCase):
 
     def test_table_2_1_23_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '23'
         transaction.amount = 10100
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.type = 'MC'
         card.number = '5112010201000109'
         card.expDate = '0421'
@@ -280,12 +290,13 @@ class TestCertEnhancedAuths(unittest.TestCase):
 
     def test_table_2_1_24_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '24'
         transaction.amount = 10100
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.type = 'MC'
         card.number = '5112010202000108'
         card.expDate = '0821'
@@ -298,12 +309,13 @@ class TestCertEnhancedAuths(unittest.TestCase):
 
     def test_table_2_1_25_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '25'
         transaction.amount = 10100
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.type = 'VI'
         card.number = '4100200310000002'
         card.expDate = '1121'
@@ -320,12 +332,13 @@ class TestCertEnhancedAuths(unittest.TestCase):
     # Can't pass 26 - 31, <message>Merchant not certified/enabled for IIAS</message>
     def test_table_2_1_26_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '26'
         transaction.amount = 18698
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.type = 'MC'
         card.number = '5194560012341234'
         card.expDate = '1221'
@@ -333,8 +346,8 @@ class TestCertEnhancedAuths(unittest.TestCase):
 
         transaction.allowPartialAuth = True
 
-        healthcareiias = litle_xml_fields.healthcareIIAS()
-        healthcareAmounts = litle_xml_fields.healthcareAmounts()
+        healthcareiias = fields.healthcareIIAS()
+        healthcareAmounts = fields.healthcareAmounts()
         healthcareAmounts.totalHealthcareAmount = 20000
         healthcareiias.healthcareAmounts = healthcareAmounts
         healthcareiias.IIASFlag ='Y'
@@ -346,12 +359,13 @@ class TestCertEnhancedAuths(unittest.TestCase):
 
     def test_table_2_1_27_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '27'
         transaction.amount = 18698
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.type = 'MC'
         card.number = '5194560012341234'
         card.expDate = '1221'
@@ -359,8 +373,8 @@ class TestCertEnhancedAuths(unittest.TestCase):
 
         transaction.allowPartialAuth = True
 
-        healthcareiias = litle_xml_fields.healthcareIIAS()
-        healthcareAmounts = litle_xml_fields.healthcareAmounts()
+        healthcareiias = fields.healthcareIIAS()
+        healthcareAmounts = fields.healthcareAmounts()
         healthcareAmounts.totalHealthcareAmount = 15000
         healthcareAmounts.RxAmount = 16000
         healthcareiias.healthcareAmounts = healthcareAmounts
@@ -373,12 +387,13 @@ class TestCertEnhancedAuths(unittest.TestCase):
 
     def test_table_2_1_28_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '28'
         transaction.amount = 15000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.type = 'MC'
         card.number = '5194560012341234'
         card.expDate = '1221'
@@ -386,8 +401,8 @@ class TestCertEnhancedAuths(unittest.TestCase):
 
         transaction.allowPartialAuth = True
 
-        healthcareiias = litle_xml_fields.healthcareIIAS()
-        healthcareAmounts = litle_xml_fields.healthcareAmounts()
+        healthcareiias = fields.healthcareIIAS()
+        healthcareAmounts = fields.healthcareAmounts()
         healthcareAmounts.totalHealthcareAmount = 15000
         healthcareAmounts.RxAmount = 3698
         healthcareiias.healthcareAmounts = healthcareAmounts
@@ -401,12 +416,13 @@ class TestCertEnhancedAuths(unittest.TestCase):
 
     def test_table_2_1_29_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '29'
         transaction.amount = 18699
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.type = 'VI'
         card.number = '4024720001231239'
         card.expDate = '1221'
@@ -414,8 +430,8 @@ class TestCertEnhancedAuths(unittest.TestCase):
 
         transaction.allowPartialAuth = True
 
-        healthcareiias = litle_xml_fields.healthcareIIAS()
-        healthcareAmounts = litle_xml_fields.healthcareAmounts()
+        healthcareiias = fields.healthcareIIAS()
+        healthcareAmounts = fields.healthcareAmounts()
         healthcareAmounts.totalHealthcareAmount = 31000
         healthcareAmounts.RxAmount = 1000
         healthcareAmounts.visionAmount = 19901
@@ -431,12 +447,13 @@ class TestCertEnhancedAuths(unittest.TestCase):
 
     def test_table_2_1_30_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '30'
         transaction.amount = 20000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.type = 'VI'
         card.number = '4024720001231239'
         card.expDate = '1221'
@@ -444,8 +461,8 @@ class TestCertEnhancedAuths(unittest.TestCase):
 
         transaction.allowPartialAuth = True
 
-        healthcareiias = litle_xml_fields.healthcareIIAS()
-        healthcareAmounts = litle_xml_fields.healthcareAmounts()
+        healthcareiias = fields.healthcareIIAS()
+        healthcareAmounts = fields.healthcareAmounts()
         healthcareAmounts.totalHealthcareAmount = 20000
         healthcareAmounts.RxAmount = 1000
         healthcareAmounts.visionAmount = 19901
@@ -462,12 +479,13 @@ class TestCertEnhancedAuths(unittest.TestCase):
 
     def test_table_2_1_31_auth(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '31'
         transaction.amount = 25000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.type = 'VI'
         card.number = '4024720001231239'
         card.expDate = '1221'
@@ -475,8 +493,8 @@ class TestCertEnhancedAuths(unittest.TestCase):
 
         transaction.allowPartialAuth = True
 
-        healthcareiias = litle_xml_fields.healthcareIIAS()
-        healthcareAmounts = litle_xml_fields.healthcareAmounts()
+        healthcareiias = fields.healthcareIIAS()
+        healthcareAmounts = fields.healthcareAmounts()
         healthcareAmounts.totalHealthcareAmount = 18699
         healthcareAmounts.RxAmount = 1000
         healthcareAmounts.visionAmount = 15099

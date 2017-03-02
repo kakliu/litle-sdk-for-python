@@ -53,6 +53,7 @@ transaction = fields.authorization()
 transaction.orderId = '1'
 transaction.amount = 10010
 transaction.orderSource = 'ecommerce'
+transaction.id = 'ThisIsRequiredby11'
 
 # Create contact object
 contact = fields.contact()
@@ -83,6 +84,7 @@ print('LitleTransaction ID: %s' % response.transactionResponse.litleTxnId)
 
 # capture
 capture = fields.capture()
+capture.id = 'ThisIsRequiredby11'
 capture.litleTxnId = response.transactionResponse.litleTxnId
 captureresponse = online.request(capture, conf)
 print('Message: %s' % captureresponse.transactionResponse.message)
@@ -90,6 +92,7 @@ print('LitleTransaction ID: %s' % captureresponse.transactionResponse.litleTxnId
 
 # credit
 credit = fields.credit()
+credit.id = 'ThisIsRequiredby11'
 credit.litleTxnId = captureresponse.transactionResponse.litleTxnId
 creditresponse = online.request(credit, conf)
 print('Message: %s' % creditresponse.transactionResponse.message)
@@ -97,6 +100,7 @@ print('LitleTransaction ID: %s' % creditresponse.transactionResponse.litleTxnId)
 
 # void
 void = fields.void()
+void.id = 'ThisIsRequiredby11'
 void.litleTxnId = creditresponse.transactionResponse.litleTxnId
 voidresponse = online.request(void, conf)
 print('Message: %s' % voidresponse.transactionResponse.message)

@@ -52,6 +52,7 @@ conf = utils.Configuration()
 transaction = fields.registerTokenRequest()
 transaction.orderId = '12345'
 transaction.paypageRegistrationId = '123456789012345678901324567890abcdefghi'
+transaction.id = 'ThisIsRequiredby11'
 
 # Send request to server and get response as object
 response = online.request(transaction, conf)

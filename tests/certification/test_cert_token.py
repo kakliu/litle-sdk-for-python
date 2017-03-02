@@ -34,9 +34,10 @@ if __name__ == '__main__':
 class TestCertToken(unittest.TestCase):
     def test_table_2_8_50(self):
         # orderId *
-        transaction = litle_xml_fields.registerTokenRequest()
+        transaction = fields.registerTokenRequest()
         transaction.orderId = '50'
         transaction.accountNumber = '4457119922390123'
+        transaction.id = 'thisisid'
 
         response = online.request(transaction, conf)
         self.assertEquals('0123', response.transactionResponse.litleToken[-4:])
@@ -47,9 +48,10 @@ class TestCertToken(unittest.TestCase):
 
     def test_table_2_8_51(self):
         # orderId *
-        transaction = litle_xml_fields.registerTokenRequest()
+        transaction = fields.registerTokenRequest()
         transaction.orderId = '51'
         transaction.accountNumber = '4457119999999999'
+        transaction.id = 'thisisid'
 
         response = online.request(transaction, conf)
         self.assertRaises(response.transactionResponse.litleToken)
@@ -59,9 +61,10 @@ class TestCertToken(unittest.TestCase):
 
     def test_table_2_8_52(self):
         # orderId *
-        transaction = litle_xml_fields.registerTokenRequest()
+        transaction = fields.registerTokenRequest()
         transaction.orderId = '52'
         transaction.accountNumber = '4457119922390123'
+        transaction.id = 'thisisid'
 
         response = online.request(transaction, conf)
         self.assertEquals('0123', response.transactionResponse.litleToken[-4:])
@@ -73,10 +76,11 @@ class TestCertToken(unittest.TestCase):
 
     def test_table_2_8_53(self):
         # orderId *
-        transaction = litle_xml_fields.registerTokenRequest()
+        transaction = fields.registerTokenRequest()
         transaction.orderId = '53'
+        transaction.id = 'thisisid'
 
-        echeckForToken = litle_xml_fields.echeckForTokenType()
+        echeckForToken = fields.echeckForTokenType()
         echeckForToken.accNum = "1099999998"
         echeckForToken.routingNum = "011100012"
         transaction.echeckForToken = echeckForToken
@@ -91,10 +95,11 @@ class TestCertToken(unittest.TestCase):
 
     def test_table_2_8_54(self):
         # orderId *
-        transaction = litle_xml_fields.registerTokenRequest()
+        transaction = fields.registerTokenRequest()
         transaction.orderId = '54'
+        transaction.id = 'thisisid'
 
-        echeckForToken = litle_xml_fields.echeckForTokenType()
+        echeckForToken = fields.echeckForTokenType()
         echeckForToken.accNum = "1022222102"
         echeckForToken.routingNum = "1145_7895"
         transaction.echeckForToken = echeckForToken
@@ -105,12 +110,13 @@ class TestCertToken(unittest.TestCase):
 
     def test_table_2_9_55(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '55'
         transaction.amount = 15000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.type = 'MC'
         card.number = '5435101234510196'
         card.expDate = '1121'
@@ -129,12 +135,13 @@ class TestCertToken(unittest.TestCase):
 
     def test_table_2_9_56(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '56'
         transaction.amount = 15000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.type = 'MC'
         card.number = '5435109999999999'
         card.expDate = '1121'
@@ -147,12 +154,13 @@ class TestCertToken(unittest.TestCase):
 
     def test_table_2_9_57_58(self):
         # orderId 57
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '57'
         transaction.amount = 15000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.type = 'MC'
         card.number = '5435101234510196'
         card.expDate = '1121'
@@ -170,12 +178,13 @@ class TestCertToken(unittest.TestCase):
         self.assertEquals('543510', response.transactionResponse.tokenResponse.bin)
 
         # orderId 58
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '58'
         transaction.amount = 15000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        token = litle_xml_fields.cardTokenType()
+        token = fields.cardTokenType()
         token.litleToken = response.transactionResponse.tokenResponse.litleToken
         token.expDate = '1121'
         token.cardValidationNum = '987'
@@ -187,12 +196,13 @@ class TestCertToken(unittest.TestCase):
 
     def test_table_2_9_59(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '59'
         transaction.amount = 15000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        token = litle_xml_fields.cardTokenType()
+        token = fields.cardTokenType()
         token.litleToken = '1111000100092332'
         token.expDate = '1121'
         transaction.token = token
@@ -203,12 +213,13 @@ class TestCertToken(unittest.TestCase):
 
     def test_table_2_9_60(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '60'
         transaction.amount = 15000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        token = litle_xml_fields.cardTokenType()
+        token = fields.cardTokenType()
         token.litleToken = '1112000100000085'
         token.expDate = '1121'
         transaction.token = token
@@ -220,18 +231,19 @@ class TestCertToken(unittest.TestCase):
 
     def test_table_2_9_61(self):
         # orderId *
-        transaction = litle_xml_fields.echeckSale()
+        transaction = fields.echeckSale()
         transaction.orderId = '61'
         transaction.amount = 15000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        billtoaddress = litle_xml_fields.contact()
+        billtoaddress = fields.contact()
         billtoaddress.firstName = 'Tom'
         billtoaddress.lastName = 'Black'
         billtoaddress.phone = '999-999-9999'
         transaction.billToAddress = billtoaddress
 
-        echeck = litle_xml_fields.echeck()
+        echeck = fields.echeck()
         echeck.accType = 'Checking'
         echeck.accNum = '1099999003'
         echeck.routingNum = '011100012'
@@ -248,18 +260,19 @@ class TestCertToken(unittest.TestCase):
 
     def test_table_2_9_62(self):
         # orderId *
-        transaction = litle_xml_fields.echeckSale()
+        transaction = fields.echeckSale()
         transaction.orderId = '62'
         transaction.amount = 15000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        billtoaddress = litle_xml_fields.contact()
+        billtoaddress = fields.contact()
         billtoaddress.firstName = 'Tom'
         billtoaddress.lastName = 'Black'
         billtoaddress.phone = '999-999-9999'
         transaction.billToAddress = billtoaddress
 
-        echeck = litle_xml_fields.echeck()
+        echeck = fields.echeck()
         echeck.accType = 'Checking'
         echeck.accNum = '1099999999'
         echeck.routingNum = '011100012'
@@ -275,18 +288,19 @@ class TestCertToken(unittest.TestCase):
 
     def test_table_2_9_63(self):
         # orderId *
-        transaction = litle_xml_fields.echeckCredit()
+        transaction = fields.echeckCredit()
         transaction.orderId = '63'
         transaction.amount = 15000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        billtoaddress = litle_xml_fields.contact()
+        billtoaddress = fields.contact()
         billtoaddress.firstName = 'Tom'
         billtoaddress.lastName = 'Black'
         billtoaddress.phone = '999-999-9999'
         transaction.billToAddress = billtoaddress
 
-        echeck = litle_xml_fields.echeck()
+        echeck = fields.echeck()
         echeck.accType = 'Checking'
         echeck.accNum = '1099999999'
         echeck.routingNum = '011100012'
@@ -303,18 +317,19 @@ class TestCertToken(unittest.TestCase):
 
     def test_table_2_9_64(self):
         # orderId *
-        transaction = litle_xml_fields.echeckSale()
+        transaction = fields.echeckSale()
         transaction.orderId = '64'
         transaction.amount = 15000
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        billtoaddress = litle_xml_fields.contact()
+        billtoaddress = fields.contact()
         billtoaddress.firstName = 'Tom'
         billtoaddress.lastName = 'Black'
         billtoaddress.phone = '999-999-9999'
         transaction.billToAddress = billtoaddress
 
-        echeck = litle_xml_fields.echeck()
+        echeck = fields.echeck()
         echeck.accType = 'Corporate'
         echeck.accNum = '6099999993'
         echeck.routingNum = '211370545'

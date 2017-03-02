@@ -34,18 +34,19 @@ if __name__ == '__main__':
 class TestCertEcheck(unittest.TestCase):
     def test_table_2_4_37(self):
         # orderId 37
-        transaction = litle_xml_fields.echeckVerification()
+        transaction = fields.echeckVerification()
         transaction.orderId = '37'
         transaction.amount = 3001
         transaction.orderSource = 'telephone'
+        transaction.id = 'thisisid'
 
-        billtoaddress = litle_xml_fields.contact()
+        billtoaddress = fields.contact()
         billtoaddress.firstName = 'Tom'
         billtoaddress.lastName = 'Black'
         billtoaddress.phone = '999-999-9999'
         transaction.billToAddress = billtoaddress
 
-        echeck = litle_xml_fields.echeck()
+        echeck = fields.echeck()
         echeck.accNum = '10@BC99999'
         echeck.accType = 'Checking'
         echeck.routingNum = '053100300'
@@ -58,18 +59,19 @@ class TestCertEcheck(unittest.TestCase):
 
     def test_table_2_4_38(self):
         # orderId *
-        transaction = litle_xml_fields.echeckVerification()
+        transaction = fields.echeckVerification()
         transaction.orderId = '38'
         transaction.amount = 3002
         transaction.orderSource = 'telephone'
+        transaction.id = 'thisisid'
 
-        billtoaddress = litle_xml_fields.contact()
+        billtoaddress = fields.contact()
         billtoaddress.firstName = 'John'
         billtoaddress.lastName = 'Smith'
         billtoaddress.phone = '999-999-9999'
         transaction.billToAddress = billtoaddress
 
-        echeck = litle_xml_fields.echeck()
+        echeck = fields.echeck()
         echeck.accType = 'Checking'
         echeck.accNum = '1099999999'
         echeck.routingNum = '011075150'
@@ -82,19 +84,20 @@ class TestCertEcheck(unittest.TestCase):
 
     def test_table_2_4_39(self):
         # orderId *
-        transaction = litle_xml_fields.echeckVerification()
+        transaction = fields.echeckVerification()
         transaction.orderId = '39'
         transaction.amount = 3003
         transaction.orderSource = 'telephone'
+        transaction.id = 'thisisid'
 
-        billtoaddress = litle_xml_fields.contact()
+        billtoaddress = fields.contact()
         billtoaddress.firstName = 'Robert'
         billtoaddress.lastName = 'Jones'
         billtoaddress.companyName = 'Good Goods Inc'
         billtoaddress.phone = '999-999-9999'
         transaction.billToAddress = billtoaddress
 
-        echeck = litle_xml_fields.echeck()
+        echeck = fields.echeck()
         echeck.accType = 'Corporate'
         echeck.accNum = '3099999999'
         echeck.routingNum = '053100300'
@@ -107,19 +110,20 @@ class TestCertEcheck(unittest.TestCase):
 
     def test_table_2_4_40(self):
         # orderId *
-        transaction = litle_xml_fields.echeckVerification()
+        transaction = fields.echeckVerification()
         transaction.orderId = '40'
         transaction.amount = 3004
         transaction.orderSource = 'telephone'
+        transaction.id = 'thisisid'
 
-        billtoaddress = litle_xml_fields.contact()
+        billtoaddress = fields.contact()
         billtoaddress.firstName = 'Peter'
         billtoaddress.lastName = 'Green'
         billtoaddress.companyName = 'Green Co'
         billtoaddress.phone = '999-999-9999'
         transaction.billToAddress = billtoaddress
 
-        echeck = litle_xml_fields.echeck()
+        echeck = fields.echeck()
         echeck.accType = 'Corporate'
         echeck.accNum = '8099999999'
         echeck.routingNum = '011075150'
@@ -132,19 +136,20 @@ class TestCertEcheck(unittest.TestCase):
 
     def test_table_2_6_41(self):
         # orderId *
-        transaction = litle_xml_fields.echeckSale()
+        transaction = fields.echeckSale()
         transaction.orderId = '41'
         transaction.amount = 2008
         transaction.orderSource = 'telephone'
+        transaction.id = 'thisisid'
 
-        billtoaddress = litle_xml_fields.contact()
+        billtoaddress = fields.contact()
         billtoaddress.firstName = 'Mike'
         billtoaddress.middleInitial = 'J'
         billtoaddress.lastName = 'Hammer'
         billtoaddress.phone = '999-999-9999'
         transaction.billToAddress = billtoaddress
 
-        echeck = litle_xml_fields.echeck()
+        echeck = fields.echeck()
         echeck.accType = 'Checking'
         echeck.accNum = '10@BC99999'
         echeck.routingNum = '053100300'
@@ -157,18 +162,19 @@ class TestCertEcheck(unittest.TestCase):
 
     def test_table_2_6_42(self):
         # orderId *
-        transaction = litle_xml_fields.echeckSale()
+        transaction = fields.echeckSale()
         transaction.orderId = '42'
         transaction.amount = 2004
         transaction.orderSource = 'telephone'
+        transaction.id = 'thisisid'
 
-        billtoaddress = litle_xml_fields.contact()
+        billtoaddress = fields.contact()
         billtoaddress.firstName = 'Tom'
         billtoaddress.lastName = 'Black'
         billtoaddress.phone = '999-999-9999'
         transaction.billToAddress = billtoaddress
 
-        echeck = litle_xml_fields.echeck()
+        echeck = fields.echeck()
         echeck.accType = 'Checking'
         echeck.accNum = '4099999992'
         echeck.routingNum = '011075150'
@@ -179,7 +185,8 @@ class TestCertEcheck(unittest.TestCase):
         self.assertEquals('Approved', response.transactionResponse.message)
 
         # eCheck Void
-        transaction = litle_xml_fields.echeckVoid()
+        transaction = fields.echeckVoid()
+        transaction.id = 'thisisid'
         transaction.litleTxnId = response.transactionResponse.litleTxnId
 
         response = online.request(transaction, conf)
@@ -190,19 +197,20 @@ class TestCertEcheck(unittest.TestCase):
 
     def test_table_2_6_43(self):
         # orderId *
-        transaction = litle_xml_fields.echeckSale()
+        transaction = fields.echeckSale()
         transaction.orderId = '43'
         transaction.amount = 2007
         transaction.orderSource = 'telephone'
+        transaction.id = 'thisisid'
 
-        billtoaddress = litle_xml_fields.contact()
+        billtoaddress = fields.contact()
         billtoaddress.firstName = 'Peter'
         billtoaddress.lastName = 'Green'
         billtoaddress.companyName = 'Green Co'
         billtoaddress.phone = '999-999-9999'
         transaction.billToAddress = billtoaddress
 
-        echeck = litle_xml_fields.echeck()
+        echeck = fields.echeck()
         echeck.accType = 'Corporate'
         echeck.accNum = '6099999992'
         echeck.routingNum = '011075150'
@@ -216,19 +224,20 @@ class TestCertEcheck(unittest.TestCase):
 
     def test_table_2_6_44(self):
         # orderId *
-        transaction = litle_xml_fields.echeckSale()
+        transaction = fields.echeckSale()
         transaction.orderId = '44'
         transaction.amount = 2009
         transaction.orderSource = 'telephone'
+        transaction.id = 'thisisid'
 
-        billtoaddress = litle_xml_fields.contact()
+        billtoaddress = fields.contact()
         billtoaddress.firstName = 'Peter'
         billtoaddress.lastName = 'Green'
         billtoaddress.companyName = 'Green Co'
         billtoaddress.phone = '999-999-9999'
         transaction.billToAddress = billtoaddress
 
-        echeck = litle_xml_fields.echeck()
+        echeck = fields.echeck()
         echeck.accType = 'Corporate'
         echeck.accNum = '6099999992'
         echeck.routingNum = '053133052'
@@ -241,18 +250,19 @@ class TestCertEcheck(unittest.TestCase):
 
     def test_table_2_7_45(self):
         # orderId *
-        transaction = litle_xml_fields.echeckCredit()
+        transaction = fields.echeckCredit()
         transaction.orderId = '45'
         transaction.amount = 1001
         transaction.orderSource = 'telephone'
+        transaction.id = 'thisisid'
 
-        billtoaddress = litle_xml_fields.contact()
+        billtoaddress = fields.contact()
         billtoaddress.firstName = 'John'
         billtoaddress.lastName = 'Smith'
         billtoaddress.phone = '999-999-9999'
         transaction.billToAddress = billtoaddress
 
-        echeck = litle_xml_fields.echeck()
+        echeck = fields.echeck()
         echeck.accType = 'Checking'
         echeck.accNum = '10@BC99999'
         echeck.routingNum = '053100300'
@@ -265,19 +275,20 @@ class TestCertEcheck(unittest.TestCase):
 
     def test_table_2_7_46(self):
         # orderId *
-        transaction = litle_xml_fields.echeckCredit()
+        transaction = fields.echeckCredit()
         transaction.orderId = '46'
         transaction.amount = 1003
         transaction.orderSource = 'telephone'
+        transaction.id = 'thisisid'
 
-        billtoaddress = litle_xml_fields.contact()
+        billtoaddress = fields.contact()
         billtoaddress.firstName = 'Robert'
         billtoaddress.lastName = 'Jones'
         billtoaddress.companyName = 'Widget Inc'
         billtoaddress.phone = '999-999-9999'
         transaction.billToAddress = billtoaddress
 
-        echeck = litle_xml_fields.echeck()
+        echeck = fields.echeck()
         echeck.accType = 'Corporate'
         echeck.accNum = '3099999999'
         echeck.routingNum = '011075150'
@@ -288,7 +299,8 @@ class TestCertEcheck(unittest.TestCase):
         self.assertEquals('Approved', response.transactionResponse.message)
 
         # eCheck Void
-        transaction = litle_xml_fields.echeckVoid()
+        transaction = fields.echeckVoid()
+        transaction.id = 'thisisid'
         transaction.litleTxnId = response.transactionResponse.litleTxnId
 
         response = online.request(transaction, conf)
@@ -298,19 +310,20 @@ class TestCertEcheck(unittest.TestCase):
 
     def test_table_2_7_47(self):
         # orderId *
-        transaction = litle_xml_fields.echeckCredit()
+        transaction = fields.echeckCredit()
         transaction.orderId = '47'
         transaction.amount = 1007
         transaction.orderSource = 'telephone'
+        transaction.id = 'thisisid'
 
-        billtoaddress = litle_xml_fields.contact()
+        billtoaddress = fields.contact()
         billtoaddress.firstName = 'Peter'
         billtoaddress.lastName = 'Green'
         billtoaddress.companyName = 'Green Co'
         billtoaddress.phone = '999-999-9999'
         transaction.billToAddress = billtoaddress
 
-        echeck = litle_xml_fields.echeck()
+        echeck = fields.echeck()
         echeck.accType = 'Corporate'
         echeck.accNum = '6099999993'
         echeck.routingNum = '211370545'
@@ -322,19 +335,20 @@ class TestCertEcheck(unittest.TestCase):
 
     def test_table_2_6_48(self):
         # orderId *
-        transaction = litle_xml_fields.echeckSale()
+        transaction = fields.echeckSale()
         transaction.orderId = '43'
         transaction.amount = 2007
         transaction.orderSource = 'telephone'
+        transaction.id = 'thisisid'
 
-        billtoaddress = litle_xml_fields.contact()
+        billtoaddress = fields.contact()
         billtoaddress.firstName = 'Peter'
         billtoaddress.lastName = 'Green'
         billtoaddress.companyName = 'Green Co'
         billtoaddress.phone = '999-999-9999'
         transaction.billToAddress = billtoaddress
 
-        echeck = litle_xml_fields.echeck()
+        echeck = fields.echeck()
         echeck.accType = 'Corporate'
         echeck.accNum = '6099999992'
         echeck.routingNum = '011075150'
@@ -342,7 +356,7 @@ class TestCertEcheck(unittest.TestCase):
 
         response = online.request(transaction, conf)
 
-        transaction = litle_xml_fields.echeckCredit()
+        transaction = fields.echeckCredit()
         transaction.litleTxnId = response.transactionResponse.litleTxnId
 
         response = online.request(transaction, conf)
@@ -352,8 +366,9 @@ class TestCertEcheck(unittest.TestCase):
 
     def test_table_2_6_49(self):
         # orderId *
-        transaction = litle_xml_fields.echeckCredit()
+        transaction = fields.echeckCredit()
         transaction.litleTxnId = '2'
+        transaction.id = 'thisisid'
 
         response = online.request(transaction, conf)
         self.assertEquals('360', response.transactionResponse.response)
@@ -361,8 +376,9 @@ class TestCertEcheck(unittest.TestCase):
 
     def test_echeck_void_4(self):
         # orderId *
-        transaction = litle_xml_fields.echeckVoid()
+        transaction = fields.echeckVoid()
         transaction.litleTxnId = '2'
+        transaction.id = 'thisisid'
 
         response = online.request(transaction, conf)
         self.assertEquals('360', response.transactionResponse.response)

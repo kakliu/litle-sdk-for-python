@@ -51,6 +51,7 @@ conf = utils.Configuration()
 # Initial Transaction.
 transaction = fields.capture()
 transaction.litleTxnId = '100000000000000011'
+transaction.id = 'ThisIsRequiredby11'
 
 # Send request to server and get response as object
 response = online.request(transaction, conf)

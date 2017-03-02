@@ -34,12 +34,13 @@ if __name__ == '__main__':
 class TestCertEcheck(unittest.TestCase):
     def test_table_2_4_32(self):
         # orderId 32
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '32'
         transaction.amount = 10010
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'John Smith'
         contact.addressLine1 = '1 Main St.'
         contact.city = 'Burlington'
@@ -48,7 +49,7 @@ class TestCertEcheck(unittest.TestCase):
         contact.country = 'USA'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.type = 'VI'
         card.number = '4457010000000009'
         card.expDate = '0121'
@@ -63,7 +64,8 @@ class TestCertEcheck(unittest.TestCase):
         self.assertEquals('M', response.transactionResponse.fraudResult.cardValidationResult)
 
         # orderId *A
-        capture = litle_xml_fields.capture()
+        capture = fields.capture()
+        capture.id = 'thisisid'
         capture.amount = 5050
         capture.litleTxnId = response.transactionResponse.litleTxnId
         captureresponse = online.request(capture, conf)
@@ -71,7 +73,7 @@ class TestCertEcheck(unittest.TestCase):
         self.assertEquals('Approved', captureresponse.transactionResponse.message)
 
         # orderId *B
-        # <litleOnlineResponse version="9.10" xmlns="http://www.litle.com/schema"
+        # <litleOnlineResponse version="9.10" xmlns="http://www.litle.com/fields.
         #     response="0" message="Valid Format">
         #     <authReversalResponse reportGroup="Default Report Group">
         #         <litleTxnId>82919994641942281</litleTxnId>
@@ -82,7 +84,8 @@ class TestCertEcheck(unittest.TestCase):
         #         <message>Approved</message>
         #     </authReversalResponse>
         # </litleOnlineResponse>
-        authreversal = litle_xml_fields.authReversal()
+        authreversal = fields.authReversal()
+        authreversal.id = 'thisisid'
         authreversal.litleTxnId = response.transactionResponse.litleTxnId
         authreversalresponse = online.request(authreversal, conf)
         self.assertEquals('111', authreversalresponse.transactionResponse.response)
@@ -92,12 +95,13 @@ class TestCertEcheck(unittest.TestCase):
 
     def test_table_2_3_33(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '33'
         transaction.amount = 20020
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'Mike J. Hammer'
         contact.addressLine1 = '2 Main St.'
         contact.addressLine2 = 'Apt. 222'
@@ -107,14 +111,14 @@ class TestCertEcheck(unittest.TestCase):
         contact.country = 'US'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.type = 'MC'
         card.number = '5112010000000003'
         card.expDate = '0221'
         card.cardValidationNum = '261'
         transaction.card = card
 
-        cardholderauthentication = litle_xml_fields.fraudCheckType()
+        cardholderauthentication = fields.fraudCheckType()
         cardholderauthentication.authenticationValue = 'BwABBJQ1AgAAAAAgJDUCAAAAAAA='
         # TODO <message>3-D Secure transaction not supported by merchant</message>
         # transaction.cardholderAuthentication = cardholderauthentication
@@ -128,7 +132,8 @@ class TestCertEcheck(unittest.TestCase):
         self.assertRaises(response.transactionResponse.fraudResult.authenticationResult)
 
         # orderId *A
-        authreversal = litle_xml_fields.authReversal()
+        authreversal = fields.authReversal()
+        authreversal.id = 'thisisid'
         authreversal.litleTxnId = response.transactionResponse.litleTxnId
         authreversalresponse = online.request(authreversal, conf)
         self.assertEquals('000', authreversalresponse.transactionResponse.response)
@@ -137,12 +142,13 @@ class TestCertEcheck(unittest.TestCase):
 
     def test_table_2_3_34(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '34'
         transaction.amount = 30030
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'Eileen Jones'
         contact.addressLine1 = '3 Main St.'
         contact.city = 'Bloomfield'
@@ -151,7 +157,7 @@ class TestCertEcheck(unittest.TestCase):
         contact.country = 'US'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '6011010000000003'
         card.expDate = '0321'
         card.cardValidationNum = '758'
@@ -166,7 +172,8 @@ class TestCertEcheck(unittest.TestCase):
         self.assertEquals('M', response.transactionResponse.fraudResult.cardValidationResult)
 
         # orderId *A
-        authreversal = litle_xml_fields.authReversal()
+        authreversal = fields.authReversal()
+        authreversal.id = 'thisisid'
         authreversal.litleTxnId = response.transactionResponse.litleTxnId
         authreversalresponse = online.request(authreversal, conf)
         self.assertEquals('000', authreversalresponse.transactionResponse.response)
@@ -175,12 +182,13 @@ class TestCertEcheck(unittest.TestCase):
 
     def test_table_2_3_35(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '35'
         transaction.amount = 10010
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        contact = litle_xml_fields.contact()
+        contact = fields.contact()
         contact.name = 'Bob Black'
         contact.addressLine1 = '4 Main St.'
         contact.city = 'Laurel'
@@ -189,7 +197,7 @@ class TestCertEcheck(unittest.TestCase):
         contact.country = 'US'
         transaction.billToAddress = contact
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '375001000000005'
         card.expDate = '0421'
         card.type = 'AX'
@@ -203,7 +211,8 @@ class TestCertEcheck(unittest.TestCase):
         self.assertEquals('13', response.transactionResponse.fraudResult.avsResult)
 
         # orderId *A
-        capture = litle_xml_fields.capture()
+        capture = fields.capture()
+        capture.id = 'thisisid'
         capture.litleTxnId = response.transactionResponse.litleTxnId
         capture.amount = 5050
         captureresponse = online.request(capture, conf)
@@ -211,7 +220,8 @@ class TestCertEcheck(unittest.TestCase):
         self.assertEquals('Approved', captureresponse.transactionResponse.message)
 
         # orderId *B
-        authreversal = litle_xml_fields.authReversal()
+        authreversal = fields.authReversal()
+        authreversal.id = 'thisisid'
         authreversal.litleTxnId = response.transactionResponse.litleTxnId
         authreversal.amount = 5050
         authreversalresponse = online.request(authreversal, conf)
@@ -222,12 +232,13 @@ class TestCertEcheck(unittest.TestCase):
 
     def test_table_2_3_36(self):
         # orderId *
-        transaction = litle_xml_fields.authorization()
+        transaction = fields.authorization()
         transaction.orderId = '36'
         transaction.amount = 20500
         transaction.orderSource = 'ecommerce'
+        transaction.id = 'thisisid'
 
-        card = litle_xml_fields.cardType()
+        card = fields.cardType()
         card.number = '375000026600004'
         card.expDate = '0521'
         card.type = 'AX'
@@ -239,7 +250,8 @@ class TestCertEcheck(unittest.TestCase):
         self.assertEquals('Approved', response.transactionResponse.message)
 
         # orderId *A
-        authreversal = litle_xml_fields.authReversal()
+        authreversal = fields.authReversal()
+        authreversal.id = 'thisisid'
         authreversal.litleTxnId = response.transactionResponse.litleTxnId
         authreversal.amount = 10000
         authreversalresponse = online.request(authreversal, conf)

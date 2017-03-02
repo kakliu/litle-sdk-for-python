@@ -53,6 +53,7 @@ transaction = fields.registerTokenRequest()
 transaction.orderId = '12344'
 transaction.accountNumber = '1233456789103801'
 transaction.orderSource = 'ecommerce'
+transaction.id = 'ThisIsRequiredby11'
 
 # Send request to server and get response as object
 response = online.request(transaction, conf)

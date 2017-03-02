@@ -53,6 +53,7 @@ transaction = fields.echeckVerification()
 transaction.orderId = '12345'
 transaction.amount = 123456
 transaction.orderSource = 'telephone'
+transaction.id = 'ThisIsRequiredby11'
 
 billtoaddress = fields.contact()
 billtoaddress.firstName = 'Peter'

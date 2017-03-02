@@ -25,37 +25,37 @@
 import json
 import os
 import tempfile
+
 import pyxb
 
+import re
 
 class Configuration(object):
     """Setup Configuration variables.
+
     Attributes:
-        user:            authentication.user
-        password:        authentication.password
-        merchantId:      The unique string to identify the merchant within the system.
-        reportGroup:     To separate your transactions into different categories,
-        url:             Url for server.
-        proxy:           Https proxy server address. Must start with "https://"
-        sftp_username:   Username for sftp
-        sftp_password:   Password for sftp
-        sftp_url:        Address for sftp
-        fast_url:        Fast address
-        fast_port:       Fast port
-        print_xml:       Whether print request and response xml
-        timeout:         Timeout
+        user (Str): authentication.user
+        password (Str): authentication.password
+        merchantId (Str): The unique string to identify the merchant within the system.
+        reportGroup (Str): To separate your transactions into different categories,
+        url (Str): Url for server.
+        proxy (Str): Https proxy server address. Must start with "https://"
+        sftp_username (Str): Username for sftp
+        sftp_password (Str): Password for sftp
+        sftp_url (Str): Address for sftp
+        batch_requests_path (Str): Location for saving generated batch request xml
+        batch_response_path (Str): Location for saving batch response xml
+        fast_url (Str): Fast address, using for batch stream
+        fast_port (Str): Fast port, using for batch stream
+        print_xml (Str): Whether print request and response xml
     """
 
-    VERSION = '9.10'
-    MERCHANTSDK = 'Python 9.10.0'
+    VERSION = '11.0'
+    MERCHANTSDK = 'Python 11.0.0dev'
     _CONFIG_FILE_PATH = os.path.join(os.environ['VANTIV_SDK_CONFIG'], ".vantiv_python_sdk.conf") \
         if 'VANTIV_SDK_CONFIG' in os.environ else os.path.join(os.path.expanduser("~"), ".vantiv_python_sdk.conf")
 
     def __init__(self):
-        """ Initial Configuration
-
-        Load configuration if the config is existing in local file system.
-        """
         self.user = ''
         self.password = ''
         self.merchantId = ''
@@ -89,37 +89,53 @@ class Configuration(object):
                 self.fast_ssl = config_json["fast_ssl"] if "fast_ssl" in config_json else self.fast_ssl
                 self.fast_port = config_json["fast_port"] if "fast_port" in config_json else ""
                 self.print_xml = config_json["print_xml"] if "print_xml" in config_json else self.print_xml
-                self.id = config_json["id"] if "id" in config_json else self.id
                 self.batch_requests_path = config_json["batch_requests_path"] if "batch_requests_path" in config_json \
                     else self.batch_requests_path
                 self.batch_response_path = config_json["batch_response_path"] if "batch_response_path" in config_json \
                     else self.batch_response_path
-        # TODO narrow the exception.
-        except Exception:
+        except:
             # If get any exception just pass.
             pass
 
     def save(self):
-        """Save Class Attributes to VANTIV_PYTHON_SDK.CONFIG
-
-        It's a json
+        """Save Class Attributes to .vantiv_python_sdk.conf
 
         Returns:
-            True when the attributes saved successfully.
+            full path for configuration file.
 
         Raises:
             IOError: An error occurred
         """
         with open(self._CONFIG_FILE_PATH, 'w') as config_file:
             json.dump(vars(self), config_file)
-        return True
+        return self._CONFIG_FILE_PATH
+
 
 def obj_to_xml(obj):
+    """Convert object to xml string without namespaces
+
+    Args:
+        obj: Object
+
+    Returns:
+        Xml string
+
+    Raises:
+        pyxb.ValidationError
+    """
     # TODO convert object to xml without default namespace gracefully.
     try:
         xml = obj.toxml('utf-8')
     except pyxb.ValidationError as e:
-        # TODO customized exceptions
-        raise Exception(e.details())
+        raise VantivException(e.details())
     xml = xml.replace('ns1:', '').replace(':ns1', '')
     return xml
+
+def get_response_code(response_xml, response_tag):
+    first_element = response_xml[:response_xml.index('>') + 1].replace('\n', '')
+    matchs = re.search('<%s.*response=["|\'](\d)["|\'].*>' % response_tag, first_element)
+    return matchs.group(1)
+
+class VantivException(Exception):
+    pass
+
