@@ -122,8 +122,8 @@ NOTE: you may need to edit the proxy to to work for your system
     Message: Valid Format
     Litle Transaction ID: <your-numeric-litle-txn-id>
     
-For information on configuration settings go to: [SDK Config Info](https://github.com/LitleCo/litle-sdk-for-python/wiki/Config-Settings).
 
-More examples can be found here [Python Gists](https://gist.github.com/gists/search?q=Litle+Python+SDK&page=1)
+More examples can be found here https://github.com/LitleCo/litle-sdk-for-python/tree/11.0/samples
+Detail documents can be found here https://github.com/LitleCo/litle-sdk-for-python/tree/11.0/docs/build/html
 
 Please contact Vantiv eCommerce with any further questions. You can reach us at SDKSupport@Vantiv.com
