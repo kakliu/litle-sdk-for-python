@@ -16,7 +16,7 @@ This SDK was implemented to support the Python programming language and was crea
 
 See LICENSE file for details on using this software.
 
-Source Code available from : https://github.com/LitleCo/litle-sdk-for-Python
+Source Code available from : https://github.com/LitleCo/litle-sdk-for-python/tree/11.0
 
 Please contact [Vantiv eCommerce](https://developer.vantiv.com/community/ecommerce) to receive valid merchant credentials and determine which version of the SDK is right for your business requirements or if you require assistance in any other way.  You can reach us at sdksupport@Vantiv.com
 
@@ -124,6 +124,7 @@ NOTE: you may need to edit the proxy to to work for your system
     
 
 More examples can be found here https://github.com/LitleCo/litle-sdk-for-python/tree/11.0/samples
+
 Detail documents can be found here https://github.com/LitleCo/litle-sdk-for-python/tree/11.0/docs/build/html
 
 Please contact Vantiv eCommerce with any further questions. You can reach us at SDKSupport@Vantiv.com
