@@ -22,13 +22,18 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
+import os
+import sys
 import unittest
 
-import certification
-from certification import certification_test_conf
+package_root = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
+sys.path.insert(0, package_root)
 
-from litle_sdk_python import utils
+import certification
 import functional
+from certification import certification_test_conf
+from litle_sdk_python import utils
+
 conf = certification_test_conf.conf
 
 suite = unittest.TestSuite()
@@ -42,7 +47,6 @@ for t in certification.__all__:
     except (ImportError, AttributeError):
         # else, just load all the test cases from the module.
         suite.addTest(unittest.defaultTestLoader.loadTestsFromName('certification.%s' % t))
-
 
 conf = utils.Configuration()
 

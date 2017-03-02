@@ -22,9 +22,12 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
+import os
+import sys
 import unittest
 
-import pyxb
+package_root = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+sys.path.insert(0, package_root)
 
 from litle_sdk_python import *
 
@@ -35,7 +38,7 @@ class TestAuthReversal(unittest.TestCase):
     def test_simple_auth_reversal(self):
         transactions = fields.authReversal()
         transactions.reportGroup = 'Planets'
-        transactions.litleTxnId ='12345678000'
+        transactions.litleTxnId = '12345678000'
         transactions.amount = 106
         transactions.orderSource = 'ecommerce'
         transactions.payPalNotes = 'Notes'

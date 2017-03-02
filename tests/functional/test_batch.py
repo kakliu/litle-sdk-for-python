@@ -22,10 +22,12 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
+import os
+import sys
 import unittest
 
-import pyxb
-import os
+package_root = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+sys.path.insert(0, package_root)
 
 from litle_sdk_python import *
 
@@ -106,7 +108,6 @@ class TestBatch(unittest.TestCase):
             self.assertEquals(11011, obj.batchRequest[0].authAmount)
 
         self.assertEquals('%s.xml.asc' % filename, response)
-
 
     def test_batch_stream_and_rfr(self):
         # Initial Transactions container

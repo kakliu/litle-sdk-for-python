@@ -22,8 +22,12 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
+import os
+import sys
 import unittest
 
+package_root = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
+sys.path.insert(0, package_root)
 import certification
 from certification import certification_test_conf
 
