@@ -22,10 +22,10 @@ Please contact [Vantiv eCommerce](https://developer.vantiv.com/community/ecommer
 
 Dependencies
 ------------
-pyxb v1.2.5 : http://pyxb.sourceforge.net/
-paramiko v1.14.0: http://www.paramiko.org/
-requests v2.13.0: http://docs.python-requests.org/en/master/
-six v1.10.0: https://github.com/benjaminp/six
+* pyxb v1.2.5 : http://pyxb.sourceforge.net/
+* paramiko v1.14.0: http://www.paramiko.org/
+* requests v2.13.0: http://docs.python-requests.org/en/master/
+* six v1.10.0: https://github.com/benjaminp/six
 
 Setup
 -----
