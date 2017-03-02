@@ -47,16 +47,12 @@ def combine_xsd(_version, _package_root):
         'litleOnline'
     ]
     schema_files = dict()
-    schema_folder = os.path.join(_package_root, 'schema')
-    for _, _, files in os.walk(schema_folder):
-        for f in files:
-            match = re.search('(\w+)_v(.*?)\.xsd', f)
-            if match and match.group(2) == _version and match.group(1) in schema_file_names:
-                schema_files[match.group(1)] = os.path.join(schema_folder, f)
-
-        for key in schema_file_names:
-            if key not in schema_files:
-                raise Exception('cannot find "%s_v%s.xsd"' % (key, _version))
+    for name in schema_file_names:
+        file_path = os.path.join(_package_root, 'schema', '%s_v%s.xsd' % (name, _version))
+        if os.path.exists(file_path):
+            schema_files[name] = file_path
+        else:
+            raise Exception('cannot find "%s_v%s.xsd"' % (name, _version))
 
     with open(schema_files[schema_file_names[0]], 'r') as file_r:
         combined_xsd_str = file_r.read().replace('</xs:schema>', '')
