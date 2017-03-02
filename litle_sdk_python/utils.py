@@ -49,13 +49,14 @@ class Configuration(object):
         fast_port (Str): Fast port, using for batch stream
         print_xml (Str): Whether print request and response xml
     """
+    VERSION = '11.0'
+    RELEASE = 'v2 11.0.beta'
+    MERCHANTSDK = 'Python ' + RELEASE
+    _CONFIG_FILE_PATH = os.path.join(os.environ['VANTIV_SDK_CONFIG'], ".vantiv_python_sdk.conf") \
+        if 'VANTIV_SDK_CONFIG' in os.environ else os.path.join(os.path.expanduser("~"), ".vantiv_python_sdk.conf")
 
     def __init__(self):
-        self.VERSION = '11.0'
-        self.RELEASE = 'v2 11.0.beta'
-        self.MERCHANTSDK = 'Python ' + self.RELEASE
-        self._CONFIG_FILE_PATH = os.path.join(os.environ['VANTIV_SDK_CONFIG'], ".vantiv_python_sdk.conf") \
-            if 'VANTIV_SDK_CONFIG' in os.environ else os.path.join(os.path.expanduser("~"), ".vantiv_python_sdk.conf")
+
         self.user = ''
         self.password = ''
         self.merchantId = ''
