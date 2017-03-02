@@ -27,6 +27,8 @@ import os
 import re
 import sys
 
+package_root = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
+sys.path.insert(0, package_root)
 from litle_sdk_python import utils
 
 # Require Python 2.7.9 or higher or Python 3.4 or higher
@@ -368,7 +370,6 @@ def set_min_occurs_0(_path_to_edited_xsd):
 
 
 if __name__ == '__main__':
-    package_root = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 
     conf = utils.Configuration()
     version = conf.VERSION
