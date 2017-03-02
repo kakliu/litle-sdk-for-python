@@ -370,7 +370,8 @@ def set_min_occurs_0(_path_to_edited_xsd):
 if __name__ == '__main__':
     package_root = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 
-    version = utils.Configuration().VERSION
+    conf = utils.Configuration()
+    version = conf.VERSION
 
     path_to_edited_xsd = combine_xsd(version, package_root)
 

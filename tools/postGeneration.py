@@ -66,7 +66,8 @@ def remove_absolute_path(_package_root):
 
 
 def generate_index_rst(_package_root):
-    _version = utils.Configuration().MERCHANTSDK
+    conf = utils.Configuration()
+    _version = conf.VERSION
     _path_to_edited_xsd = os.path.join(_package_root, 'SchemaCombined_v%s.xsd' % _version)
     _index_rst_path = os.path.join(_package_root, 'docs/source/index.rst')
     # base string for index.rst

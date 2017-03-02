@@ -1,7 +1,7 @@
 # ./fields.py
 # -*- coding: utf-8 -*-
 # PyXB bindings for NM:f03bd2be92cca0df00d3d054794f8a47756ec009
-# Generated 2017-03-02 11:13:55.388064 by PyXB version 1.2.5 using Python 2.7.13.final.0
+# Generated 2017-03-02 13:02:23.216525 by PyXB version 1.2.5 using Python 2.7.13.final.0
 # Namespace http://www.litle.com/schema
 
 from __future__ import unicode_literals
@@ -14,7 +14,7 @@ import pyxb.utils.domutils
 import sys
 import pyxb.utils.six as _six
 # Unique identifier for bindings created at the same time
-_GenerationUID = pyxb.utils.utility.UniqueIdentifier('urn:uuid:3b198396-ff63-11e6-a402-001a4a01063e')
+_GenerationUID = pyxb.utils.utility.UniqueIdentifier('urn:uuid:62091da4-ff72-11e6-9913-001a4a01063e')
 
 # Version of PyXB used to generate the bindings
 _PyXBVersion = '1.2.5'
