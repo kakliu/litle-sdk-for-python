@@ -23,8 +23,11 @@
 # OTHER DEALINGS IN THE SOFTWARE.
 from __future__ import print_function
 
-import datetime
+import os
+import sys
 
+package_root = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+sys.path.insert(0, package_root)
 from litle_sdk_python import *
 
 # Initial Configuration object. If you have saved configuration in '.vantiv_python_sdk.conf' at system environment

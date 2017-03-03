@@ -21,7 +21,7 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
-from __future__ import print_function
+from __future__ import print_function, absolute_import
 
 import os
 import sys
@@ -30,13 +30,14 @@ import unittest
 package_root = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.insert(0, package_root)
 
+package_root = os.path.abspath(os.path.dirname(__file__))
+sys.path.insert(0, package_root)
+
 import certification_test_conf
-from litle_sdk_python import *
 
 conf = certification_test_conf.conf
 
-if __name__ == '__main__':
-    unittest.main()
+from litle_sdk_python import *
 
 
 class TestCertAuths(unittest.TestCase):
@@ -90,6 +91,7 @@ class TestCertAuths(unittest.TestCase):
 
         # orderId 1C
         void = fields.void()
+        void.id = 'ThisIsID'
         void.litleTxnId = creditresponse.transactionResponse.litleTxnId
         voidresponse = online.request(void, conf)
         self.assertEquals('000', voidresponse.transactionResponse.response)
@@ -329,7 +331,7 @@ class TestCertAuths(unittest.TestCase):
 
         # orderId *C
         void = fields.void()
-        credit.id = 'thisisid'
+        void.id = 'thisisid'
         void.litleTxnId = creditresponse.transactionResponse.litleTxnId
         voidresponse = online.request(void, conf)
         self.assertEquals('000', voidresponse.transactionResponse.response)
@@ -1146,3 +1148,7 @@ class TestCertAuths(unittest.TestCase):
         self.assertEquals('010', response.transactionResponse.response)
         self.assertEquals('Partially Approved', response.transactionResponse.message)
         self.assertEquals(12000, response.transactionResponse.approvedAmount)
+
+
+if __name__ == '__main__':
+    unittest.main()

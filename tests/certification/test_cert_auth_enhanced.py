@@ -30,6 +30,10 @@ package_root = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(_
 sys.path.insert(0, package_root)
 
 from litle_sdk_python import *
+
+package_root = os.path.abspath(os.path.dirname(__file__))
+sys.path.insert(0, package_root)
+
 import certification_test_conf
 
 conf = certification_test_conf.conf

@@ -23,6 +23,12 @@
 # OTHER DEALINGS IN THE SOFTWARE.
 from __future__ import print_function
 
+import os
+import sys
+
+package_root = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+sys.path.insert(0, package_root)
+
 import datetime
 
 from litle_sdk_python import *

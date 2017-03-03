@@ -21,13 +21,15 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
+from __future__ import absolute_import, division, print_function
+
+import inspect
 import os
 import re
 import sys
-import inspect
 
 # Require Python 2.7.9 or higher or Python 3.4 or higher
-if (sys.version_info[:3] < (2, 7 ,9)) or ((sys.version_info[0] == 3) and sys.version_info[:2] < (3, 4)):
+if (sys.version_info[:3] < (2, 7, 9)) or ((sys.version_info[0] == 3) and sys.version_info[:2] < (3, 4)):
     raise ValueError('''PyXB requires:
   Python2 version 2.7.9 or later; or
   Python3 version 3.4 or later
@@ -36,7 +38,8 @@ if (sys.version_info[:3] < (2, 7 ,9)) or ((sys.version_info[0] == 3) and sys.ver
 package_root = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 
 sys.path.insert(0, package_root)
-from litle_sdk_python import fields,utils
+from litle_sdk_python import fields, utils
+
 
 def remove_absolute_path(_package_root):
     """Remove all absolute path in generated file by pyxbgen.
@@ -188,7 +191,7 @@ Transactions
                     obj = getattr(fields, attr_name)()
                     typename = type(obj).__name__
                     index_rst_base += '        :var %s: instance of :py:class:`litle_sdk_python.fields.%s`\n' \
-                                      % (attr_name,clsmembers[typename])
+                                      % (attr_name, clsmembers[typename])
                 except:
                     index_rst_base += '        :var %s: String or Number\n' % attr_name
             index_rst_base += '\n'
@@ -203,13 +206,14 @@ Transactions
                     obj = getattr(fields, attr_name)()
                     typename = type(obj).__name__
                     index_rst_base += '        :var %s: instance of :py:class:`litle_sdk_python.fields.%s`\n' \
-                                      % (attr_name,clsmembers[typename])
+                                      % (attr_name, clsmembers[typename])
                 except:
                     index_rst_base += '        :var %s: String or Number\n' % attr_name
             index_rst_base += '\n'
 
         with open(_index_rst_path, 'w') as index_rst_file_w:
             index_rst_file_w.write(index_rst_base)
+
 
 if __name__ == '__main__':
     remove_absolute_path(package_root)

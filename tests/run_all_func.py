@@ -22,27 +22,9 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
-import os
-import sys
-import unittest
+from __future__ import absolute_import
 
-package_root = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
-sys.path.insert(0, package_root)
-from litle_sdk_python import *
-import functional
+import run_test_utils
 
-conf = utils.Configuration()
-
-suite = unittest.TestSuite()
-
-for t in functional.__all__:
-    try:
-        # If the module defines a suite() function, call it to get the suite.
-        mod = __import__(t, globals(), locals(), ['suite'])
-        suite_set = getattr(mod, 'suite')
-        suite.addTest(suite_set())
-    except (ImportError, AttributeError):
-        # else, just load all the test cases from the module.
-        suite.addTest(unittest.defaultTestLoader.loadTestsFromName('functional.%s' % t))
-
-unittest.TextTestRunner().run(suite)
+tests_dir = ['functional']
+run_test_utils.run_tests(tests_dir)

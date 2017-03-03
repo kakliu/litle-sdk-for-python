@@ -22,7 +22,7 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 #
-from __future__ import print_function
+from __future__ import absolute_import, division, print_function
 
 import datetime
 import os
@@ -30,8 +30,8 @@ import os
 import paramiko
 import six
 
-import fields
-import utils
+from . import fields
+from . import utils
 
 # Key: transaction name
 # Value: array of batchRequest attributes according to transactions

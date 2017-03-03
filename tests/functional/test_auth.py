@@ -129,7 +129,7 @@ class TestAuth(unittest.TestCase):
         authorization.pos = pos
 
         card = fields.cardType()
-        card.number = '4100000000000002'
+        card.number = u'4100000000000002'
         card.expDate = '1210'
         card.type = 'VI'
         card.pin = '2222'

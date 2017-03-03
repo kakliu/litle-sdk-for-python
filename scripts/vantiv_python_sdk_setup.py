@@ -21,11 +21,15 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
+from __future__ import absolute_import, division, print_function
+
 import os
 import sys
 import tempfile
 
-package_root = os.path.abspath(os.path.dirname(__file__))
+import six
+
+package_root = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 sys.path.insert(0, package_root)
 
 from litle_sdk_python import utils
@@ -103,16 +107,13 @@ def ask_user():
 Please enter values for the following settings (just press Enter to
 accept a default value, if one is given in brackets).''')
 
-    try:
-        # noinspection PyShadowingBuiltins
-        input = raw_input
-    except NameError:
-        pass
-
     for attr in attrs:
         while True:
             print(gene_prompt(attr, attr_dict, attr_valid_dict, attr_des_dict))
-            x = input('')
+            if six.PY3:
+                x = input('')
+            else:
+                x = raw_input('')
             if not x:
                 x = attr_dict[attr]
             if attr in attr_valid_dict:

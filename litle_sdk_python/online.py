@@ -22,14 +22,12 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 #
-from __future__ import print_function
+from __future__ import absolute_import, division, print_function
 
 import requests
 
-import fields
-import utils
-
-import re
+from . import fields
+from . import utils
 
 
 def request(transaction, conf, return_format='object', timeout=30):

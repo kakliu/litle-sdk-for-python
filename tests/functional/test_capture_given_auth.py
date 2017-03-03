@@ -188,6 +188,7 @@ class TestCaptureGivenAuth(unittest.TestCase):
         transaction.orderSource = 'ecommerce'
         transaction.originalNetworkTransactionId = '987654321098765432109876543210'
         transaction.originalTransactionAmount = 1066
+        transaction.id = 'ThisIsID'
 
         # Create authInformation
         authInformation = fields.authInformation()

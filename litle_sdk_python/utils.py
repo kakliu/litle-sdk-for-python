@@ -22,13 +22,15 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
+from __future__ import absolute_import, division, print_function
+
 import json
 import os
+import re
 import tempfile
 
 import pyxb
 
-import re
 
 class Configuration(object):
     """Setup Configuration variables.
@@ -74,6 +76,7 @@ class Configuration(object):
         self.print_xml = False
         self.id = ''
         # Load Configuration from local file system.
+        # noinspection PyBroadException
         try:
             with open(self._CONFIG_FILE_PATH, 'r') as config_file:
                 config_json = json.load(config_file)
@@ -129,14 +132,18 @@ def obj_to_xml(obj):
         xml = obj.toxml('utf-8')
     except pyxb.ValidationError as e:
         raise VantivException(e.details())
-    xml = xml.replace('ns1:', '').replace(':ns1', '')
+    # convert byte string to u string in python3
+    xml = xml.decode()
+    xml = xml.replace('ns1:', '')
+    xml = xml.replace(':ns1', '')
     return xml
+
 
 def get_response_code(response_xml, response_tag):
     first_element = response_xml[:response_xml.index('>') + 1].replace('\n', '')
     matchs = re.search('<%s.*response=["|\'](\d)["|\'].*>' % response_tag, first_element)
     return matchs.group(1)
 
+
 class VantivException(Exception):
     pass
-

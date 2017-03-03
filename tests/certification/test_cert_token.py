@@ -30,12 +30,17 @@ package_root = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(_
 sys.path.insert(0, package_root)
 
 from litle_sdk_python import *
+
+package_root = os.path.abspath(os.path.dirname(__file__))
+sys.path.insert(0, package_root)
+
 import certification_test_conf
 
 conf = certification_test_conf.conf
 
 if __name__ == '__main__':
     unittest.main()
+
 
 class TestCertToken(unittest.TestCase):
     def test_table_2_8_50(self):
@@ -64,7 +69,6 @@ class TestCertToken(unittest.TestCase):
         self.assertEquals('820', response.transactionResponse.response)
         self.assertEquals('Credit card number was invalid', response.transactionResponse.message)
 
-
     def test_table_2_8_52(self):
         # orderId *
         transaction = fields.registerTokenRequest()
@@ -78,7 +82,6 @@ class TestCertToken(unittest.TestCase):
         self.assertEquals('VI', response.transactionResponse.type)
         self.assertEquals('802', response.transactionResponse.response)
         self.assertEquals('Account number was previously registered', response.transactionResponse.message)
-
 
     def test_table_2_8_53(self):
         # orderId *
@@ -97,7 +100,6 @@ class TestCertToken(unittest.TestCase):
         self.assertEquals('998', response.transactionResponse.eCheckAccountSuffix)
         self.assertEquals('801', response.transactionResponse.response)
         self.assertEquals('Account number was previously registered', response.transactionResponse.message)
-
 
     def test_table_2_8_54(self):
         # orderId *
@@ -156,7 +158,7 @@ class TestCertToken(unittest.TestCase):
 
         response = online.request(transaction, conf)
         self.assertEquals('301', response.transactionResponse.response)
-        self.assertEquals('Invalid account number', response.transactionResponse.message)
+        self.assertEquals('Invalid account number'.lower(), response.transactionResponse.message.lower())
 
     def test_table_2_9_57_58(self):
         # orderId 57
@@ -234,7 +236,6 @@ class TestCertToken(unittest.TestCase):
         self.assertEquals('823', response.transactionResponse.response)
         self.assertEquals('Token was invalid', response.transactionResponse.message)
 
-
     def test_table_2_9_61(self):
         # orderId *
         transaction = fields.echeckSale()
@@ -262,7 +263,6 @@ class TestCertToken(unittest.TestCase):
                           response.transactionResponse.tokenResponse.tokenMessage)
         self.assertEquals('EC', response.transactionResponse.tokenResponse.type)
         self.assertEquals('003', response.transactionResponse.tokenResponse.eCheckAccountSuffix)
-
 
     def test_table_2_9_62(self):
         # orderId *
@@ -319,7 +319,6 @@ class TestCertToken(unittest.TestCase):
                           response.transactionResponse.tokenResponse.tokenMessage)
         self.assertEquals('EC', response.transactionResponse.tokenResponse.type)
         self.assertEquals('999', response.transactionResponse.tokenResponse.eCheckAccountSuffix)
-
 
     def test_table_2_9_64(self):
         # orderId *
