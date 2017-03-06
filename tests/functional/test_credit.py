@@ -51,7 +51,7 @@ class TestCredit(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['creditResponse']['response'])
 
     def test_simple_credit_with_paypal(self):
         transaction = fields.credit()
@@ -66,7 +66,7 @@ class TestCredit(unittest.TestCase):
         transaction.paypal = paypal
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['creditResponse']['response'])
 
     def test_simple_credit_with_card_and_secondary_amount(self):
         transaction = fields.credit()
@@ -85,7 +85,7 @@ class TestCredit(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['creditResponse']['response'])
 
     def test_simple_credit_paypal_notes(self):
         transaction = fields.credit()
@@ -104,7 +104,7 @@ class TestCredit(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['creditResponse']['response'])
 
 
     def test_processing_instruction_and_amex(self):
@@ -127,7 +127,7 @@ class TestCredit(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['creditResponse']['response'])
 
 
     def test_simple_credit_with_litletxn_and_pin(self):
@@ -139,7 +139,7 @@ class TestCredit(unittest.TestCase):
         transaction.id = 'ThisIsID'
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['creditResponse']['response'])
 
 if __name__ == '__main__':
     unittest.main()

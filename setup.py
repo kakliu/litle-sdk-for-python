@@ -21,7 +21,9 @@ setup(name='LitleSdkPython',
           'PyXB==1.2.5',
           'paramiko>=1.14.0',
           'requests>=2.13.0',
-          'six>=1.10.0'],
+          'six>=1.10.0',
+          'xmltodict>=0.10.2'
+      ],
       classifiers=[
           'Development Status :: 5 - Production/Stable',
           'Environment :: Console',

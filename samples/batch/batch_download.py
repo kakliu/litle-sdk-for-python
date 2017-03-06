@@ -54,6 +54,6 @@ conf = utils.Configuration()
 # self.print_xml = False
 # self.id = ''
 try:
-    batch.download('batch_sample_submit.xml.asc',conf)
+    batch.download('batch_sample_submit_20170306105214204511.xml.asc', conf)
 except:
     pass

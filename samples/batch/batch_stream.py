@@ -104,21 +104,13 @@ transactions.add(sale)
 # stream to Vaitiv eCommerce and get object as response
 response = batch.stream(transactions, conf)
 
-# Return as xml string
-# response = batch.stream(transactions, conf, 'xml')
-
-for batchresponse in response.batchResponse:
-    for txn in batchresponse.transactionResponse:
-        print('Message: %s' % txn.message)
-        print('LitleTransaction ID: %s' % txn.litleTxnId)
-
 # In your sample, you can ignore this
-if response.message != 'Valid Format':
+if response['@message'] != 'Valid Format':
     raise Exception('the example does not give the right response')
 
 # Example for RFRRequest
 RFRRequest = fields.RFRRequest()
-RFRRequest.litleSessionId = response.litleSessionId
+RFRRequest.litleSessionId = response['@litleSessionId']
 
 # Initial Transactions container, because RFRRequest and batchRequest cannot be in same session file
 transactions = batch.Transactions()
@@ -127,11 +119,6 @@ transactions.add(RFRRequest)
 # stream to Vaitiv eCommerce and get object as response
 response = batch.stream(transactions, conf)
 
-for batchresponse in response.batchResponse:
-    for txn in batchresponse.transactionResponse:
-        print('Message: %s' % txn.message)
-        print('LitleTransaction ID: %s' % txn.litleTxnId)
-
 # In your sample, you can ignore this
-if response.message != 'Valid Format':
+if response['@message'] != 'Valid Format':
     raise Exception('the example does not give the right response')

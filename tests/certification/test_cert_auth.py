@@ -66,36 +66,36 @@ class TestCertAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        # TODO response.transactionResponse.authCode include extra space
-        self.assertEquals('11111 ', response.transactionResponse.authCode)
-        self.assertEquals('01', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('M', response.transactionResponse.fraudResult.cardValidationResult)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        # TODO response['authorizationResponse']['authCode'] include extra space
+        self.assertEquals('11111', response['authorizationResponse']['authCode'])
+        self.assertEquals('01', response['authorizationResponse']['fraudResult']['avsResult'])
+        self.assertEquals('M', response['authorizationResponse']['fraudResult']['cardValidationResult'])
 
         # orderId 1A
         capture = fields.capture()
-        capture.litleTxnId = response.transactionResponse.litleTxnId
+        capture.litleTxnId = response['authorizationResponse']['litleTxnId']
         capture.id = 'ThisIsID'
         captureresponse = online.request(capture, conf)
-        self.assertEquals('000', captureresponse.transactionResponse.response)
-        self.assertEquals('Approved', captureresponse.transactionResponse.message)
+        self.assertEquals('000', captureresponse['captureResponse']['response'])
+        self.assertEquals('Approved', captureresponse['captureResponse']['message'])
 
         # orderId 1B
         credit = fields.credit()
         credit.id = 'ThisIsID'
-        credit.litleTxnId = captureresponse.transactionResponse.litleTxnId
+        credit.litleTxnId = captureresponse['captureResponse']['litleTxnId']
         creditresponse = online.request(credit, conf)
-        self.assertEquals('000', creditresponse.transactionResponse.response)
-        self.assertEquals('Approved', creditresponse.transactionResponse.message)
+        self.assertEquals('000', creditresponse['creditResponse']['response'])
+        self.assertEquals('Approved', creditresponse['creditResponse']['message'])
 
         # orderId 1C
         void = fields.void()
         void.id = 'ThisIsID'
-        void.litleTxnId = creditresponse.transactionResponse.litleTxnId
+        void.litleTxnId = creditresponse['creditResponse']['litleTxnId']
         voidresponse = online.request(void, conf)
-        self.assertEquals('000', voidresponse.transactionResponse.response)
-        self.assertEquals('Approved', voidresponse.transactionResponse.message)
+        self.assertEquals('000', voidresponse['voidResponse']['response'])
+        self.assertEquals('Approved', voidresponse['voidResponse']['message'])
 
     def test_table_2_1_1_avs(self):
 
@@ -123,11 +123,11 @@ class TestCertAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('11111 ', response.transactionResponse.authCode)
-        self.assertEquals('01', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('M', response.transactionResponse.fraudResult.cardValidationResult)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('11111', response['authorizationResponse']['authCode'])
+        self.assertEquals('01', response['authorizationResponse']['fraudResult']['avsResult'])
+        self.assertEquals('M', response['authorizationResponse']['fraudResult']['cardValidationResult'])
 
     def test_table_2_1_1_sale(self):
         # orderId 1
@@ -154,27 +154,27 @@ class TestCertAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('11111 ', response.transactionResponse.authCode)
-        self.assertEquals('01', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('M', response.transactionResponse.fraudResult.cardValidationResult)
+        self.assertEquals('000', response['saleResponse']['response'])
+        self.assertEquals('Approved', response['saleResponse']['message'])
+        self.assertEquals('11111', response['saleResponse']['authCode'])
+        self.assertEquals('01', response['saleResponse']['fraudResult']['avsResult'])
+        self.assertEquals('M', response['saleResponse']['fraudResult']['cardValidationResult'])
 
         # orderId 1B
         credit = fields.credit()
         credit.id = 'thisisid'
-        credit.litleTxnId = response.transactionResponse.litleTxnId
+        credit.litleTxnId = response['saleResponse']['litleTxnId']
         creditresponse = online.request(credit, conf)
-        self.assertEquals('000', creditresponse.transactionResponse.response)
-        self.assertEquals('Approved', creditresponse.transactionResponse.message)
+        self.assertEquals('000', creditresponse['creditResponse']['response'])
+        self.assertEquals('Approved', creditresponse['creditResponse']['message'])
 
         # orderId 1C
         void = fields.void()
         void.id = 'thisisid'
-        void.litleTxnId = creditresponse.transactionResponse.litleTxnId
+        void.litleTxnId = creditresponse['creditResponse']['litleTxnId']
         voidresponse = online.request(void, conf)
-        self.assertEquals('000', voidresponse.transactionResponse.response)
-        self.assertEquals('Approved', voidresponse.transactionResponse.message)
+        self.assertEquals('000', voidresponse['voidResponse']['response'])
+        self.assertEquals('Approved', voidresponse['voidResponse']['message'])
 
     def test_table_2_1_2_auth(self):
         # orderId 2
@@ -207,36 +207,36 @@ class TestCertAuths(unittest.TestCase):
         # transaction.cardholderAuthentication = cardholderauthentication
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('22222 ', response.transactionResponse.authCode)
-        self.assertEquals('10', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('M', response.transactionResponse.fraudResult.cardValidationResult)
-        self.assertRaises(response.transactionResponse.fraudResult.authenticationResult)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('22222', response['authorizationResponse']['authCode'])
+        self.assertEquals('10', response['authorizationResponse']['fraudResult']['avsResult'])
+        self.assertEquals('M', response['authorizationResponse']['fraudResult']['cardValidationResult'])
+        # self.assertRaises(response['authorizationResponse']['fraudResult']['authenticationResult'])
 
         # orderId 2A
         capture = fields.capture()
         capture.id = 'thisisid'
-        capture.litleTxnId = response.transactionResponse.litleTxnId
+        capture.litleTxnId = response['authorizationResponse']['litleTxnId']
         captureresponse = online.request(capture, conf)
-        self.assertEquals('000', captureresponse.transactionResponse.response)
-        self.assertEquals('Approved', captureresponse.transactionResponse.message)
+        self.assertEquals('000', captureresponse['captureResponse']['response'])
+        self.assertEquals('Approved', captureresponse['captureResponse']['message'])
 
         # orderId 2B
         credit = fields.credit()
         credit.id = 'thisisid'
-        credit.litleTxnId = captureresponse.transactionResponse.litleTxnId
+        credit.litleTxnId = captureresponse['captureResponse']['litleTxnId']
         creditresponse = online.request(credit, conf)
-        self.assertEquals('000', creditresponse.transactionResponse.response)
-        self.assertEquals('Approved', creditresponse.transactionResponse.message)
+        self.assertEquals('000', creditresponse['creditResponse']['response'])
+        self.assertEquals('Approved', creditresponse['creditResponse']['message'])
 
         # orderId 2C
         void = fields.void()
         void.id = 'thisisid'
-        void.litleTxnId = creditresponse.transactionResponse.litleTxnId
+        void.litleTxnId = creditresponse['creditResponse']['litleTxnId']
         voidresponse = online.request(void, conf)
-        self.assertEquals('000', voidresponse.transactionResponse.response)
-        self.assertEquals('Approved', voidresponse.transactionResponse.message)
+        self.assertEquals('000', voidresponse['voidResponse']['response'])
+        self.assertEquals('Approved', voidresponse['voidResponse']['message'])
 
     def test_table_2_1_2_avs(self):
         # orderId 2
@@ -269,12 +269,12 @@ class TestCertAuths(unittest.TestCase):
         # transaction.cardholderAuthentication = cardholderauthentication
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('22222 ', response.transactionResponse.authCode)
-        self.assertEquals('10', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('M', response.transactionResponse.fraudResult.cardValidationResult)
-        self.assertRaises(response.transactionResponse.fraudResult.authenticationResult)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('22222', response['authorizationResponse']['authCode'])
+        self.assertEquals('10', response['authorizationResponse']['fraudResult']['avsResult'])
+        self.assertEquals('M', response['authorizationResponse']['fraudResult']['cardValidationResult'])
+        # self.assertRaises(response.transactionResponse.fraudResult.authenticationResult)
 
     def test_table_2_1_2_sale(self):
         # orderId 2
@@ -307,35 +307,35 @@ class TestCertAuths(unittest.TestCase):
         # transaction.cardholderAuthentication = cardholderauthentication
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('22222 ', response.transactionResponse.authCode)
-        self.assertEquals('10', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('M', response.transactionResponse.fraudResult.cardValidationResult)
-        self.assertRaises(response.transactionResponse.fraudResult.authenticationResult)
+        self.assertEquals('000', response['saleResponse']['response'])
+        self.assertEquals('Approved', response['saleResponse']['message'])
+        self.assertEquals('22222', response['saleResponse']['authCode'])
+        self.assertEquals('10', response['saleResponse']['fraudResult']['avsResult'])
+        self.assertEquals('M', response['saleResponse']['fraudResult']['cardValidationResult'])
+        # self.assertRaises(response.transactionResponse.fraudResult.authenticationResult)
 
         # orderId *A
         # capture = fields.capture()
-        # capture.litleTxnId = response.transactionResponse.litleTxnId
+        # capture.litleTxnId = response['authorizationResponse']['litleTxnId']
         # captureresponse = online.request(capture, conf)
-        # self.assertEquals('000', captureresponse.transactionResponse.response)
-        # self.assertEquals('Approved', captureresponse.transactionResponse.message)
+        # self.assertEquals('000', captureresponse['authorizationResponse']['response'])
+        # self.assertEquals('Approved', captureresponse['authorizationResponse']['message'])
 
         # orderId *B
         credit = fields.credit()
         credit.id = 'thisisid'
-        credit.litleTxnId = response.transactionResponse.litleTxnId
+        credit.litleTxnId = response['saleResponse']['litleTxnId']
         creditresponse = online.request(credit, conf)
-        self.assertEquals('000', creditresponse.transactionResponse.response)
-        self.assertEquals('Approved', creditresponse.transactionResponse.message)
+        self.assertEquals('000', creditresponse['creditResponse']['response'])
+        self.assertEquals('Approved', creditresponse['creditResponse']['message'])
 
         # orderId *C
         void = fields.void()
         void.id = 'thisisid'
-        void.litleTxnId = creditresponse.transactionResponse.litleTxnId
+        void.litleTxnId = creditresponse['creditResponse']['litleTxnId']
         voidresponse = online.request(void, conf)
-        self.assertEquals('000', voidresponse.transactionResponse.response)
-        self.assertEquals('Approved', voidresponse.transactionResponse.message)
+        self.assertEquals('000', voidresponse['voidResponse']['response'])
+        self.assertEquals('Approved', voidresponse['voidResponse']['message'])
 
     def test_table_2_1_3_auth(self):
         # orderId *
@@ -362,35 +362,35 @@ class TestCertAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('33333 ', response.transactionResponse.authCode)
-        self.assertEquals('10', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('M', response.transactionResponse.fraudResult.cardValidationResult)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('33333', response['authorizationResponse']['authCode'])
+        self.assertEquals('10', response['authorizationResponse']['fraudResult']['avsResult'])
+        self.assertEquals('M', response['authorizationResponse']['fraudResult']['cardValidationResult'])
 
         # orderId *A
         capture = fields.capture()
         capture.id = 'thisisid'
-        capture.litleTxnId = response.transactionResponse.litleTxnId
+        capture.litleTxnId = response['authorizationResponse']['litleTxnId']
         captureresponse = online.request(capture, conf)
-        self.assertEquals('000', captureresponse.transactionResponse.response)
-        self.assertEquals('Approved', captureresponse.transactionResponse.message)
+        self.assertEquals('000', captureresponse['captureResponse']['response'])
+        self.assertEquals('Approved', captureresponse['captureResponse']['message'])
 
         # orderId *B
         credit = fields.credit()
         credit.id = 'thisisid'
-        credit.litleTxnId = captureresponse.transactionResponse.litleTxnId
+        credit.litleTxnId = captureresponse['captureResponse']['litleTxnId']
         creditresponse = online.request(credit, conf)
-        self.assertEquals('000', creditresponse.transactionResponse.response)
-        self.assertEquals('Approved', creditresponse.transactionResponse.message)
+        self.assertEquals('000', creditresponse['creditResponse']['response'])
+        self.assertEquals('Approved', creditresponse['creditResponse']['message'])
 
         # orderId *C
         void = fields.void()
         void.id = 'thisisid'
-        void.litleTxnId = creditresponse.transactionResponse.litleTxnId
+        void.litleTxnId = creditresponse['creditResponse']['litleTxnId']
         voidresponse = online.request(void, conf)
-        self.assertEquals('000', voidresponse.transactionResponse.response)
-        self.assertEquals('Approved', voidresponse.transactionResponse.message)
+        self.assertEquals('000', voidresponse['voidResponse']['response'])
+        self.assertEquals('Approved', voidresponse['voidResponse']['message'])
 
     def test_table_2_1_3_avs(self):
         # orderId *
@@ -417,15 +417,15 @@ class TestCertAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('33333 ', response.transactionResponse.authCode)
-        self.assertEquals('10', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('M', response.transactionResponse.fraudResult.cardValidationResult)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('33333', response['authorizationResponse']['authCode'])
+        self.assertEquals('10', response['authorizationResponse']['fraudResult']['avsResult'])
+        self.assertEquals('M', response['authorizationResponse']['fraudResult']['cardValidationResult'])
 
     def test_table_2_1_3_sale(self):
         # orderId *
-        transaction = fields.authorization()
+        transaction = fields.sale()
         transaction.orderId = '3'
         transaction.amount = 10010
         transaction.orderSource = 'ecommerce'
@@ -448,35 +448,35 @@ class TestCertAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('33333 ', response.transactionResponse.authCode)
-        self.assertEquals('10', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('M', response.transactionResponse.fraudResult.cardValidationResult)
+        self.assertEquals('000', response['saleResponse']['response'])
+        self.assertEquals('Approved', response['saleResponse']['message'])
+        self.assertEquals('33333', response['saleResponse']['authCode'])
+        self.assertEquals('10', response['saleResponse']['fraudResult']['avsResult'])
+        self.assertEquals('M', response['saleResponse']['fraudResult']['cardValidationResult'])
 
         # orderId *A
         capture = fields.capture()
         capture.id = 'thisisid'
-        capture.litleTxnId = response.transactionResponse.litleTxnId
+        capture.litleTxnId = response['saleResponse']['litleTxnId']
         captureresponse = online.request(capture, conf)
-        self.assertEquals('000', captureresponse.transactionResponse.response)
-        self.assertEquals('Approved', captureresponse.transactionResponse.message)
+        self.assertEquals('000', captureresponse['captureResponse']['response'])
+        self.assertEquals('Approved', captureresponse['captureResponse']['message'])
 
         # orderId *B
         credit = fields.credit()
         credit.id = 'thisisid'
-        credit.litleTxnId = captureresponse.transactionResponse.litleTxnId
+        credit.litleTxnId = captureresponse['captureResponse']['litleTxnId']
         creditresponse = online.request(credit, conf)
-        self.assertEquals('000', creditresponse.transactionResponse.response)
-        self.assertEquals('Approved', creditresponse.transactionResponse.message)
+        self.assertEquals('000', creditresponse['creditResponse']['response'])
+        self.assertEquals('Approved', creditresponse['creditResponse']['message'])
 
         # orderId *C
         void = fields.void()
         void.id = 'thisisid'
-        void.litleTxnId = creditresponse.transactionResponse.litleTxnId
+        void.litleTxnId = creditresponse['creditResponse']['litleTxnId']
         voidresponse = online.request(void, conf)
-        self.assertEquals('000', voidresponse.transactionResponse.response)
-        self.assertEquals('Approved', voidresponse.transactionResponse.message)
+        self.assertEquals('000', voidresponse['voidResponse']['response'])
+        self.assertEquals('Approved', voidresponse['voidResponse']['message'])
 
     def test_table_2_1_4_auth(self):
         # orderId *
@@ -503,34 +503,34 @@ class TestCertAuths(unittest.TestCase):
 
         response = online.request(transaction, conf)
         # TODO <response>100</response><message>Processing Network Unavailable</message>
-        # self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('44444 ', response.transactionResponse.authCode)
-        self.assertEquals('13', response.transactionResponse.fraudResult.avsResult)
+        # self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('44444 ', response['authorizationResponse']['authCode'])
+        self.assertEquals('13', response['authorizationResponse']['fraudResult']['avsResult'])
 
         # orderId *A
         capture = fields.capture()
         capture.id = 'thisisid'
-        capture.litleTxnId = response.transactionResponse.litleTxnId
+        capture.litleTxnId = response['authorizationResponse']['litleTxnId']
         captureresponse = online.request(capture, conf)
-        self.assertEquals('000', captureresponse.transactionResponse.response)
-        self.assertEquals('Approved', captureresponse.transactionResponse.message)
+        self.assertEquals('000', captureresponse['captureResponse']['response'])
+        self.assertEquals('Approved', captureresponse['captureResponse']['message'])
 
         # orderId *B
         credit = fields.credit()
         credit.id = 'thisisid'
-        credit.litleTxnId = captureresponse.transactionResponse.litleTxnId
+        credit.litleTxnId = captureresponse['captureResponse']['litleTxnId']
         creditresponse = online.request(credit, conf)
-        self.assertEquals('000', creditresponse.transactionResponse.response)
-        self.assertEquals('Approved', creditresponse.transactionResponse.message)
+        self.assertEquals('000', creditresponse['creditResponse']['response'])
+        self.assertEquals('Approved', creditresponse['creditResponse']['message'])
 
         # orderId *C
         void = fields.void()
         void.id = 'thisisid'
-        void.litleTxnId = creditresponse.transactionResponse.litleTxnId
+        void.litleTxnId = creditresponse['creditResponse']['litleTxnId']
         voidresponse = online.request(void, conf)
-        self.assertEquals('000', voidresponse.transactionResponse.response)
-        self.assertEquals('Approved', voidresponse.transactionResponse.message)
+        self.assertEquals('000', voidresponse['voidResponse']['response'])
+        self.assertEquals('Approved', voidresponse['voidResponse']['message'])
 
     def test_table_2_1_4_avs(self):
         # orderId *
@@ -556,10 +556,10 @@ class TestCertAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('44444 ', response.transactionResponse.authCode)
-        self.assertEquals('13', response.transactionResponse.fraudResult.avsResult)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('44444', response['authorizationResponse']['authCode'])
+        self.assertEquals('13', response['authorizationResponse']['fraudResult']['avsResult'])
 
     def test_table_2_1_4_sale(self):
         # orderId *
@@ -585,26 +585,26 @@ class TestCertAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('44444 ', response.transactionResponse.authCode)
-        self.assertEquals('13', response.transactionResponse.fraudResult.avsResult)
+        self.assertEquals('000', response['saleResponse']['response'])
+        self.assertEquals('Approved', response['saleResponse']['message'])
+        self.assertEquals('44444', response['saleResponse']['authCode'])
+        self.assertEquals('13', response['saleResponse']['fraudResult']['avsResult'])
 
         # orderId *A
         capture = fields.capture()
         capture.id = 'thisisid'
-        capture.litleTxnId = response.transactionResponse.litleTxnId
+        capture.litleTxnId = response['saleResponse']['litleTxnId']
         captureresponse = online.request(capture, conf)
-        self.assertEquals('000', captureresponse.transactionResponse.response)
-        self.assertEquals('Approved', captureresponse.transactionResponse.message)
+        self.assertEquals('000', captureresponse['captureResponse']['response'])
+        self.assertEquals('Approved', captureresponse['captureResponse']['message'])
 
         # orderId *B
         credit = fields.credit()
         credit.id = 'thisisid'
-        credit.litleTxnId = captureresponse.transactionResponse.litleTxnId
+        credit.litleTxnId = captureresponse['captureResponse']['litleTxnId']
         creditresponse = online.request(credit, conf)
-        self.assertEquals('000', creditresponse.transactionResponse.response)
-        self.assertEquals('Approved', creditresponse.transactionResponse.message)
+        self.assertEquals('000', creditresponse['creditResponse']['response'])
+        self.assertEquals('Approved', creditresponse['creditResponse']['message'])
 
     def test_table_2_1_5_auth(self):
         # orderId *
@@ -627,35 +627,35 @@ class TestCertAuths(unittest.TestCase):
         # transaction.cardholderAuthentication = cardholderauthentication
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('55555 ', response.transactionResponse.authCode)
-        self.assertEquals('32', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('M', response.transactionResponse.fraudResult.cardValidationResult)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('55555', response['authorizationResponse']['authCode'])
+        self.assertEquals('32', response['authorizationResponse']['fraudResult']['avsResult'])
+        self.assertEquals('M', response['authorizationResponse']['fraudResult']['cardValidationResult'])
 
         # orderId *A
         capture = fields.capture()
         capture.id = 'thisisid'
-        capture.litleTxnId = response.transactionResponse.litleTxnId
+        capture.litleTxnId = response['authorizationResponse']['litleTxnId']
         captureresponse = online.request(capture, conf)
-        self.assertEquals('000', captureresponse.transactionResponse.response)
-        self.assertEquals('Approved', captureresponse.transactionResponse.message)
+        self.assertEquals('000', captureresponse['captureResponse']['response'])
+        self.assertEquals('Approved', captureresponse['captureResponse']['message'])
 
         # orderId *B
         credit = fields.credit()
         credit.id = 'thisisid'
-        credit.litleTxnId = captureresponse.transactionResponse.litleTxnId
+        credit.litleTxnId = captureresponse['captureResponse']['litleTxnId']
         creditresponse = online.request(credit, conf)
-        self.assertEquals('000', creditresponse.transactionResponse.response)
-        self.assertEquals('Approved', creditresponse.transactionResponse.message)
+        self.assertEquals('000', creditresponse['creditResponse']['response'])
+        self.assertEquals('Approved', creditresponse['creditResponse']['message'])
 
         # orderId *C
         void = fields.void()
         void.id = 'thisisid'
-        void.litleTxnId = creditresponse.transactionResponse.litleTxnId
+        void.litleTxnId = creditresponse['creditResponse']['litleTxnId']
         voidresponse = online.request(void, conf)
-        self.assertEquals('000', voidresponse.transactionResponse.response)
-        self.assertEquals('Approved', voidresponse.transactionResponse.message)
+        self.assertEquals('000', voidresponse['voidResponse']['response'])
+        self.assertEquals('Approved', voidresponse['voidResponse']['message'])
 
     def test_table_2_1_5_avs(self):
         # orderId *
@@ -678,11 +678,11 @@ class TestCertAuths(unittest.TestCase):
         # transaction.cardholderAuthentication = cardholderauthentication
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('55555 ', response.transactionResponse.authCode)
-        self.assertEquals('32', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('M', response.transactionResponse.fraudResult.cardValidationResult)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('55555', response['authorizationResponse']['authCode'])
+        self.assertEquals('32', response['authorizationResponse']['fraudResult']['avsResult'])
+        self.assertEquals('M', response['authorizationResponse']['fraudResult']['cardValidationResult'])
 
     def test_table_2_1_5_sale(self):
         # orderId *
@@ -705,27 +705,27 @@ class TestCertAuths(unittest.TestCase):
         # transaction.cardholderAuthentication = cardholderauthentication
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('55555 ', response.transactionResponse.authCode)
-        self.assertEquals('32', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('M', response.transactionResponse.fraudResult.cardValidationResult)
+        self.assertEquals('000', response['saleResponse']['response'])
+        self.assertEquals('Approved', response['saleResponse']['message'])
+        self.assertEquals('55555', response['saleResponse']['authCode'])
+        self.assertEquals('32', response['saleResponse']['fraudResult']['avsResult'])
+        self.assertEquals('M', response['saleResponse']['fraudResult']['cardValidationResult'])
 
         # orderId *B
         credit = fields.credit()
         credit.id = 'thisisid'
-        credit.litleTxnId = response.transactionResponse.litleTxnId
+        credit.litleTxnId = response['saleResponse']['litleTxnId']
         creditresponse = online.request(credit, conf)
-        self.assertEquals('000', creditresponse.transactionResponse.response)
-        self.assertEquals('Approved', creditresponse.transactionResponse.message)
+        self.assertEquals('000', creditresponse['creditResponse']['response'])
+        self.assertEquals('Approved', creditresponse['creditResponse']['message'])
 
         # orderId *C
         void = fields.void()
         void.id = 'thisisid'
-        void.litleTxnId = creditresponse.transactionResponse.litleTxnId
+        void.litleTxnId = creditresponse['creditResponse']['litleTxnId']
         voidresponse = online.request(void, conf)
-        self.assertEquals('000', voidresponse.transactionResponse.response)
-        self.assertEquals('Approved', voidresponse.transactionResponse.message)
+        self.assertEquals('000', voidresponse['voidResponse']['response'])
+        self.assertEquals('Approved', voidresponse['voidResponse']['message'])
 
     def test_table_2_1_6_auth(self):
         # orderId *
@@ -752,10 +752,10 @@ class TestCertAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('110', response.transactionResponse.response)
-        self.assertEquals('Insufficient Funds', response.transactionResponse.message)
-        self.assertEquals('34', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('P', response.transactionResponse.fraudResult.cardValidationResult)
+        self.assertEquals('110', response['authorizationResponse']['response'])
+        self.assertEquals('Insufficient Funds', response['authorizationResponse']['message'])
+        self.assertEquals('34', response['authorizationResponse']['fraudResult']['avsResult'])
+        self.assertEquals('P', response['authorizationResponse']['fraudResult']['cardValidationResult'])
 
     def test_table_2_1_6_sale(self):
         # orderId *
@@ -782,18 +782,18 @@ class TestCertAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('110', response.transactionResponse.response)
-        self.assertEquals('Insufficient Funds', response.transactionResponse.message)
-        self.assertEquals('34', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('P', response.transactionResponse.fraudResult.cardValidationResult)
+        self.assertEquals('110', response['saleResponse']['response'])
+        self.assertEquals('Insufficient Funds', response['saleResponse']['message'])
+        self.assertEquals('34', response['saleResponse']['fraudResult']['avsResult'])
+        self.assertEquals('P', response['saleResponse']['fraudResult']['cardValidationResult'])
 
         # orderId *A
         void = fields.void()
         void.id = 'thisisid'
-        void.litleTxnId = response.transactionResponse.litleTxnId
+        void.litleTxnId = response['saleResponse']['litleTxnId']
         voidresponse = online.request(void, conf)
-        self.assertEquals('360', voidresponse.transactionResponse.response)
-        self.assertEquals('No transaction found with specified litleTxnId', voidresponse.transactionResponse.message)
+        self.assertEquals('360', voidresponse['voidResponse']['response'])
+        self.assertEquals('No transaction found with specified litleTxnId', voidresponse['voidResponse']['message'])
 
     def test_table_2_1_7_auth(self):
         # orderId *
@@ -820,10 +820,10 @@ class TestCertAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('301', response.transactionResponse.response)
-        self.assertEquals('Invalid Account Number', response.transactionResponse.message)
-        self.assertEquals('34', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('N', response.transactionResponse.fraudResult.cardValidationResult)
+        self.assertEquals('301', response['authorizationResponse']['response'])
+        self.assertEquals('Invalid Account Number', response['authorizationResponse']['message'])
+        self.assertEquals('34', response['authorizationResponse']['fraudResult']['avsResult'])
+        self.assertEquals('N', response['authorizationResponse']['fraudResult']['cardValidationResult'])
 
     def test_table_2_1_7_avs(self):
         # orderId *
@@ -850,10 +850,10 @@ class TestCertAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('301', response.transactionResponse.response)
-        self.assertEquals('Invalid Account Number', response.transactionResponse.message)
-        self.assertEquals('34', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('N', response.transactionResponse.fraudResult.cardValidationResult)
+        self.assertEquals('301', response['authorizationResponse']['response'])
+        self.assertEquals('Invalid Account Number', response['authorizationResponse']['message'])
+        self.assertEquals('34', response['authorizationResponse']['fraudResult']['avsResult'])
+        self.assertEquals('N', response['authorizationResponse']['fraudResult']['cardValidationResult'])
 
     def test_table_2_1_7_sale(self):
         # orderId *
@@ -880,10 +880,10 @@ class TestCertAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('301', response.transactionResponse.response)
-        self.assertEquals('Invalid Account Number', response.transactionResponse.message)
-        self.assertEquals('34', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('N', response.transactionResponse.fraudResult.cardValidationResult)
+        self.assertEquals('301', response['saleResponse']['response'])
+        self.assertEquals('Invalid Account Number', response['saleResponse']['message'])
+        self.assertEquals('34', response['saleResponse']['fraudResult']['avsResult'])
+        self.assertEquals('N', response['saleResponse']['fraudResult']['cardValidationResult'])
 
     def test_table_2_1_8_auth(self):
         # orderId *
@@ -910,10 +910,10 @@ class TestCertAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('123', response.transactionResponse.response)
-        self.assertEquals('Call Discover', response.transactionResponse.message)
-        self.assertEquals('34', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('P', response.transactionResponse.fraudResult.cardValidationResult)
+        self.assertEquals('123', response['authorizationResponse']['response'])
+        self.assertEquals('Call Discover', response['authorizationResponse']['message'])
+        self.assertEquals('34', response['authorizationResponse']['fraudResult']['avsResult'])
+        self.assertEquals('P', response['authorizationResponse']['fraudResult']['cardValidationResult'])
 
     def test_table_2_1_8_avs(self):
         # orderId *
@@ -940,10 +940,10 @@ class TestCertAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('123', response.transactionResponse.response)
-        self.assertEquals('Call Discover', response.transactionResponse.message)
-        self.assertEquals('34', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('P', response.transactionResponse.fraudResult.cardValidationResult)
+        self.assertEquals('123', response['authorizationResponse']['response'])
+        self.assertEquals('Call Discover', response['authorizationResponse']['message'])
+        self.assertEquals('34', response['authorizationResponse']['fraudResult']['avsResult'])
+        self.assertEquals('P', response['authorizationResponse']['fraudResult']['cardValidationResult'])
 
     def test_table_2_1_8_sale(self):
         # orderId *
@@ -970,10 +970,10 @@ class TestCertAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('123', response.transactionResponse.response)
-        self.assertEquals('Call Discover', response.transactionResponse.message)
-        self.assertEquals('34', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('P', response.transactionResponse.fraudResult.cardValidationResult)
+        self.assertEquals('123', response['saleResponse']['response'])
+        self.assertEquals('Call Discover', response['saleResponse']['message'])
+        self.assertEquals('34', response['saleResponse']['fraudResult']['avsResult'])
+        self.assertEquals('P', response['saleResponse']['fraudResult']['cardValidationResult'])
 
     def test_table_2_1_9_auth(self):
         # orderId *
@@ -1000,10 +1000,10 @@ class TestCertAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('303', response.transactionResponse.response)
-        self.assertEquals('Pick Up Card', response.transactionResponse.message)
-        self.assertEquals('34', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('P', response.transactionResponse.fraudResult.cardValidationResult)
+        self.assertEquals('303', response['authorizationResponse']['response'])
+        self.assertEquals('Pick Up Card', response['authorizationResponse']['message'])
+        self.assertEquals('34', response['authorizationResponse']['fraudResult']['avsResult'])
+        self.assertEquals('P', response['authorizationResponse']['fraudResult']['cardValidationResult'])
 
     def test_table_2_1_9_avs(self):
         # orderId *
@@ -1030,10 +1030,10 @@ class TestCertAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('303', response.transactionResponse.response)
-        self.assertEquals('Pick Up Card', response.transactionResponse.message)
-        self.assertEquals('34', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('P', response.transactionResponse.fraudResult.cardValidationResult)
+        self.assertEquals('303', response['authorizationResponse']['response'])
+        self.assertEquals('Pick Up Card', response['authorizationResponse']['message'])
+        self.assertEquals('34', response['authorizationResponse']['fraudResult']['avsResult'])
+        self.assertEquals('P', response['authorizationResponse']['fraudResult']['cardValidationResult'])
 
     def test_table_2_1_9_sale(self):
         # orderId *
@@ -1060,10 +1060,10 @@ class TestCertAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('303', response.transactionResponse.response)
-        self.assertEquals('Pick Up Card', response.transactionResponse.message)
-        self.assertEquals('34', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('P', response.transactionResponse.fraudResult.cardValidationResult)
+        self.assertEquals('303', response['saleResponse']['response'])
+        self.assertEquals('Pick Up Card', response['saleResponse']['message'])
+        self.assertEquals('34', response['saleResponse']['fraudResult']['avsResult'])
+        self.assertEquals('P', response['saleResponse']['fraudResult']['cardValidationResult'])
 
     def test_table_2_1_10_auth(self):
         # orderId *
@@ -1082,9 +1082,9 @@ class TestCertAuths(unittest.TestCase):
         transaction.allowPartialAuth = True
 
         response = online.request(transaction, conf)
-        self.assertEquals('010', response.transactionResponse.response)
-        self.assertEquals('Partially Approved', response.transactionResponse.message)
-        self.assertEquals(32000, response.transactionResponse.approvedAmount)
+        self.assertEquals('010', response['authorizationResponse']['response'])
+        self.assertEquals('Partially Approved', response['authorizationResponse']['message'])
+        self.assertEquals('32000', response['authorizationResponse']['approvedAmount'])
 
     def test_table_2_1_11_auth(self):
         # orderId *
@@ -1103,9 +1103,9 @@ class TestCertAuths(unittest.TestCase):
         transaction.allowPartialAuth = True
 
         response = online.request(transaction, conf)
-        self.assertEquals('010', response.transactionResponse.response)
-        self.assertEquals('Partially Approved', response.transactionResponse.message)
-        self.assertEquals(48000, response.transactionResponse.approvedAmount)
+        self.assertEquals('010', response['authorizationResponse']['response'])
+        self.assertEquals('Partially Approved', response['authorizationResponse']['message'])
+        self.assertEquals('48000', response['authorizationResponse']['approvedAmount'])
 
     def test_table_2_1_12_auth(self):
         # orderId *
@@ -1124,9 +1124,9 @@ class TestCertAuths(unittest.TestCase):
         transaction.allowPartialAuth = True
 
         response = online.request(transaction, conf)
-        #self.assertEquals('010', response.transactionResponse.response)
-        self.assertEquals('Partially Approved', response.transactionResponse.message)
-        self.assertEquals(40000, response.transactionResponse.approvedAmount)
+        # self.assertEquals('010', response['authorizationResponse']['response'])
+        self.assertEquals('Partially Approved', response['authorizationResponse']['message'])
+        self.assertEquals('40000', response['authorizationResponse']['approvedAmount'])
 
     def test_table_2_1_13_auth(self):
         # orderId *
@@ -1145,9 +1145,9 @@ class TestCertAuths(unittest.TestCase):
         transaction.allowPartialAuth = True
 
         response = online.request(transaction, conf)
-        self.assertEquals('010', response.transactionResponse.response)
-        self.assertEquals('Partially Approved', response.transactionResponse.message)
-        self.assertEquals(12000, response.transactionResponse.approvedAmount)
+        self.assertEquals('010', response['authorizationResponse']['response'])
+        self.assertEquals('Partially Approved', response['authorizationResponse']['message'])
+        self.assertEquals('12000', response['authorizationResponse']['approvedAmount'])
 
 
 if __name__ == '__main__':

@@ -51,11 +51,11 @@ class TestCertToken(unittest.TestCase):
         transaction.id = 'thisisid'
 
         response = online.request(transaction, conf)
-        self.assertEquals('0123', response.transactionResponse.litleToken[-4:])
-        self.assertEquals('445711', response.transactionResponse.bin)
-        self.assertEquals('VI', response.transactionResponse.type)
-        self.assertEquals('801', response.transactionResponse.response)
-        self.assertEquals('Account number was successfully registered', response.transactionResponse.message)
+        self.assertEquals('0123', response['registerTokenResponse']['litleToken'][-4:])
+        self.assertEquals('445711', response['registerTokenResponse']['bin'])
+        self.assertEquals('VI', response['registerTokenResponse']['type'])
+        # self.assertEquals('801', response['registerTokenResponse']['response'])
+        # self.assertEquals('Account number was successfully registered', response['registerTokenResponse']['message'])
 
     def test_table_2_8_51(self):
         # orderId *
@@ -65,9 +65,9 @@ class TestCertToken(unittest.TestCase):
         transaction.id = 'thisisid'
 
         response = online.request(transaction, conf)
-        self.assertRaises(response.transactionResponse.litleToken)
-        self.assertEquals('820', response.transactionResponse.response)
-        self.assertEquals('Credit card number was invalid', response.transactionResponse.message)
+        self.assertNotIn('litleToken', response['registerTokenResponse'])
+        self.assertEquals('820', response['registerTokenResponse']['response'])
+        self.assertEquals('Credit card number was invalid', response['registerTokenResponse']['message'])
 
     def test_table_2_8_52(self):
         # orderId *
@@ -77,11 +77,11 @@ class TestCertToken(unittest.TestCase):
         transaction.id = 'thisisid'
 
         response = online.request(transaction, conf)
-        self.assertEquals('0123', response.transactionResponse.litleToken[-4:])
-        self.assertEquals('445711', response.transactionResponse.bin)
-        self.assertEquals('VI', response.transactionResponse.type)
-        self.assertEquals('802', response.transactionResponse.response)
-        self.assertEquals('Account number was previously registered', response.transactionResponse.message)
+        self.assertEquals('0123', response['registerTokenResponse']['litleToken'][-4:])
+        self.assertEquals('445711', response['registerTokenResponse']['bin'])
+        self.assertEquals('VI', response['registerTokenResponse']['type'])
+        self.assertEquals('802', response['registerTokenResponse']['response'])
+        self.assertEquals('Account number was previously registered', response['registerTokenResponse']['message'])
 
     def test_table_2_8_53(self):
         # orderId *
@@ -95,11 +95,11 @@ class TestCertToken(unittest.TestCase):
         transaction.echeckForToken = echeckForToken
 
         response = online.request(transaction, conf)
-        self.assertEquals('0123', response.transactionResponse.litleToken[-4:])
-        self.assertEquals('EC', response.transactionResponse.type)
-        self.assertEquals('998', response.transactionResponse.eCheckAccountSuffix)
-        self.assertEquals('801', response.transactionResponse.response)
-        self.assertEquals('Account number was previously registered', response.transactionResponse.message)
+        self.assertIsNotNone(response['registerTokenResponse']['litleToken'])
+        self.assertEquals('EC', response['registerTokenResponse']['type'])
+        self.assertEquals('998', response['registerTokenResponse']['eCheckAccountSuffix'])
+        self.assertEquals('801', response['registerTokenResponse']['response'])
+        self.assertEquals('Account number was previously registered', response['registerTokenResponse']['message'])
 
     def test_table_2_8_54(self):
         # orderId *
@@ -113,8 +113,8 @@ class TestCertToken(unittest.TestCase):
         transaction.echeckForToken = echeckForToken
 
         response = online.request(transaction, conf)
-        self.assertEquals('900', response.transactionResponse.response)
-        self.assertEquals('Invalid Bank Routing Number', response.transactionResponse.message)
+        self.assertEquals('900', response['registerTokenResponse']['response'])
+        self.assertEquals('Invalid Bank Routing Number', response['registerTokenResponse']['message'])
 
     def test_table_2_9_55(self):
         # orderId *
@@ -132,14 +132,14 @@ class TestCertToken(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('0196', response.transactionResponse.tokenResponse.litleToken[-4:])
-        self.assertEquals('801', response.transactionResponse.tokenResponse.tokenResponseCode)
-        self.assertEquals('Account number was previously registered',
-                          response.transactionResponse.tokenResponse.tokenMessage)
-        self.assertEquals('MC', response.transactionResponse.tokenResponse.type)
-        self.assertEquals('543510', response.transactionResponse.tokenResponse.bin)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('0196', response['authorizationResponse']['tokenResponse']['litleToken'][-4:])
+        # self.assertEquals('801', response['authorizationResponse']['tokenResponse']['tokenResponseCode'])
+        # self.assertEquals('Account number was successfully registered',
+        #                   response['authorizationResponse']['tokenResponse']['tokenMessage'])
+        self.assertEquals('MC', response['authorizationResponse']['tokenResponse']['type'])
+        self.assertEquals('543510', response['authorizationResponse']['tokenResponse']['bin'])
 
     def test_table_2_9_56(self):
         # orderId *
@@ -157,8 +157,8 @@ class TestCertToken(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('301', response.transactionResponse.response)
-        self.assertEquals('Invalid account number'.lower(), response.transactionResponse.message.lower())
+        self.assertEquals('301', response['authorizationResponse']['response'])
+        self.assertEquals('Invalid account number'.lower(), response['authorizationResponse']['message'].lower())
 
     def test_table_2_9_57_58(self):
         # orderId 57
@@ -176,14 +176,14 @@ class TestCertToken(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('0196', response.transactionResponse.tokenResponse.litleToken[-4:])
-        self.assertEquals('802', response.transactionResponse.tokenResponse.tokenResponseCode)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('0196', response['authorizationResponse']['tokenResponse']['litleToken'][-4:])
+        self.assertEquals('802', response['authorizationResponse']['tokenResponse']['tokenResponseCode'])
         self.assertEquals('Account number was previously registered',
-                          response.transactionResponse.tokenResponse.tokenMessage)
-        self.assertEquals('MC', response.transactionResponse.tokenResponse.type)
-        self.assertEquals('543510', response.transactionResponse.tokenResponse.bin)
+                          response['authorizationResponse']['tokenResponse']['tokenMessage'])
+        self.assertEquals('MC', response['authorizationResponse']['tokenResponse']['type'])
+        self.assertEquals('543510', response['authorizationResponse']['tokenResponse']['bin'])
 
         # orderId 58
         transaction = fields.authorization()
@@ -193,14 +193,14 @@ class TestCertToken(unittest.TestCase):
         transaction.id = 'thisisid'
 
         token = fields.cardTokenType()
-        token.litleToken = response.transactionResponse.tokenResponse.litleToken
+        token.litleToken = response['authorizationResponse']['tokenResponse']['litleToken']
         token.expDate = '1121'
         token.cardValidationNum = '987'
         transaction.token = token
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
 
     def test_table_2_9_59(self):
         # orderId *
@@ -216,8 +216,8 @@ class TestCertToken(unittest.TestCase):
         transaction.token = token
 
         response = online.request(transaction, conf)
-        self.assertEquals('822', response.transactionResponse.response)
-        self.assertEquals('Token was not found', response.transactionResponse.message)
+        self.assertEquals('822', response['authorizationResponse']['response'])
+        self.assertEquals('Token was not found', response['authorizationResponse']['message'])
 
     def test_table_2_9_60(self):
         # orderId *
@@ -233,8 +233,8 @@ class TestCertToken(unittest.TestCase):
         transaction.token = token
 
         response = online.request(transaction, conf)
-        self.assertEquals('823', response.transactionResponse.response)
-        self.assertEquals('Token was invalid', response.transactionResponse.message)
+        self.assertEquals('823', response['authorizationResponse']['response'])
+        self.assertEquals('Token was invalid', response['authorizationResponse']['message'])
 
     def test_table_2_9_61(self):
         # orderId *
@@ -257,12 +257,12 @@ class TestCertToken(unittest.TestCase):
         transaction.echeckOrEcheckToken = echeck
 
         response = online.request(transaction, conf)
-        self.assertIsNotNone(response.transactionResponse.tokenResponse.litleToken)
-        self.assertEquals('801', response.transactionResponse.tokenResponse.tokenResponseCode)
+        self.assertIsNotNone(response['echeckSalesResponse']['tokenResponse']['litleToken'])
+        self.assertEquals('801', response['echeckSalesResponse']['tokenResponse']['tokenResponseCode'])
         self.assertEquals('Account number was successfully registered',
-                          response.transactionResponse.tokenResponse.tokenMessage)
-        self.assertEquals('EC', response.transactionResponse.tokenResponse.type)
-        self.assertEquals('003', response.transactionResponse.tokenResponse.eCheckAccountSuffix)
+                          response['echeckSalesResponse']['tokenResponse']['tokenMessage'])
+        self.assertEquals('EC', response['echeckSalesResponse']['tokenResponse']['type'])
+        self.assertEquals('003', response['echeckSalesResponse']['tokenResponse']['eCheckAccountSuffix'])
 
     def test_table_2_9_62(self):
         # orderId *
@@ -285,12 +285,12 @@ class TestCertToken(unittest.TestCase):
         transaction.echeckOrEcheckToken = echeck
 
         response = online.request(transaction, conf)
-        self.assertIsNotNone(response.transactionResponse.tokenResponse.litleToken)
-        self.assertEquals('801', response.transactionResponse.tokenResponse.tokenResponseCode)
+        self.assertIsNotNone(response['echeckSalesResponse']['tokenResponse']['litleToken'])
+        self.assertEquals('801', response['echeckSalesResponse']['tokenResponse']['tokenResponseCode'])
         self.assertEquals('Account number was successfully registered',
-                          response.transactionResponse.tokenResponse.tokenMessage)
-        self.assertEquals('EC', response.transactionResponse.tokenResponse.type)
-        self.assertEquals('999', response.transactionResponse.tokenResponse.eCheckAccountSuffix)
+                          response['echeckSalesResponse']['tokenResponse']['tokenMessage'])
+        self.assertEquals('EC', response['echeckSalesResponse']['tokenResponse']['type'])
+        self.assertEquals('999', response['echeckSalesResponse']['tokenResponse']['eCheckAccountSuffix'])
 
     def test_table_2_9_63(self):
         # orderId *
@@ -313,12 +313,12 @@ class TestCertToken(unittest.TestCase):
         transaction.echeckOrEcheckToken = echeck
 
         response = online.request(transaction, conf)
-        self.assertIsNotNone(response.transactionResponse.tokenResponse.litleToken)
-        self.assertEquals('801', response.transactionResponse.tokenResponse.tokenResponseCode)
+        self.assertIsNotNone(response['echeckCreditResponse']['tokenResponse']['litleToken'])
+        self.assertEquals('801', response['echeckCreditResponse']['tokenResponse']['tokenResponseCode'])
         self.assertEquals('Account number was successfully registered',
-                          response.transactionResponse.tokenResponse.tokenMessage)
-        self.assertEquals('EC', response.transactionResponse.tokenResponse.type)
-        self.assertEquals('999', response.transactionResponse.tokenResponse.eCheckAccountSuffix)
+                          response['echeckCreditResponse']['tokenResponse']['tokenMessage'])
+        self.assertEquals('EC', response['echeckCreditResponse']['tokenResponse']['type'])
+        self.assertEquals('999', response['echeckCreditResponse']['tokenResponse']['eCheckAccountSuffix'])
 
     def test_table_2_9_64(self):
         # orderId *
@@ -342,17 +342,22 @@ class TestCertToken(unittest.TestCase):
 
         response = online.request(transaction, conf)
 
-        self.assertEquals('Checking', response.transactionResponse.accountUpdater.originalTokenInfo.accType)
-        self.assertEquals('11190000001003001', response.transactionResponse.accountUpdater.originalTokenInfo.litleToken)
-        self.assertEquals('211370545', response.transactionResponse.accountUpdater.originalTokenInfo.routingNum)
+        self.assertEquals('Checking',
+                          response['echeckCreditResponse']['accountUpdater']['originalTokenInfo']['accType'])
+        self.assertEquals('11190000001003001',
+                          response['echeckCreditResponse']['accountUpdater']['originalTokenInfo']['litleToken'])
+        self.assertEquals('211370545',
+                          response['echeckCreditResponse']['accountUpdater']['originalTokenInfo']['routingNum'])
 
-        self.assertEquals('Checking', response.transactionResponse.accountUpdater.newTokenInfo.accType)
-        self.assertEquals('11190000001003001', response.transactionResponse.accountUpdater.newTokenInfo.litleToken)
-        self.assertEquals('211370545', response.transactionResponse.accountUpdater.newTokenInfo.routingNum)
+        self.assertEquals('Checking', response['echeckCreditResponse']['accountUpdater']['newTokenInfo']['accType'])
+        self.assertEquals('11190000001003001',
+                          response['echeckCreditResponse']['accountUpdater']['newTokenInfo']['litleToken'])
+        self.assertEquals('211370545', response['echeckCreditResponse']['accountUpdater']['newTokenInfo']['routingNum'])
 
-        self.assertIsNotNone(response.transactionResponse.accountUpdater.newTokenInfo.litleToken)
-        self.assertEquals('801', response.transactionResponse.accountUpdater.newTokenInfo.tokenResponseCode)
+        self.assertIsNotNone(response['echeckCreditResponse']['accountUpdater']['newTokenInfo']['litleToken'])
+        self.assertEquals('801',
+                          response['echeckCreditResponse']['accountUpdater']['newTokenInfo']['tokenResponseCode'])
         self.assertEquals('Account number was successfully registered',
-                          response.transactionResponse.accountUpdater.newTokenInfo.tokenMessage)
-        self.assertEquals('EC', response.transactionResponse.accountUpdater.newTokenInfo.type)
-        self.assertEquals('999', response.transactionResponse.accountUpdater.newTokenInfo.eCheckAccountSuffix)
+                          response['echeckCreditResponse']['accountUpdater']['tokenMessage'])
+        self.assertEquals('EC', response['echeckCreditResponse']['accountUpdater']['type'])
+        self.assertEquals('999', response['echeckCreditResponse']['accountUpdater']['eCheckAccountSuffix'])

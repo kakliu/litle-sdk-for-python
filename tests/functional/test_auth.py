@@ -53,7 +53,7 @@ class TestAuth(unittest.TestCase):
         authorization.card = card
 
         response = online.request(authorization, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['authorizationResponse']['response'])
 
     def test_simple_auth_with_android_pay(self):
         authorization = fields.authorization()
@@ -71,9 +71,9 @@ class TestAuth(unittest.TestCase):
         authorization.card = card
 
         response = online.request(authorization, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['authorizationResponse']['response'])
         self.assertEquals('aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1kUXc0dzlXZ1hjUQ0K',
-                          response.transactionResponse.androidpayResponse.cryptogram)
+                          response['authorizationResponse']['androidpayResponse']['cryptogram'])
 
     def test_simple_auth_with_paypal(self):
         authorization = fields.authorization()
@@ -90,7 +90,7 @@ class TestAuth(unittest.TestCase):
         authorization.paypal = paypal
 
         response = online.request(authorization, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['authorizationResponse']['response'])
 
     def test_simple_auth_with_applepay_and_secondary_amount(self):
         authorization = fields.authorization()
@@ -114,8 +114,8 @@ class TestAuth(unittest.TestCase):
         authorization.applepay = applepay
 
         response = online.request(authorization, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals(106, response.transactionResponse.applepayResponse.transactionAmount)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('106', response['authorizationResponse']['applepayResponse']['transactionAmount'])
 
     def test_pos_without_capability_entrymod(self):
         authorization = fields.authorization()
@@ -152,8 +152,9 @@ class TestAuth(unittest.TestCase):
         authorization.card = card
 
         response = online.request(authorization, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('4100100000000000', response.transactionResponse.accountUpdater.originalCardInfo.number)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('4100100000000000',
+                          response['authorizationResponse']['accountUpdater']['originalCardInfo']['number'])
 
     def test_track_data(self):
         authorization = fields.authorization()
@@ -178,7 +179,7 @@ class TestAuth(unittest.TestCase):
         authorization.pos = pos
 
         response = online.request(authorization, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['authorizationResponse']['response'])
 
     def test_list_of_tax_amount(self):
         authorization = fields.authorization()
@@ -203,7 +204,7 @@ class TestAuth(unittest.TestCase):
         authorization.card = card
 
         response = online.request(authorization, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['authorizationResponse']['response'])
 
     def test_auth_with_processing_type(self):
         authorization = fields.authorization()
@@ -223,7 +224,7 @@ class TestAuth(unittest.TestCase):
         authorization.card = card
 
         response = online.request(authorization, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['authorizationResponse']['response'])
 
     def test_auth_with_wallet(self):
         authorization = fields.authorization()
@@ -248,7 +249,7 @@ class TestAuth(unittest.TestCase):
         authorization.wallet = wallet
 
         response = online.request(authorization, conf)
-        self.assertEquals('63225578415568556365452427825', response.transactionResponse.networkTransactionId)
+        self.assertEquals('63225578415568556365452427825', response['authorizationResponse']['networkTransactionId'])
 
     def test_auth_with_wallet_and_card_suffix_response(self):
         authorization = fields.authorization()
@@ -273,8 +274,8 @@ class TestAuth(unittest.TestCase):
         authorization.wallet = wallet
 
         response = online.request(authorization, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertIsNone(response.transactionResponse.networkTransactionId)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertNotIn('networkTransactionId', response['authorizationResponse'])
 
 
 if __name__ == '__main__':

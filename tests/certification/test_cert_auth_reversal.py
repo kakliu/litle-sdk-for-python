@@ -66,20 +66,20 @@ class TestCertEcheck(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('11111 ', response.transactionResponse.authCode)
-        self.assertEquals('01', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('M', response.transactionResponse.fraudResult.cardValidationResult)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('11111', response['authorizationResponse']['authCode'])
+        self.assertEquals('01', response['authorizationResponse']['fraudResult']['avsResult'])
+        self.assertEquals('M', response['authorizationResponse']['fraudResult']['cardValidationResult'])
 
         # orderId *A
         capture = fields.capture()
         capture.id = 'thisisid'
         capture.amount = 5050
-        capture.litleTxnId = response.transactionResponse.litleTxnId
+        capture.litleTxnId = response['authorizationResponse']['litleTxnId']
         captureresponse = online.request(capture, conf)
-        self.assertEquals('000', captureresponse.transactionResponse.response)
-        self.assertEquals('Approved', captureresponse.transactionResponse.message)
+        self.assertEquals('000', captureresponse['captureResponse']['response'])
+        self.assertEquals('Approved', captureresponse['captureResponse']['message'])
 
         # orderId *B
         # <litleOnlineResponse version="9.10" xmlns="http://www.litle.com/fields.
@@ -95,11 +95,11 @@ class TestCertEcheck(unittest.TestCase):
         # </litleOnlineResponse>
         authreversal = fields.authReversal()
         authreversal.id = 'thisisid'
-        authreversal.litleTxnId = response.transactionResponse.litleTxnId
+        authreversal.litleTxnId = response['authorizationResponse']['litleTxnId']
         authreversalresponse = online.request(authreversal, conf)
-        self.assertEquals('111', authreversalresponse.transactionResponse.response)
+        self.assertEquals('111', authreversalresponse['authReversalResponse']['response'])
         self.assertEquals('Authorization amount has already been depleted',
-                          authreversalresponse.transactionResponse.message)
+                          authreversalresponse['authReversalResponse']['message'])
 
 
     def test_table_2_3_33(self):
@@ -133,20 +133,20 @@ class TestCertEcheck(unittest.TestCase):
         # transaction.cardholderAuthentication = cardholderauthentication
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('22222 ', response.transactionResponse.authCode)
-        self.assertEquals('10', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('M', response.transactionResponse.fraudResult.cardValidationResult)
-        self.assertRaises(response.transactionResponse.fraudResult.authenticationResult)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('22222', response['authorizationResponse']['authCode'])
+        self.assertEquals('10', response['authorizationResponse']['fraudResult']['avsResult'])
+        self.assertEquals('M', response['authorizationResponse']['fraudResult']['cardValidationResult'])
+        # self.assertRaises(response['authorizationResponse']['fraudResult']['authenticationResult'])
 
         # orderId *A
         authreversal = fields.authReversal()
         authreversal.id = 'thisisid'
-        authreversal.litleTxnId = response.transactionResponse.litleTxnId
+        authreversal.litleTxnId = response['authorizationResponse']['litleTxnId']
         authreversalresponse = online.request(authreversal, conf)
-        self.assertEquals('000', authreversalresponse.transactionResponse.response)
-        self.assertEquals('Approved', authreversalresponse.transactionResponse.message)
+        self.assertEquals('000', authreversalresponse['authReversalResponse']['response'])
+        self.assertEquals('Approved', authreversalresponse['authReversalResponse']['message'])
 
 
     def test_table_2_3_34(self):
@@ -174,19 +174,19 @@ class TestCertEcheck(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('33333 ', response.transactionResponse.authCode)
-        self.assertEquals('10', response.transactionResponse.fraudResult.avsResult)
-        self.assertEquals('M', response.transactionResponse.fraudResult.cardValidationResult)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('33333', response['authorizationResponse']['authCode'])
+        self.assertEquals('10', response['authorizationResponse']['fraudResult']['avsResult'])
+        self.assertEquals('M', response['authorizationResponse']['fraudResult']['cardValidationResult'])
 
         # orderId *A
         authreversal = fields.authReversal()
         authreversal.id = 'thisisid'
-        authreversal.litleTxnId = response.transactionResponse.litleTxnId
+        authreversal.litleTxnId = response['authorizationResponse']['litleTxnId']
         authreversalresponse = online.request(authreversal, conf)
-        self.assertEquals('000', authreversalresponse.transactionResponse.response)
-        self.assertEquals('Approved', authreversalresponse.transactionResponse.message)
+        self.assertEquals('000', authreversalresponse['authReversalResponse']['response'])
+        self.assertEquals('Approved', authreversalresponse['authReversalResponse']['message'])
 
 
     def test_table_2_3_35(self):
@@ -214,29 +214,29 @@ class TestCertEcheck(unittest.TestCase):
 
         response = online.request(transaction, conf)
         # TODO <response>100</response><message>Processing Network Unavailable</message>
-        # self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('44444 ', response.transactionResponse.authCode)
-        self.assertEquals('13', response.transactionResponse.fraudResult.avsResult)
+        # self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('44444 ', response['authorizationResponse']['authCode'])
+        self.assertEquals('13', response['authorizationResponse']['fraudResult']['avsResult'])
 
         # orderId *A
         capture = fields.capture()
         capture.id = 'thisisid'
-        capture.litleTxnId = response.transactionResponse.litleTxnId
+        capture.litleTxnId = response['authorizationResponse']['litleTxnId']
         capture.amount = 5050
         captureresponse = online.request(capture, conf)
-        self.assertEquals('000', captureresponse.transactionResponse.response)
-        self.assertEquals('Approved', captureresponse.transactionResponse.message)
+        self.assertEquals('000', captureresponse['captureResponse']['response'])
+        self.assertEquals('Approved', captureresponse['captureResponse']['message'])
 
         # orderId *B
         authreversal = fields.authReversal()
         authreversal.id = 'thisisid'
-        authreversal.litleTxnId = response.transactionResponse.litleTxnId
+        authreversal.litleTxnId = response['authorizationResponse']['litleTxnId']
         authreversal.amount = 5050
         authreversalresponse = online.request(authreversal, conf)
-        self.assertEquals('336', authreversalresponse.transactionResponse.response)
+        self.assertEquals('336', authreversalresponse['authReversalResponse']['response'])
         self.assertEquals('Reversal amount does not match Authorization amount',
-                          authreversalresponse.transactionResponse.message)
+                          authreversalresponse['authReversalResponse']['message'])
 
 
     def test_table_2_3_36(self):
@@ -255,17 +255,15 @@ class TestCertEcheck(unittest.TestCase):
 
         response = online.request(transaction, conf)
         # TODO <response>100</response><message>Processing Network Unavailable</message>
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
 
         # orderId *A
         authreversal = fields.authReversal()
         authreversal.id = 'thisisid'
-        authreversal.litleTxnId = response.transactionResponse.litleTxnId
+        authreversal.litleTxnId = response['authorizationResponse']['litleTxnId']
         authreversal.amount = 10000
         authreversalresponse = online.request(authreversal, conf)
-        self.assertEquals('336', authreversalresponse.transactionResponse.response)
+        self.assertEquals('336', authreversalresponse['authReversalResponse']['response'])
         self.assertEquals('Reversal amount does not match Authorization amount',
-                          authreversalresponse.transactionResponse.message)
-
-
+                          authreversalresponse['authReversalResponse']['message'])

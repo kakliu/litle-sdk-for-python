@@ -51,7 +51,7 @@ class TestForceCapture(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['forceCaptureResponse']['response'])
 
     def test_force_capture_with_secondary_amount(self):
         transaction = fields.forceCapture()
@@ -70,7 +70,7 @@ class TestForceCapture(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['forceCaptureResponse']['response'])
 
     def test_force_capture_with_token(self):
         transaction = fields.forceCapture()
@@ -90,7 +90,7 @@ class TestForceCapture(unittest.TestCase):
         transaction.token = token
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['forceCaptureResponse']['response'])
 
 
 if __name__ == '__main__':

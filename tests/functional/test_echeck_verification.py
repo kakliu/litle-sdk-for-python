@@ -59,7 +59,7 @@ class TestEcheckVerification(unittest.TestCase):
         transaction.shipToAddress = billtoaddress
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['echeckVerificationResponse']['response'])
 
     def test_echeck_verification_with_token(self):
         transaction = fields.echeckVerification()
@@ -83,7 +83,7 @@ class TestEcheckVerification(unittest.TestCase):
         transaction.billToAddress = billtoaddress
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['echeckVerificationResponse']['response'])
 
 
     def test_echeck_verification_without_billing_address(self):

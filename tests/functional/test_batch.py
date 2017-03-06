@@ -172,11 +172,11 @@ class TestBatch(unittest.TestCase):
         # stream to Vaitiv eCommerce and get object as response
         response = batch.stream(transactions, conf)
 
-        self.assertEquals(1, len(response.batchResponse))
+        self.assertIn('batchResponse', response)
 
         # Example for RFRRequest
         RFRRequest = fields.RFRRequest()
-        RFRRequest.litleSessionId = response.litleSessionId
+        RFRRequest.litleSessionId = response['@litleSessionId']
 
         transactions = batch.Transactions()
         transactions.add(RFRRequest)
@@ -184,9 +184,9 @@ class TestBatch(unittest.TestCase):
         # stream to Vaitiv eCommerce and get object as response
         response_rfr = batch.stream(transactions, conf)
 
-        self.assertEquals(1, len(response_rfr.batchResponse))
-        self.assertEquals(response_rfr.batchResponse[0].transactionResponse[0].litleTxnId,
-                          response.batchResponse[0].transactionResponse[0].litleTxnId)
+        self.assertIn('batchResponse', response_rfr)
+        self.assertEquals(response_rfr['batchResponse']['authorizationResponse'][0]['litleTxnId'],
+                          response['batchResponse']['authorizationResponse'][0]['litleTxnId'])
 
 
 if __name__ == '__main__':

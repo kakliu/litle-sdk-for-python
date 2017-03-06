@@ -45,7 +45,7 @@ class TestAuthReversal(unittest.TestCase):
         transactions.id = 'thisisid'
 
         response = online.request(transactions, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['authReversalResponse']['response'])
 
 
 if __name__ == '__main__':

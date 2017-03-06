@@ -57,7 +57,7 @@ class TestCaptureGivenAuth(unittest.TestCase):
         # The type of card is cardType
         transaction.card = card
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['captureGivenAuthResponse']['response'])
 
 
     def test_simple_capture_given_auth_with_token(self):
@@ -81,7 +81,7 @@ class TestCaptureGivenAuth(unittest.TestCase):
         token.CardValidationNum = '555'
         transaction.token = token
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['captureGivenAuthResponse']['response'])
 
 
     def test_complex_capture_given_auth(self):
@@ -122,7 +122,7 @@ class TestCaptureGivenAuth(unittest.TestCase):
         # The type of card is cardType
         transaction.card = card
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['captureGivenAuthResponse']['response'])
 
     def test_auth_info(self):
         transaction = fields.captureGivenAuth()
@@ -153,7 +153,7 @@ class TestCaptureGivenAuth(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['captureGivenAuthResponse']['response'])
 
     def test_simple_capture_given_auth_with_processing_type(self):
         transaction = fields.captureGivenAuth()
@@ -178,7 +178,7 @@ class TestCaptureGivenAuth(unittest.TestCase):
         # The type of card is cardType
         transaction.card = card
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['captureGivenAuthResponse']['response'])
 
 
     def test_simple_capture_given_auth_with_original_network_transaction_id(self):
@@ -205,7 +205,7 @@ class TestCaptureGivenAuth(unittest.TestCase):
         # The type of card is cardType
         transaction.card = card
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['captureGivenAuthResponse']['response'])
 
 if __name__ == '__main__':
     unittest.main()

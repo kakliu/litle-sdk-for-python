@@ -22,21 +22,21 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 #
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import, print_function
 
 import requests
+import xmltodict
 
-from . import fields
-from . import utils
+from . import (fields, utils)
 
 
-def request(transaction, conf, return_format='object', timeout=30):
+def request(transaction, conf, return_format='dict', timeout=30):
     """Send request to server.
 
     Args:
         transaction: An instance of transaction class
         conf: An instance of utils.Configuration
-        return_format: Return format. The default is 'object'. Could be either 'object' or 'xml'.
+        return_format: Return format. The default is 'dict'. Could be one of 'dict', 'object' or 'xml'.
         timeout: timeout for the request in seconds. timeout is not a time limit on the entire response.
         It's the time that server has not issued a response.
 
@@ -44,28 +44,34 @@ def request(transaction, conf, return_format='object', timeout=30):
         response XML in desired format.
 
     Raises:
-        Vantiv Exceptions.
+        VantivExceptions.
     """
     if not (isinstance(transaction, fields.recurringTransactionType)
             or isinstance(transaction, fields.transactionType)):
-        raise TypeError('transaction must be either litle_xml_fields.recurringTransactionType or transactionType')
+        raise utils.VantivException(
+            'transaction must be either litle_xml_fields.recurringTransactionType or transactionType')
 
     if not isinstance(conf, utils.Configuration):
-        raise TypeError('conf must be an instance of utils.Configuration')
+        raise utils.VantivException('conf must be an instance of utils.Configuration')
 
     request_xml = _create_request_xml(transaction, conf)
     response_xml = _http_post(request_xml, conf, timeout)
-    response_code = utils.get_response_code(response_xml, 'litleOnlineResponse')
 
-    if response_code == '0':
-        if return_format.lower() == 'xml':
+    response_dict = xmltodict.parse(response_xml)['litleOnlineResponse']
+
+    if response_dict['@response'] == '0':
+        return_f_l = return_format.lower()
+        if return_f_l == 'xml':
             return response_xml
-        else:
+        elif return_f_l == 'object':
             return fields.CreateFromDocument(response_xml)
+        else:
+            if conf.print_xml:
+                import json
+                print('Response Dict:\n', json.dumps(response_dict, indent=4), '\n\n')
+            return response_dict
     else:
-        # Using pyxb to get
-        msg = fields.CreateFromDocument(response_xml).message
-        raise utils.VantivException(msg)
+        raise utils.VantivException(response_dict['@message'])
 
 
 def _create_request_xml(transaction, conf):
@@ -82,7 +88,7 @@ def _create_request_xml(transaction, conf):
     request_xml = utils.obj_to_xml(request_obj)
 
     if conf.print_xml:
-        print('Request XML:\n', request_xml)
+        print('Request XML:\n', request_xml, '\n')
 
     return request_xml
 
@@ -154,19 +160,20 @@ def _http_post(post_data, conf, timeout):
         XML string for server response.
 
     Raise:
-        When can't communicate with server, Error with Https Request, Please Check Proxy and Url configuration
-        When the server response code is not 200, Error with Https Response, Status code: xxx
+        VantivException
     """
     headers = {'Content-type': 'application/xml'}
     proxies = {'https': conf.proxy} if (conf.proxy is not None and conf.proxy != '') else None
     try:
         response = requests.post(conf.url, data=post_data, headers=headers, proxies=proxies, timeout=timeout)
-    except Exception as e:
-        # TODO Change to custom Vantiv Exception.
-        raise Exception("Error with Https Request, Please Check Proxy and Url configuration", e.message)
+    except requests.RequestException:
+        raise utils.VantivException("Error with Https Request, Please Check Proxy and Url configuration")
     if response.status_code != 200:
-        # TODO Change to custom Vantiv Exception.
-        raise Exception("Error with Https Response, Status code: ", response.status_code)
+        raise utils.VantivException("Error with Https Response, Status code: ", response.status_code)
+
+    # Check empty response
+    if not response:
+        raise utils.VantivException("The response is empty, Please call Vantiv eCommerce")
 
     if conf.print_xml:
         print('Response XML:\n', response.text, '\n')

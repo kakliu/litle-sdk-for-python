@@ -29,9 +29,9 @@ import os
 
 import paramiko
 import six
+import xmltodict
 
-from . import fields
-from . import utils
+from . import (fields, utils)
 
 # Key: transaction name
 # Value: array of batchRequest attributes according to transactions
@@ -109,19 +109,19 @@ def submit(transactions, conf, filename='', timeout=60):
         Exception depends on when get it.
     """
     if not isinstance(transactions, Transactions):
-        raise TypeError('transactions must be an instance of batch.Transactions')
+        raise utils.VantivException('transactions must be an instance of batch.Transactions')
 
     if len(transactions.transactions) < 1:
-        raise ValueError('transactions must have at least 1 transaction')
+        raise utils.VantivException('transactions must have at least 1 transaction')
 
     if not isinstance(conf, utils.Configuration):
-        raise TypeError('conf must be an instance of utils.Configuration')
+        raise utils.VantivException('conf must be an instance of utils.Configuration')
 
     if not isinstance(filename, six.string_types):
-        raise TypeError('filename must be a string')
+        raise utils.VantivException('filename must be a string')
 
     if not isinstance(timeout, six.integer_types) or timeout < 0:
-        raise ValueError('timeout must be an positive int')
+        raise utils.VantivException('timeout must be an positive int')
 
     # 1. Generate litleRequest xml.
     xml_str = _create_batch_xml(transactions, conf)
@@ -134,7 +134,7 @@ def submit(transactions, conf, filename='', timeout=60):
     return remote_filename
 
 
-def download(filename, conf, delete_remote=True, timeout=60):
+def download(filename, conf, delete_remote=False, timeout=60):
     """Download Processed Session File from server via sFTP
 
     Get xml file from server and save to local file system
@@ -142,7 +142,7 @@ def download(filename, conf, delete_remote=True, timeout=60):
     Args:
         filename: filename of file in outbound folder at remote server with '.asc' as extension.
         conf:  An instance of utils.Configuration.
-        delete_remote: If delete the remote file after download. The default is True
+        delete_remote: If delete the remote file after download. The default is False
         timeout: Timeout in second for ssh connection for sftp.
 
     Returns:
@@ -152,18 +152,18 @@ def download(filename, conf, delete_remote=True, timeout=60):
         Exception depends on when get it.
     """
     if not isinstance(conf, utils.Configuration):
-        raise TypeError('conf must be an instance of utils.Configuration')
+        raise utils.VantivException('conf must be an instance of utils.Configuration')
 
     if not isinstance(filename, six.string_types) or len(filename) < 4:
-        raise TypeError('filename must be a string, and at least 4 chars')
+        raise utils.VantivException('filename must be a string, and at least 4 chars')
 
     if not isinstance(timeout, six.integer_types) or timeout < 0:
-        raise ValueError('timeout must be an positive int')
+        raise utils.VantivException('timeout must be an positive int')
 
     return _get_file_from_sftp(filename, conf, delete_remote, timeout)
 
 
-def retrieve(filename, conf, return_format='object', save_to_local=False, delete_remote=True, timeout=60):
+def retrieve(filename, conf, return_format='dict', save_to_local=False, delete_remote=False, timeout=60):
     """Retrieving Processed Session File from server via sFTP
 
     1. Get xml file string from server and return object
@@ -174,7 +174,7 @@ def retrieve(filename, conf, return_format='object', save_to_local=False, delete
         conf:  An instance of utils.Configuration.
         return_format: Return format. The default is 'object'. Could be either 'object' or 'xml'.
         save_to_local: whether save file to local. default is false.
-        delete_remote: If delete the remote file after download. The default is True
+        delete_remote: If delete the remote file after download. The default is False
         timeout: Timeout in second for ssh connection for sftp.
 
     Returns:
@@ -184,32 +184,23 @@ def retrieve(filename, conf, return_format='object', save_to_local=False, delete
         Exception depends on when get it.
     """
     if not isinstance(conf, utils.Configuration):
-        raise TypeError('conf must be an instance of utils.Configuration')
+        raise utils.VantivException('conf must be an instance of utils.Configuration')
 
     if not isinstance(filename, six.string_types) or len(filename) < 4:
-        raise TypeError('filename must be a string, and at least 4 chars')
+        raise utils.VantivException('filename must be a string, and at least 4 chars')
 
     if not isinstance(timeout, six.integer_types) or timeout < 0:
-        raise ValueError('timeout must be an positive int')
+        raise utils.VantivException('timeout must be an positive int')
 
-    xml_str = _get_file_str_from_sftp(filename, conf, delete_remote, timeout)
+    response_xml = _get_file_str_from_sftp(filename, conf, delete_remote, timeout)
 
-    response_code = utils.get_response_code(xml_str, 'litleResponse')
+    if save_to_local:
+        _save_str_file(response_xml, conf.batch_response_path, filename)
 
-    if response_code == '0':
-        if save_to_local:
-            _save_str_file(xml_str, conf.batch_response_path, filename)
-        if return_format.lower() == 'xml':
-            return xml_str
-        else:
-            return fields.CreateFromDocument(xml_str)
-    else:
-        # Using pyxb to get
-        msg = fields.CreateFromDocument(xml_str)
-        raise utils.VantivException(msg)
+    return _generate_response(response_xml, return_format, conf)
 
 
-def stream(transactions, conf, return_format='object', timeout_send=60, timeout_rev=2):
+def stream(transactions, conf, return_format='dict', timeout_send=60, timeout_rev=2):
     """stream batch request to IBC (inbound batch communicator) via socket and get return object
 
     Args:
@@ -224,19 +215,19 @@ def stream(transactions, conf, return_format='object', timeout_send=60, timeout_
 
     """
     if not isinstance(transactions, Transactions):
-        raise TypeError('transactions must be an instance of batch.Transactions')
+        raise utils.VantivException('transactions must be an instance of batch.Transactions')
 
     if len(transactions.transactions) < 1:
-        raise ValueError('transactions must have at least 1 transaction')
+        raise utils.VantivException('transactions must have at least 1 transaction')
 
     if not isinstance(conf, utils.Configuration):
-        raise TypeError('conf must be an instance of utils.Configuration')
+        raise utils.VantivException('conf must be an instance of utils.Configuration')
 
     if not isinstance(timeout_send, six.integer_types) or timeout_send < 0:
-        raise ValueError('timeout_send must be an positive int')
+        raise utils.VantivException('timeout_send must be an positive int')
 
     if not isinstance(timeout_rev, six.integer_types) or timeout_rev < 0:
-        raise ValueError('timeout_rev must be an positive int')
+        raise utils.VantivException('timeout_rev must be an positive int')
 
     xml_str = _create_batch_xml(transactions, conf)
     response_xml = _stream_socket(xml_str, conf, timeout_send, timeout_rev)
@@ -244,17 +235,24 @@ def stream(transactions, conf, return_format='object', timeout_send=60, timeout_
     if not response_xml.strip():
         raise utils.VantivException('Cannot get response from vantiv, please tray again later.')
 
-    response_code = utils.get_response_code(response_xml, 'litleResponse')
+    return _generate_response(response_xml, return_format, conf)
 
-    if response_code == '0':
-        if return_format.lower() == 'xml':
-            return response_xml
+
+def _generate_response(_response_xml, _return_format, conf):
+    response_dict = xmltodict.parse(_response_xml)['litleResponse']
+    if response_dict['@response'] == '0':
+        return_f_l = _return_format.lower()
+        if return_f_l == 'xml':
+            return _response_xml
+        elif return_f_l == 'object':
+            return fields.CreateFromDocument(_response_xml)
         else:
-            return fields.CreateFromDocument(response_xml)
+            if conf.print_xml:
+                import json
+                print('Response Dict:\n', json.dumps(response_dict, indent=4), '\n\n')
+            return response_dict
     else:
-        # Using pyxb to get
-        msg = fields.CreateFromDocument(response_xml).message
-        raise utils.VantivException(msg)
+        raise utils.VantivException(response_dict['@message'])
 
 
 def _stream_socket(xml_str, conf, timeout_send, timeout_rev):
@@ -281,10 +279,9 @@ def _stream_socket(xml_str, conf, timeout_send, timeout_rev):
     try:
         s.connect((conf.fast_url, int(conf.fast_port)))
     except:
-        # TODO customized exceptions
-        raise Exception("Exception connect to vantiv")
+        raise utils.VantivException("Cannot connect to vantiv")
 
-    s.sendall(xml_str)
+    s.sendall(xml_str.encode())
 
     s.settimeout(0.0)
     str_array = []
@@ -309,10 +306,11 @@ def _stream_socket(xml_str, conf, timeout_send, timeout_rev):
 
     s.close()
 
-    return_str = ''.join(str_array)
+    return_str = b''.join(str_array)
+    return_str = return_str.decode('utf-8')
 
     if conf.print_xml:
-        print('Batch stream response XML: \n', return_str)
+        print('Batch stream response XML: \n', return_str, '\n')
 
     return return_str
 
@@ -334,7 +332,6 @@ def _put_file_to_sftp(file_path, conf, timeout):
 
     transport = ''
     try:
-        # noinspection PyTypeChecker
         transport = paramiko.Transport((conf.sftp_url, 22))
         transport.connect(username=conf.sftp_username, password=conf.sftp_password)
         channel = transport.open_session()
@@ -347,14 +344,12 @@ def _put_file_to_sftp(file_path, conf, timeout):
         sftp.put(file_path, remote_path_prg)
         sftp.rename(remote_path_prg, remote_path_asc)
         transport.close()
-    except Exception as e:
-        # noinspection PyBroadException
+    except Exception:
         try:
             transport.close()
         except:
             pass
-        # TODO customized exceptions
-        raise Exception('fail to send', e.message)
+        raise utils.VantivException('Fail to send "%s" to Vantiv server.' % file_path)
 
     return os.path.basename(remote_path_asc)
 
@@ -379,7 +374,6 @@ def _get_file_from_sftp(filename, conf, delete_remote, timeout):
 
     transport = ''
     try:
-        # noinspection PyTypeChecker
         transport = paramiko.Transport((conf.sftp_url, 22))
         transport.connect(username=conf.sftp_username, password=conf.sftp_password)
         channel = transport.open_session()
@@ -389,15 +383,12 @@ def _get_file_from_sftp(filename, conf, delete_remote, timeout):
         if delete_remote:
             sftp.remove(remote_path_asc)
         transport.close()
-    except Exception as e:
-        # noinspection PyBroadException
+    except FileNotFoundError:
         try:
             transport.close()
         except:
             pass
-        # TODO customized exceptions
-
-        raise Exception('fail to get %s' % e.message)
+        raise utils.VantivException('Cannot find file "%s" on Vantiv server.' % filename)
     return local_path
 
 
@@ -416,7 +407,6 @@ def _get_file_str_from_sftp(filename, conf, delete_remote, timeout):
     remote_path_asc = 'outbound/' + filename
     transport = ''
     try:
-        # noinspection PyTypeChecker
         transport = paramiko.Transport((conf.sftp_url, 22))
         transport.connect(username=conf.sftp_username, password=conf.sftp_password)
         channel = transport.open_session()
@@ -424,20 +414,19 @@ def _get_file_str_from_sftp(filename, conf, delete_remote, timeout):
         sftp = paramiko.SFTPClient.from_transport(transport)
         remote_file = sftp.open(remote_path_asc)
         return_str = remote_file.read()
+        return_str = return_str.decode('utf-8')
         if delete_remote:
             sftp.remove(remote_path_asc)
         transport.close()
-    except Exception as e:
-        # noinspection PyBroadException
+    except FileNotFoundError:
         try:
             transport.close()
         except:
             pass
-        # TODO customized exceptions
-        raise Exception('fail to get', e.message)
+        raise utils.VantivException('Cannot find file "%s" on Vantiv server.' % filename)
 
     if conf.print_xml:
-        print('Batch response file content: \n', return_str)
+        print('Batch response file content: \n', return_str, '\n')
 
     return return_str
 
@@ -547,7 +536,6 @@ def _create_batch_xml(transactions, conf):
             num_batch_requests += 1
 
     xml_str = '<?xml version="1.0" encoding="utf-8"?>'
-    # noinspection PyProtectedMember
     xml_str += '<litleRequest version="%s" xmlns="http://www.litle.com/schema" id="%s" numBatchRequests="%d">' \
                % (conf.VERSION, conf.id, num_batch_requests)
     xml_str += _obj_to_xml_element(authentication)
@@ -555,7 +543,7 @@ def _create_batch_xml(transactions, conf):
     xml_str += '</litleRequest>'
 
     if conf.print_xml:
-        print('Batch request XML:\n', xml_str)
+        print('Batch request XML:\n', xml_str, '\n')
 
     return xml_str
 
@@ -625,26 +613,26 @@ class Transactions(object):
 
         # A Batch should not exceed 1,000,000 transactions.
         if len(self._transactions) > 1000000:
-            raise Exception('A session should not exceed 1,000,000 transactions.')
+            raise utils.VantivException('A session should not exceed 1,000,000 transactions.')
 
         type_name = type(transaction).__name__
         if self._RFRRequest_cls_name == type_name:
             if self._RFRRequest:
-                raise Exception('only can add one RFRRequest')
+                raise utils.VantivException('only can add one RFRRequest')
             else:
                 if not self._transactions:
                     self._transactions.add(transaction)
                     self._RFRRequest = True
                 else:
-                    raise Exception('cannot mix transactions and RFRRequest')
+                    raise utils.VantivException('cannot mix transactions and RFRRequest')
         else:
             if self._RFRRequest:
-                raise Exception('cannot mix transactions and RFRRequest')
+                raise utils.VantivException('cannot mix transactions and RFRRequest')
             if typename in _class_transaction_dict:
                 if transaction not in self._transactions:
                     # Add transaction
                     self._transactions.add(transaction)
                 else:
-                    raise Exception('duplicate transaction cannot be added to a batch')
+                    raise utils.VantivException('duplicate transaction cannot be added to a batch')
             else:
-                raise Exception('transaction not support by batch')
+                raise utils.VantivException('transaction not support by batch')

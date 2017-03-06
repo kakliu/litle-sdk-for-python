@@ -85,36 +85,39 @@ transaction.card = card
 response = online.request(transaction, conf)
 
 # Print results
-print('Message: %s' % response.transactionResponse.message)
-print('LitleTransaction ID: %s' % response.transactionResponse.litleTxnId)
+print('Message: %s' % response['authorizationResponse']['message'])
+print('LitleTransaction ID: %s' % response['authorizationResponse']['litleTxnId'])
 
 # capture
 capture = fields.capture()
 capture.id = 'ThisIsRequiredby11'
-capture.litleTxnId = response.transactionResponse.litleTxnId
+capture.litleTxnId = response['authorizationResponse']['litleTxnId']
 captureresponse = online.request(capture, conf)
-print('Message: %s' % captureresponse.transactionResponse.message)
-print('LitleTransaction ID: %s' % captureresponse.transactionResponse.litleTxnId)
+# Print results
+print('Message: %s' % captureresponse['captureResponse']['message'])
+print('LitleTransaction ID: %s' % captureresponse['captureResponse']['litleTxnId'])
 
 # credit
 credit = fields.credit()
 credit.id = 'ThisIsRequiredby11'
-credit.litleTxnId = captureresponse.transactionResponse.litleTxnId
+credit.litleTxnId = captureresponse['captureResponse']['litleTxnId']
 creditresponse = online.request(credit, conf)
-print('Message: %s' % creditresponse.transactionResponse.message)
-print('LitleTransaction ID: %s' % creditresponse.transactionResponse.litleTxnId)
+# Print results
+print('Message: %s' % creditresponse['creditResponse']['message'])
+print('LitleTransaction ID: %s' % creditresponse['creditResponse']['litleTxnId'])
 
 # void
 void = fields.void()
 void.id = 'ThisIsRequiredby11'
-void.litleTxnId = creditresponse.transactionResponse.litleTxnId
+void.litleTxnId = creditresponse['creditResponse']['litleTxnId']
 voidresponse = online.request(void, conf)
-print('Message: %s' % voidresponse.transactionResponse.message)
-print('LitleTransaction ID: %s' % voidresponse.transactionResponse.litleTxnId)
+# Print results
+print('Message: %s' % voidresponse['voidResponse']['message'])
+print('LitleTransaction ID: %s' % voidresponse['voidResponse']['litleTxnId'])
 
 # In your sample, you can ignore this
-if response.transactionResponse.message != 'Approved' or \
-                captureresponse.transactionResponse.message != 'Approved' or \
-                creditresponse.transactionResponse.message != 'Approved' or \
-                voidresponse.transactionResponse.message != 'Approved':
+if response['authorizationResponse']['message'] != 'Approved' or \
+                captureresponse['captureResponse']['message'] != 'Approved' or \
+                creditresponse['creditResponse']['message'] != 'Approved' or \
+                voidresponse['voidResponse']['message'] != 'Approved':
     raise Exception('the example does not give the right response')

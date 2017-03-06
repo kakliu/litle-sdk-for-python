@@ -43,7 +43,7 @@ class TestEcheckCredit(unittest.TestCase):
         transaction.id = 'ThisIsID'
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['echeckCreditResponse']['response'])
 
     def test_echeck_credit_with_echeck(self):
         transaction = fields.echeckCredit()
@@ -68,7 +68,7 @@ class TestEcheckCredit(unittest.TestCase):
         transaction.billToAddress = billtoaddress
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['echeckCreditResponse']['response'])
 
     def test_echeck_credit_with_token(self):
         transaction = fields.echeckCredit()
@@ -92,7 +92,7 @@ class TestEcheckCredit(unittest.TestCase):
         transaction.billToAddress = billtoaddress
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['echeckCreditResponse']['response'])
 
     def test_echeck_credit_with_echeck_and_secondary_amount(self):
         transaction = fields.echeckCredit()
@@ -118,7 +118,7 @@ class TestEcheckCredit(unittest.TestCase):
         transaction.billToAddress = billtoaddress
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['echeckCreditResponse']['response'])
 
 if __name__ == '__main__':
     unittest.main()

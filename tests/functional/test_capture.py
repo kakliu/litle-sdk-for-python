@@ -48,7 +48,7 @@ class TestCapture(unittest.TestCase):
         transactions.id = 'ThisIsID'
 
         response = online.request(transactions, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['captureResponse']['response'])
 
 
     def test_simple_capture_with_partial(self):
@@ -62,7 +62,7 @@ class TestCapture(unittest.TestCase):
         transactions.id = 'ThisIsID'
 
         response = online.request(transactions, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['captureResponse']['response'])
 
     def test_complex_capture(self):
         transactions = fields.capture()
@@ -86,7 +86,7 @@ class TestCapture(unittest.TestCase):
         transactions.enhancedData = enhancedData
 
         response = online.request(transactions, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['captureResponse']['response'])
 
 
 if __name__ == '__main__':

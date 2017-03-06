@@ -26,7 +26,6 @@ from __future__ import absolute_import, division, print_function
 
 import json
 import os
-import re
 import tempfile
 
 import pyxb
@@ -51,8 +50,8 @@ class Configuration(object):
         fast_port (Str): Fast port, using for batch stream
         print_xml (Str): Whether print request and response xml
     """
-    VERSION = '11.0'
-    RELEASE = 'v2 11.0.beta'
+    VERSION = '9.10'
+    RELEASE = 'v2 9.10.beta'
     MERCHANTSDK = 'Python ' + RELEASE
     _CONFIG_FILE_PATH = os.path.join(os.environ['VANTIV_SDK_CONFIG'], ".vantiv_python_sdk.conf") \
         if 'VANTIV_SDK_CONFIG' in os.environ else os.path.join(os.path.expanduser("~"), ".vantiv_python_sdk.conf")
@@ -137,12 +136,6 @@ def obj_to_xml(obj):
     xml = xml.replace('ns1:', '')
     xml = xml.replace(':ns1', '')
     return xml
-
-
-def get_response_code(response_xml, response_tag):
-    first_element = response_xml[:response_xml.index('>') + 1].replace('\n', '')
-    matchs = re.search('<%s.*response=["|\'](\d)["|\'].*>' % response_tag, first_element)
-    return matchs.group(1)
 
 
 class VantivException(Exception):

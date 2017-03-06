@@ -92,9 +92,9 @@ class TestCertEnhancedAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('VIPREP', response.transactionResponse.authCode)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('VIPREP', response['authorizationResponse']['authCode'])
 
 
     def test_table_2_1_15_auth(self):
@@ -112,9 +112,9 @@ class TestCertEnhancedAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('MCPREP', response.transactionResponse.authCode)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('MCPREP', response['authorizationResponse']['authCode'])
 
     def test_table_2_1_16_auth(self):
         # orderId *
@@ -131,9 +131,9 @@ class TestCertEnhancedAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('MCPREP', response.transactionResponse.authCode)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('MCPREP', response['authorizationResponse']['authCode'])
 
     def test_table_2_1_17_auth(self):
         # orderId *
@@ -150,9 +150,9 @@ class TestCertEnhancedAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('MCPREP', response.transactionResponse.authCode)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('MCPREP', response['authorizationResponse']['authCode'])
 
     def test_table_2_1_18_auth(self):
         # orderId *
@@ -169,9 +169,9 @@ class TestCertEnhancedAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('MCPREP', response.transactionResponse.authCode)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('MCPREP', response['authorizationResponse']['authCode'])
 
 
     def test_table_2_1_19_auth(self):
@@ -189,9 +189,9 @@ class TestCertEnhancedAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('MCPREP', response.transactionResponse.authCode)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('MCPREP', response['authorizationResponse']['authCode'])
 
     def test_table_2_1_20_auth(self):
         # orderId *
@@ -208,9 +208,9 @@ class TestCertEnhancedAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('MCPREP', response.transactionResponse.authCode)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('MCPREP', response['authorizationResponse']['authCode'])
 
     # response sample for orderId 21 through 24
     #  <litleOnlineResponse version="9.10" xmlns="http://www.litle.com/fields.
@@ -255,9 +255,9 @@ class TestCertEnhancedAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('VIAFF1', response.transactionResponse.authCode)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('VIAFF1', response['authorizationResponse']['authCode'])
 
     def test_table_2_1_22_auth(self):
         # orderId *
@@ -274,9 +274,9 @@ class TestCertEnhancedAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('VIAFF2', response.transactionResponse.authCode)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('VIAFF2', response['authorizationResponse']['authCode'])
 
 
     def test_table_2_1_23_auth(self):
@@ -294,9 +294,9 @@ class TestCertEnhancedAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('MCAFF1', response.transactionResponse.authCode)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('MCAFF1', response['authorizationResponse']['authCode'])
 
     def test_table_2_1_24_auth(self):
         # orderId *
@@ -313,9 +313,9 @@ class TestCertEnhancedAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
-        self.assertEquals('MCAFF2', response.transactionResponse.authCode)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
+        self.assertEquals('MCAFF2', response['authorizationResponse']['authCode'])
 
     def test_table_2_1_25_auth(self):
         # orderId *
@@ -332,8 +332,8 @@ class TestCertEnhancedAuths(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
         # TODO Didn't return issuerCountry
         # enhancedAuthResponse is empty
         self.assertEquals('BRA', response.transactionResponse.enhancedAuthResponse.issuerCountry)
@@ -364,8 +364,8 @@ class TestCertEnhancedAuths(unittest.TestCase):
         transaction.healthcareIIAS = healthcareiias
 
         response = online.request(transaction, conf)
-        self.assertEquals('341', response.transactionResponse.response)
-        self.assertEquals('Invalid healthcare amounts', response.transactionResponse.message)
+        self.assertEquals('341', response['authorizationResponse']['response'])
+        self.assertEquals('Invalid healthcare amounts', response['authorizationResponse']['message'])
 
     def test_table_2_1_27_auth(self):
         # orderId *
@@ -392,8 +392,8 @@ class TestCertEnhancedAuths(unittest.TestCase):
         transaction.healthcareIIAS = healthcareiias
 
         response = online.request(transaction, conf)
-        self.assertEquals('341', response.transactionResponse.response)
-        self.assertEquals('Invalid healthcare amounts', response.transactionResponse.message)
+        self.assertEquals('341', response['authorizationResponse']['response'])
+        self.assertEquals('Invalid healthcare amounts', response['authorizationResponse']['message'])
 
     def test_table_2_1_28_auth(self):
         # orderId *
@@ -420,8 +420,8 @@ class TestCertEnhancedAuths(unittest.TestCase):
         transaction.healthcareIIAS = healthcareiias
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
+        self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals('Approved', response['authorizationResponse']['message'])
 
 
     def test_table_2_1_29_auth(self):
@@ -452,8 +452,8 @@ class TestCertEnhancedAuths(unittest.TestCase):
         transaction.healthcareIIAS = healthcareiias
 
         response = online.request(transaction, conf)
-        self.assertEquals('341', response.transactionResponse.response)
-        self.assertEquals('Invalid healthcare amounts', response.transactionResponse.message)
+        self.assertEquals('341', response['authorizationResponse']['response'])
+        self.assertEquals('Invalid healthcare amounts', response['authorizationResponse']['message'])
 
     def test_table_2_1_30_auth(self):
         # orderId *
@@ -483,8 +483,8 @@ class TestCertEnhancedAuths(unittest.TestCase):
         transaction.healthcareIIAS = healthcareiias
 
         response = online.request(transaction, conf)
-        self.assertEquals('341', response.transactionResponse.response)
-        self.assertEquals('Invalid healthcare amounts', response.transactionResponse.message)
+        self.assertEquals('341', response['authorizationResponse']['response'])
+        self.assertEquals('Invalid healthcare amounts', response['authorizationResponse']['message'])
 
 
     def test_table_2_1_31_auth(self):
@@ -513,8 +513,6 @@ class TestCertEnhancedAuths(unittest.TestCase):
         transaction.healthcareIIAS = healthcareiias
 
         response = online.request(transaction, conf)
-        self.assertEquals('010', response.transactionResponse.response)
-        self.assertEquals('Partially Approved', response.transactionResponse.message)
-        self.assertEquals('18699', response.transactionResponse.approvedAmount)
-
-
+        self.assertEquals('010', response['authorizationResponse']['response'])
+        self.assertEquals('Partially Approved', response['authorizationResponse']['message'])
+        self.assertEquals('18699', response['authorizationResponse']['approvedAmount'])

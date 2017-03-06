@@ -62,8 +62,8 @@ class TestCertEcheck(unittest.TestCase):
         transaction.echeckOrEcheckToken = echeck
 
         response = online.request(transaction, conf)
-        self.assertEquals('301', response.transactionResponse.response)
-        self.assertEquals('Invalid Account Number', response.transactionResponse.message)
+        self.assertEquals('301', response['echeckVerificationResponse']['response'])
+        self.assertEquals('Invalid Account Number', response['echeckVerificationResponse']['message'])
 
 
     def test_table_2_4_38(self):
@@ -87,8 +87,8 @@ class TestCertEcheck(unittest.TestCase):
         transaction.echeckOrEcheckToken = echeck
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
+        self.assertEquals('000', response['echeckVerificationResponse']['response'])
+        self.assertEquals('Approved', response['echeckVerificationResponse']['message'])
 
 
     def test_table_2_4_39(self):
@@ -113,8 +113,8 @@ class TestCertEcheck(unittest.TestCase):
         transaction.echeckOrEcheckToken = echeck
 
         response = online.request(transaction, conf)
-        self.assertEquals('950', response.transactionResponse.response)
-        self.assertEquals('Decline - Negative Information on File', response.transactionResponse.message)
+        self.assertEquals('950', response['echeckVerificationResponse']['response'])
+        self.assertEquals('Decline - Negative Information on File', response['echeckVerificationResponse']['message'])
 
 
     def test_table_2_4_40(self):
@@ -139,8 +139,8 @@ class TestCertEcheck(unittest.TestCase):
         transaction.echeckOrEcheckToken = echeck
 
         response = online.request(transaction, conf)
-        self.assertEquals('951', response.transactionResponse.response)
-        self.assertEquals('Absolute Decline', response.transactionResponse.message)
+        self.assertEquals('951', response['echeckVerificationResponse']['response'])
+        self.assertEquals('Absolute Decline', response['echeckVerificationResponse']['message'])
 
 
     def test_table_2_6_41(self):
@@ -165,8 +165,8 @@ class TestCertEcheck(unittest.TestCase):
         transaction.echeckOrEcheckToken = echeck
 
         response = online.request(transaction, conf)
-        self.assertEquals('301', response.transactionResponse.response)
-        self.assertEquals('Invalid Account Number', response.transactionResponse.message)
+        self.assertEquals('301', response['echeckSalesResponse']['response'])
+        self.assertEquals('Invalid Account Number', response['echeckSalesResponse']['message'])
 
 
     def test_table_2_6_42(self):
@@ -190,17 +190,17 @@ class TestCertEcheck(unittest.TestCase):
         transaction.echeckOrEcheckToken = echeck
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
+        self.assertEquals('000', response['echeckSalesResponse']['response'])
+        self.assertEquals('Approved', response['echeckSalesResponse']['message'])
 
         # eCheck Void
         transaction = fields.echeckVoid()
         transaction.id = 'thisisid'
-        transaction.litleTxnId = response.transactionResponse.litleTxnId
+        transaction.litleTxnId = response['echeckSalesResponse']['litleTxnId']
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
+        self.assertEquals('000', response['echeckVoidResponse']['response'])
+        self.assertEquals('Approved', response['echeckVoidResponse']['message'])
 
 
 
@@ -226,8 +226,8 @@ class TestCertEcheck(unittest.TestCase):
         transaction.echeckOrEcheckToken = echeck
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
+        self.assertEquals('000', response['echeckSalesResponse']['response'])
+        self.assertEquals('Approved', response['echeckSalesResponse']['message'])
         #TODO no accountUpdater element.
 
 
@@ -253,8 +253,8 @@ class TestCertEcheck(unittest.TestCase):
         transaction.echeckOrEcheckToken = echeck
 
         response = online.request(transaction, conf)
-        self.assertEquals('900', response.transactionResponse.response)
-        self.assertEquals('Invalid Bank Routing Number', response.transactionResponse.message)
+        self.assertEquals('900', response['echeckSalesResponse']['response'])
+        self.assertEquals('Invalid Bank Routing Number', response['echeckSalesResponse']['message'])
 
 
     def test_table_2_7_45(self):
@@ -278,8 +278,8 @@ class TestCertEcheck(unittest.TestCase):
         transaction.echeckOrEcheckToken = echeck
 
         response = online.request(transaction, conf)
-        self.assertEquals('301', response.transactionResponse.response)
-        self.assertEquals('Invalid Account Number', response.transactionResponse.message)
+        self.assertEquals('301', response['echeckCreditResponse']['response'])
+        self.assertEquals('Invalid Account Number', response['echeckCreditResponse']['message'])
 
 
     def test_table_2_7_46(self):
@@ -304,17 +304,17 @@ class TestCertEcheck(unittest.TestCase):
         transaction.echeckOrEcheckToken = echeck
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
+        self.assertEquals('000', response['echeckCreditResponse']['response'])
+        self.assertEquals('Approved', response['echeckCreditResponse']['message'])
 
         # eCheck Void
         transaction = fields.echeckVoid()
         transaction.id = 'thisisid'
-        transaction.litleTxnId = response.transactionResponse.litleTxnId
+        transaction.litleTxnId = response['echeckCreditResponse']['litleTxnId']
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
+        self.assertEquals('000', response['echeckVoidResponse']['response'])
+        self.assertEquals('Approved', response['echeckVoidResponse']['message'])
 
 
     def test_table_2_7_47(self):
@@ -339,8 +339,8 @@ class TestCertEcheck(unittest.TestCase):
         transaction.echeckOrEcheckToken = echeck
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
+        self.assertEquals('000', response['echeckCreditResponse']['response'])
+        self.assertEquals('Approved', response['echeckCreditResponse']['message'])
 
     def test_table_2_6_48(self):
         # orderId *
@@ -367,11 +367,11 @@ class TestCertEcheck(unittest.TestCase):
 
         transaction = fields.echeckCredit()
         transaction.id = 'thisisid'
-        transaction.litleTxnId = response.transactionResponse.litleTxnId
+        transaction.litleTxnId = response['echeckSalesResponse']['litleTxnId']
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals('Approved', response.transactionResponse.message)
+        self.assertEquals('000', response['echeckCreditResponse']['response'])
+        self.assertEquals('Approved', response['echeckCreditResponse']['message'])
 
 
     def test_table_2_6_49(self):
@@ -381,15 +381,15 @@ class TestCertEcheck(unittest.TestCase):
         transaction.id = 'thisisid'
 
         response = online.request(transaction, conf)
-        self.assertEquals('360', response.transactionResponse.response)
-        self.assertEquals('No transaction found with specified litleTxnId', response.transactionResponse.message)
+        self.assertEquals('360', response['echeckCreditResponse']['response'])
+        self.assertEquals('No transaction found with specified litleTxnId', response['echeckCreditResponse']['message'])
 
-    def test_echeck_void_4(self):
+    def test_echeck_void_2_7(self):
         # orderId *
         transaction = fields.echeckVoid()
         transaction.litleTxnId = '2'
         transaction.id = 'thisisid'
 
         response = online.request(transaction, conf)
-        self.assertEquals('360', response.transactionResponse.response)
-        self.assertEquals('No transaction found with specified litleTxnId', response.transactionResponse.message)
+        self.assertEquals('360', response['echeckVoidResponse']['response'])
+        self.assertEquals('No transaction found with specified litleTxnId', response['echeckVoidResponse']['message'])

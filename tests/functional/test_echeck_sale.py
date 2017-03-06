@@ -42,7 +42,7 @@ class TestEcheckSale(unittest.TestCase):
         transaction.id = 'ThisIsID'
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['echeckSalesResponse']['response'])
 
     def test_echeck_sale_with_echeck(self):
         transaction = fields.echeckSale()
@@ -68,7 +68,7 @@ class TestEcheckSale(unittest.TestCase):
         transaction.shipToAddress = billtoaddress
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['echeckSalesResponse']['response'])
 
     def test_echeck_sale_with_token(self):
         transaction = fields.echeckSale()
@@ -92,7 +92,7 @@ class TestEcheckSale(unittest.TestCase):
         transaction.billToAddress = billtoaddress
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['echeckSalesResponse']['response'])
 
     def test_echeck_sale_with_secoundary_amount_and_ccd(self):
         transaction = fields.echeckSale()
@@ -119,7 +119,7 @@ class TestEcheckSale(unittest.TestCase):
         transaction.billToAddress = billtoaddress
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['echeckSalesResponse']['response'])
 
 
     def test_echeck_sale_with_secoundary_amount_and_ccd_longer_80(self):

@@ -1,4 +1,4 @@
-Vantiv eCommerce Python SDK's documentation 11.0!
+Vantiv eCommerce Python SDK's documentation 9.10!
 ==================================================
 
 .. toctree::
@@ -66,17 +66,10 @@ activateReversal
 ................
     .. py:class:: litle_sdk_python.fields.activateReversal
 
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
         :var customerId: String or Number
         :var id: String or Number
         :var litleTxnId: String or Number
-        :var originalAmount: String or Number
-        :var originalRefCode: String or Number
-        :var originalSequenceNumber: String or Number
-        :var originalSystemTraceId: String or Number
-        :var originalTxnTime: String or Number
         :var reportGroup: String or Number
-        :var virtualGiftCardBin: String or Number
 
 authReversal
 ............
@@ -242,29 +235,18 @@ deactivateReversal
 ..................
     .. py:class:: litle_sdk_python.fields.deactivateReversal
 
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
         :var customerId: String or Number
         :var id: String or Number
         :var litleTxnId: String or Number
-        :var originalRefCode: String or Number
-        :var originalSequenceNumber: String or Number
-        :var originalSystemTraceId: String or Number
-        :var originalTxnTime: String or Number
         :var reportGroup: String or Number
 
 depositReversal
 ...............
     .. py:class:: litle_sdk_python.fields.depositReversal
 
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
         :var customerId: String or Number
         :var id: String or Number
         :var litleTxnId: String or Number
-        :var originalAmount: String or Number
-        :var originalRefCode: String or Number
-        :var originalSequenceNumber: String or Number
-        :var originalSystemTraceId: String or Number
-        :var originalTxnTime: String or Number
         :var reportGroup: String or Number
 
 echeckCredit
@@ -274,7 +256,6 @@ echeckCredit
         :var amount: String or Number
         :var billToAddress: instance of :py:class:`litle_sdk_python.fields.contact`
         :var customBilling: instance of :py:class:`litle_sdk_python.fields.customBilling`
-        :var customIdentifier: String or Number
         :var customerId: String or Number
         :var echeckOrEcheckToken: String or Number
         :var id: String or Number
@@ -315,7 +296,6 @@ echeckRedeposit
 ...............
     .. py:class:: litle_sdk_python.fields.echeckRedeposit
 
-        :var customIdentifier: String or Number
         :var customerId: String or Number
         :var echeckOrEcheckToken: String or Number
         :var id: String or Number
@@ -330,7 +310,6 @@ echeckSale
         :var amount: String or Number
         :var billToAddress: instance of :py:class:`litle_sdk_python.fields.contact`
         :var customBilling: instance of :py:class:`litle_sdk_python.fields.customBilling`
-        :var customIdentifier: String or Number
         :var customerId: String or Number
         :var echeckOrEcheckToken: String or Number
         :var id: String or Number
@@ -352,6 +331,7 @@ echeckVerification
         :var customerId: String or Number
         :var echeckOrEcheckToken: String or Number
         :var id: String or Number
+            :var litleTxnId: String or Number
         :var merchantData: String or Number
         :var orderId: String or Number
         :var orderSource: String or Number
@@ -405,58 +385,6 @@ fraudCheck
         :var reportGroup: String or Number
         :var shipToAddress: instance of :py:class:`litle_sdk_python.fields.contact`
 
-fundingInstructionVoid
-......................
-    .. py:class:: litle_sdk_python.fields.fundingInstructionVoid
-
-        :var customerId: String or Number
-        :var id: String or Number
-        :var litleTxnId: String or Number
-        :var reportGroup: String or Number
-
-giftCardAuthReversal
-....................
-    .. py:class:: litle_sdk_python.fields.giftCardAuthReversal
-
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
-        :var customerId: String or Number
-        :var id: String or Number
-        :var litleTxnId: String or Number
-        :var originalAmount: String or Number
-        :var originalRefCode: String or Number
-        :var originalSequenceNumber: String or Number
-        :var originalSystemTraceId: String or Number
-        :var originalTxnTime: String or Number
-        :var reportGroup: String or Number
-
-giftCardCapture
-...............
-    .. py:class:: litle_sdk_python.fields.giftCardCapture
-
-        :var captureAmount: String or Number
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
-        :var customerId: String or Number
-        :var id: String or Number
-        :var litleTxnId: String or Number
-        :var originalAmount: String or Number
-        :var originalRefCode: String or Number
-        :var originalTxnTime: String or Number
-        :var partial: String or Number
-        :var reportGroup: String or Number
-
-giftCardCredit
-..............
-    .. py:class:: litle_sdk_python.fields.giftCardCredit
-
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
-        :var creditAmount: String or Number
-        :var customerId: String or Number
-        :var id: String or Number
-        :var litleTxnId: String or Number
-        :var orderId: String or Number
-        :var orderSource: String or Number
-        :var reportGroup: String or Number
-
 load
 ....
     .. py:class:: litle_sdk_python.fields.load
@@ -473,15 +401,9 @@ loadReversal
 ............
     .. py:class:: litle_sdk_python.fields.loadReversal
 
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
         :var customerId: String or Number
         :var id: String or Number
         :var litleTxnId: String or Number
-        :var originalAmount: String or Number
-        :var originalRefCode: String or Number
-        :var originalSequenceNumber: String or Number
-        :var originalSystemTraceId: String or Number
-        :var originalTxnTime: String or Number
         :var reportGroup: String or Number
 
 payFacCredit
@@ -534,24 +456,20 @@ queryTransaction
 
         :var customerId: String or Number
         :var id: String or Number
+            :var origAccountNumber: String or Number
         :var origActionType: String or Number
         :var origId: String or Number
         :var origLitleTxnId: String or Number
+            :var origOrderId: String or Number
         :var reportGroup: String or Number
 
 refundReversal
 ..............
     .. py:class:: litle_sdk_python.fields.refundReversal
 
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
         :var customerId: String or Number
         :var id: String or Number
         :var litleTxnId: String or Number
-        :var originalAmount: String or Number
-        :var originalRefCode: String or Number
-        :var originalSequenceNumber: String or Number
-        :var originalSystemTraceId: String or Number
-        :var originalTxnTime: String or Number
         :var reportGroup: String or Number
 
 reserveCredit
@@ -618,22 +536,11 @@ sale
         :var recyclingRequest: String or Number
         :var reportGroup: String or Number
         :var secondaryAmount: String or Number
-        :var sepaDirectDebit: String or Number
         :var shipToAddress: instance of :py:class:`litle_sdk_python.fields.contact`
         :var surchargeAmount: String or Number
         :var taxType: String or Number
         :var token: instance of :py:class:`litle_sdk_python.fields.cardTokenType`
         :var wallet: instance of :py:class:`litle_sdk_python.fields.wallet`
-
-serviceStatusRequest
-....................
-    .. py:class:: litle_sdk_python.fields.serviceStatusRequest
-
-        :var customerId: String or Number
-        :var id: String or Number
-        :var pathId: String or Number
-        :var reportGroup: String or Number
-        :var serviceId: String or Number
 
 submerchantCredit
 .................
@@ -641,7 +548,6 @@ submerchantCredit
 
         :var accountInfo: String or Number
         :var amount: String or Number
-        :var customIdentifier: String or Number
         :var customerId: String or Number
         :var fundingSubmerchantId: String or Number
         :var fundsTransferId: String or Number
@@ -655,7 +561,6 @@ submerchantDebit
 
         :var accountInfo: String or Number
         :var amount: String or Number
-        :var customIdentifier: String or Number
         :var customerId: String or Number
         :var fundingSubmerchantId: String or Number
         :var fundsTransferId: String or Number
@@ -679,15 +584,9 @@ unloadReversal
 ..............
     .. py:class:: litle_sdk_python.fields.unloadReversal
 
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
         :var customerId: String or Number
         :var id: String or Number
         :var litleTxnId: String or Number
-        :var originalAmount: String or Number
-        :var originalRefCode: String or Number
-        :var originalSequenceNumber: String or Number
-        :var originalSystemTraceId: String or Number
-        :var originalTxnTime: String or Number
         :var reportGroup: String or Number
 
 vendorCredit
@@ -737,9 +636,9 @@ CTD_ANON_15
         :var reloadable: String or Number
         :var type: String or Number
 
-CTD_ANON_32
+CTD_ANON_31
 ...........
-    .. py:class:: litle_sdk_python.fields.CTD_ANON_32
+    .. py:class:: litle_sdk_python.fields.CTD_ANON_31
 
         :var transactionResponse: String or Number
 
@@ -862,9 +761,6 @@ batchRequest
         :var echeckVerificationAmount: String or Number
         :var extCaptureAmount: String or Number
         :var forceCaptureAmount: String or Number
-        :var giftCardAuthReversalOriginalAmount: String or Number
-        :var giftCardCaptureAmount: String or Number
-        :var giftCardCreditAmount: String or Number
         :var id: String or Number
         :var loadAmount: String or Number
         :var merchantId: String or Number
@@ -888,10 +784,6 @@ batchRequest
         :var numEcheckVerification: String or Number
         :var numExtCaptures: String or Number
         :var numForceCaptures: String or Number
-        :var numFundingInstructionVoid: String or Number
-        :var numGiftCardAuthReversals: String or Number
-        :var numGiftCardCaptures: String or Number
-        :var numGiftCardCredits: String or Number
         :var numLoads: String or Number
         :var numPayFacCredit: String or Number
         :var numPayFacDebit: String or Number
@@ -1204,17 +1096,6 @@ fraudResult
         :var avsResult: String or Number
         :var cardValidationResult: String or Number
 
-giftCardCardType
-................
-    .. py:class:: litle_sdk_python.fields.giftCardCardType
-
-        :var cardValidationNum: String or Number
-        :var expDate: String or Number
-        :var number: String or Number
-        :var pin: String or Number
-        :var track: String or Number
-        :var type: String or Number
-
 healthcareAmounts
 .................
     .. py:class:: litle_sdk_python.fields.healthcareAmounts
@@ -1298,22 +1179,6 @@ mposType
         :var track1Status: String or Number
         :var track2Status: String or Number
 
-networkField
-............
-    .. py:class:: litle_sdk_python.fields.networkField
-
-        :var fieldName: String or Number
-        :var fieldNumber: String or Number
-        :var fieldValue: String or Number
-        :var networkSubField: instance of :py:class:`litle_sdk_python.fields.networkSubField`
-
-networkSubField
-...............
-    .. py:class:: litle_sdk_python.fields.networkSubField
-
-        :var fieldNumber: String or Number
-        :var fieldValue: String or Number
-
 payPal
 ......
     .. py:class:: litle_sdk_python.fields.payPal
@@ -1396,18 +1261,6 @@ registerTokenRequestType
         :var orderId: String or Number
         :var paypageRegistrationId: String or Number
         :var reportGroup: String or Number
-
-sepaDirectDebitType
-...................
-    .. py:class:: litle_sdk_python.fields.sepaDirectDebitType
-
-        :var iban: String or Number
-        :var mandateProvider: String or Number
-        :var mandateReference: String or Number
-        :var mandateSignatureDate: String or Number
-        :var mandateUrl: String or Number
-        :var preferredLanguage: String or Number
-        :var sequenceType: String or Number
 
 transactionType
 ...............

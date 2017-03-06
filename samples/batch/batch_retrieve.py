@@ -52,12 +52,11 @@ conf = utils.Configuration()
 # self.fast_ssl = True
 # self.fast_port = ''
 # self.print_xml = False
-# self.id = ''
+
+
+
+
 try:
-    response = batch.retrieve('batch_sample_submit_20170227120518535999.xml.asc',conf)
-    for batchresponse in response.batchResponse:
-        for txn in batchresponse.transactionResponse:
-            print('Message: %s' % txn.message)
-            print('LitleTransaction ID: %s' % txn.litleTxnId)
-except:
-    pass
+    response = batch.retrieve('batch_sample_submit_20170306105214204511.xml.asc', conf)
+except Exception as e:
+    print(e.args)

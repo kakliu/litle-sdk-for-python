@@ -41,7 +41,7 @@ class TestEcheckVoid(unittest.TestCase):
         transaction.id = 'ThisIsID'
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['echeckVoidResponse']['response'])
 
 if __name__ == '__main__':
     unittest.main()

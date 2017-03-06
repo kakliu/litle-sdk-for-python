@@ -73,13 +73,13 @@ transaction.card = card
 response = online.request(transaction, conf)
 
 # Print results
-print('Message: %s' % response.transactionResponse.message)
-print('LitleTransaction ID: %s' % response.transactionResponse.litleTxnId)
+print('Message: %s' % response['forceCaptureResponse']['message'])
+print('LitleTransaction ID: %s' % response['forceCaptureResponse']['litleTxnId'])
 
 # Send request to server and get response as XML
 # response = online.request(transaction, conf, 'xml')
 # print('Get response as XML:\n %s' % response)
 
 # In your sample, you can ignore this
-if response.transactionResponse.message != 'Approved':
+if response['forceCaptureResponse']['message'] != 'Approved':
     raise Exception('the example does not give the right response')

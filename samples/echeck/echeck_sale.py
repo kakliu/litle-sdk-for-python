@@ -52,7 +52,6 @@ conf = utils.Configuration()
 # self.fast_ssl = True
 # self.fast_port = ''
 # self.print_xml = False
-# self.id = ''
 
 # Initial Transaction.
 transaction = fields.echeckSale()
@@ -78,14 +77,13 @@ transaction.echeckOrEcheckToken = echeck
 response = online.request(transaction, conf)
 
 # Print results
-print('Get response as object\n')
-print('Message: %s' % response.transactionResponse.message)
-print('LitleTransaction ID: %s' % response.transactionResponse.litleTxnId)
+print('Message: %s' % response['echeckSalesResponse']['message'])
+print('LitleTransaction ID: %s' % response['echeckSalesResponse']['litleTxnId'])
 
 # Send request to server and get response as XML
 # response = online.request(transaction, conf, 'xml')
 # print('Get response as XML:\n %s' % response)
 
 # In your sample, you can ignore this
-if response.transactionResponse.message != 'Approved':
+if response['echeckSalesResponse']['message'] != 'Approved':
     raise Exception('the example does not give the right response')

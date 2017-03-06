@@ -43,8 +43,10 @@ class TestFraudCheck(unittest.TestCase):
         transaction.advancedFraudChecks = advancedFraudChecks
 
         response = online.request(transaction, conf)
-        self.assertEquals('pass', response.transactionResponse.advancedFraudResults.deviceReviewStatus)
-        self.assertEquals(42, response.transactionResponse.advancedFraudResults.deviceReputationScore)
+        self.assertEquals('pass',
+                          response['fraudCheckResponse']['advancedFraudResults']['deviceReviewStatus'])
+        self.assertEquals('42',
+                          response['fraudCheckResponse']['advancedFraudResults']['deviceReputationScore'])
 
 
 if __name__ == '__main__':

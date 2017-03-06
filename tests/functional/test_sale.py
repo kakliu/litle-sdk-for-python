@@ -51,7 +51,7 @@ class TestSale(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['saleResponse']['response'])
 
     def test_simple_sale_with_paypal(self):
         transaction = fields.sale()
@@ -68,7 +68,7 @@ class TestSale(unittest.TestCase):
         transaction.paypal = paypal
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['saleResponse']['response'])
 
     def test_simple_sale_with_applepay_and_secondary_amount(self):
         transaction = fields.sale()
@@ -92,8 +92,8 @@ class TestSale(unittest.TestCase):
         transaction.applepay = applepay
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertEquals(106, response.transactionResponse.applepayResponse.transactionAmount)
+        self.assertEquals('000', response['saleResponse']['response'])
+        self.assertEquals('106', response['saleResponse']['applepayResponse']['transactionAmount'])
 
     def test_simple_sale_with_android_pay(self):
         transaction = fields.sale()
@@ -111,9 +111,9 @@ class TestSale(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['saleResponse']['response'])
         self.assertEquals('aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1kUXc0dzlXZ1hjUQ0K',
-                          response.transactionResponse.androidpayResponse.cryptogram)
+                          response['saleResponse']['androidpayResponse']['cryptogram'])
 
 
     def test_simple_sale_with_token(self):
@@ -132,7 +132,7 @@ class TestSale(unittest.TestCase):
         transaction.token = token
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['saleResponse']['response'])
 
 
     def test_simple_sale_with_token(self):
@@ -151,7 +151,7 @@ class TestSale(unittest.TestCase):
         transaction.token = token
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['saleResponse']['response'])
         
     def test_sale_with_wallet(self):
         transaction = fields.sale()
@@ -177,7 +177,7 @@ class TestSale(unittest.TestCase):
         transaction.wallet = wallet
 
         response = online.request(transaction, conf)
-        self.assertEquals('63225578415568556365452427825', response.transactionResponse.networkTransactionId)
+        self.assertEquals('63225578415568556365452427825', response['saleResponse']['networkTransactionId'])
 
     def test_sale_with_wallet_and_card_suffix_response(self):
         transaction = fields.sale()
@@ -203,8 +203,8 @@ class TestSale(unittest.TestCase):
         transaction.wallet = wallet
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
-        self.assertIsNone(response.transactionResponse.networkTransactionId)
+        self.assertEquals('000', response['saleResponse']['response'])
+        self.assertNotIn('networkTransactionId', response['saleResponse'])
 
     def test_sale_with_processing_type(self):
         transaction = fields.sale()
@@ -225,7 +225,7 @@ class TestSale(unittest.TestCase):
         transaction.card = card
 
         response = online.request(transaction, conf)
-        self.assertEquals('000', response.transactionResponse.response)
+        self.assertEquals('000', response['saleResponse']['response'])
 
 
 if __name__ == '__main__':
