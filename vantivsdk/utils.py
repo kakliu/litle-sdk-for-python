@@ -50,8 +50,8 @@ class Configuration(object):
         fast_port (Str): Fast port, using for batch stream
         print_xml (Str): Whether print request and response xml
     """
-    VERSION = '10.1'
-    RELEASE = '10.1.b0'
+    VERSION = '10.6'
+    RELEASE = '10.6.b0'
     MERCHANTSDK = 'Python SDKv2 ' + RELEASE
     _CONFIG_FILE_PATH = os.path.join(os.environ['VANTIV_SDK_CONFIG'], ".vantiv_python_sdk.conf") \
         if 'VANTIV_SDK_CONFIG' in os.environ else os.path.join(os.path.expanduser("~"), ".vantiv_python_sdk.conf")

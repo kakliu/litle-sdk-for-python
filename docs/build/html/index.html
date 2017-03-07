@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Vantiv eCommerce Python SDKv2 documentation 10.1! &#8212; Vantiv eCommerce Python SDKv2 10.1.b0 documentation</title>
+    <title>Vantiv eCommerce Python SDKv2 documentation 10.6! &#8212; Vantiv eCommerce Python SDKv2 10.6.b0 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '10.1.b0',
+        VERSION:     '10.6.b0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -34,7 +34,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="nav-item nav-item-0"><a href="#">Vantiv eCommerce Python SDKv2 10.1.b0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="#">Vantiv eCommerce Python SDKv2 10.6.b0 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -43,8 +43,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="vantiv-ecommerce-python-sdkv2-documentation-10-1">
-<h1>Vantiv eCommerce Python SDKv2 documentation 10.1!<a class="headerlink" href="#vantiv-ecommerce-python-sdkv2-documentation-10-1" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="vantiv-ecommerce-python-sdkv2-documentation-10-6">
+<h1>Vantiv eCommerce Python SDKv2 documentation 10.6!<a class="headerlink" href="#vantiv-ecommerce-python-sdkv2-documentation-10-6" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
 <div class="section" id="example">
@@ -706,10 +706,13 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <li><strong>mpos</strong> &#8211; String or Number</li>
 <li><strong>orderId</strong> &#8211; String or Number</li>
 <li><strong>orderSource</strong> &#8211; String or Number</li>
+<li><strong>originalNetworkTransactionId</strong> &#8211; String or Number</li>
+<li><strong>originalTransactionAmount</strong> &#8211; String or Number</li>
 <li><strong>paypage</strong> &#8211; String or Number</li>
 <li><strong>paypal</strong> &#8211; String or Number</li>
 <li><a class="reference internal" href="#vantivsdk.fields.pos" title="vantivsdk.fields.pos"><strong>pos</strong></a> &#8211; instance of <a class="reference internal" href="#vantivsdk.fields.pos" title="vantivsdk.fields.pos"><code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.pos</span></code></a></li>
 <li><a class="reference internal" href="#vantivsdk.fields.processingInstructions" title="vantivsdk.fields.processingInstructions"><strong>processingInstructions</strong></a> &#8211; instance of <a class="reference internal" href="#vantivsdk.fields.processingInstructions" title="vantivsdk.fields.processingInstructions"><code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.processingInstructions</span></code></a></li>
+<li><strong>processingType</strong> &#8211; String or Number</li>
 <li><strong>recurringRequest</strong> &#8211; String or Number</li>
 <li><strong>recyclingRequest</strong> &#8211; String or Number</li>
 <li><a class="reference internal" href="#Configuration.reportGroup" title="Configuration.reportGroup"><strong>reportGroup</strong></a> &#8211; String or Number</li>
@@ -774,6 +777,7 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <li><strong>partial</strong> &#8211; String or Number</li>
 <li><strong>payPalNotes</strong> &#8211; String or Number</li>
 <li><strong>payPalOrderComplete</strong> &#8211; String or Number</li>
+<li><strong>pin</strong> &#8211; String or Number</li>
 <li><a class="reference internal" href="#vantivsdk.fields.processingInstructions" title="vantivsdk.fields.processingInstructions"><strong>processingInstructions</strong></a> &#8211; instance of <a class="reference internal" href="#vantivsdk.fields.processingInstructions" title="vantivsdk.fields.processingInstructions"><code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.processingInstructions</span></code></a></li>
 <li><a class="reference internal" href="#Configuration.reportGroup" title="Configuration.reportGroup"><strong>reportGroup</strong></a> &#8211; String or Number</li>
 <li><strong>surchargeAmount</strong> &#8211; String or Number</li>
@@ -812,9 +816,12 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <li><strong>mpos</strong> &#8211; String or Number</li>
 <li><strong>orderId</strong> &#8211; String or Number</li>
 <li><strong>orderSource</strong> &#8211; String or Number</li>
+<li><strong>originalNetworkTransactionId</strong> &#8211; String or Number</li>
+<li><strong>originalTransactionAmount</strong> &#8211; String or Number</li>
 <li><strong>paypage</strong> &#8211; String or Number</li>
 <li><a class="reference internal" href="#vantivsdk.fields.pos" title="vantivsdk.fields.pos"><strong>pos</strong></a> &#8211; instance of <a class="reference internal" href="#vantivsdk.fields.pos" title="vantivsdk.fields.pos"><code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.pos</span></code></a></li>
 <li><a class="reference internal" href="#vantivsdk.fields.processingInstructions" title="vantivsdk.fields.processingInstructions"><strong>processingInstructions</strong></a> &#8211; instance of <a class="reference internal" href="#vantivsdk.fields.processingInstructions" title="vantivsdk.fields.processingInstructions"><code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.processingInstructions</span></code></a></li>
+<li><strong>processingType</strong> &#8211; String or Number</li>
 <li><a class="reference internal" href="#Configuration.reportGroup" title="Configuration.reportGroup"><strong>reportGroup</strong></a> &#8211; String or Number</li>
 <li><strong>secondaryAmount</strong> &#8211; String or Number</li>
 <li><strong>shipToAddress</strong> &#8211; instance of <a class="reference internal" href="#vantivsdk.fields.contact" title="vantivsdk.fields.contact"><code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.contact</span></code></a></li>
@@ -859,6 +866,7 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <li><strong>payPalNotes</strong> &#8211; String or Number</li>
 <li><strong>paypage</strong> &#8211; String or Number</li>
 <li><strong>paypal</strong> &#8211; String or Number</li>
+<li><strong>pin</strong> &#8211; String or Number</li>
 <li><a class="reference internal" href="#vantivsdk.fields.pos" title="vantivsdk.fields.pos"><strong>pos</strong></a> &#8211; instance of <a class="reference internal" href="#vantivsdk.fields.pos" title="vantivsdk.fields.pos"><code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.pos</span></code></a></li>
 <li><a class="reference internal" href="#vantivsdk.fields.processingInstructions" title="vantivsdk.fields.processingInstructions"><strong>processingInstructions</strong></a> &#8211; instance of <a class="reference internal" href="#vantivsdk.fields.processingInstructions" title="vantivsdk.fields.processingInstructions"><code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.processingInstructions</span></code></a></li>
 <li><a class="reference internal" href="#Configuration.reportGroup" title="Configuration.reportGroup"><strong>reportGroup</strong></a> &#8211; String or Number</li>
@@ -1178,6 +1186,7 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <li><strong>paypage</strong> &#8211; String or Number</li>
 <li><a class="reference internal" href="#vantivsdk.fields.pos" title="vantivsdk.fields.pos"><strong>pos</strong></a> &#8211; instance of <a class="reference internal" href="#vantivsdk.fields.pos" title="vantivsdk.fields.pos"><code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.pos</span></code></a></li>
 <li><a class="reference internal" href="#vantivsdk.fields.processingInstructions" title="vantivsdk.fields.processingInstructions"><strong>processingInstructions</strong></a> &#8211; instance of <a class="reference internal" href="#vantivsdk.fields.processingInstructions" title="vantivsdk.fields.processingInstructions"><code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.processingInstructions</span></code></a></li>
+<li><strong>processingType</strong> &#8211; String or Number</li>
 <li><a class="reference internal" href="#Configuration.reportGroup" title="Configuration.reportGroup"><strong>reportGroup</strong></a> &#8211; String or Number</li>
 <li><strong>secondaryAmount</strong> &#8211; String or Number</li>
 <li><strong>surchargeAmount</strong> &#8211; String or Number</li>
@@ -1306,6 +1315,7 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
 <li><strong>amount</strong> &#8211; String or Number</li>
+<li><strong>customIdentifier</strong> &#8211; String or Number</li>
 <li><strong>customerId</strong> &#8211; String or Number</li>
 <li><strong>fundingSubmerchantId</strong> &#8211; String or Number</li>
 <li><strong>fundsTransferId</strong> &#8211; String or Number</li>
@@ -1332,6 +1342,7 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
 <li><strong>amount</strong> &#8211; String or Number</li>
+<li><strong>customIdentifier</strong> &#8211; String or Number</li>
 <li><strong>customerId</strong> &#8211; String or Number</li>
 <li><strong>fundingSubmerchantId</strong> &#8211; String or Number</li>
 <li><strong>fundsTransferId</strong> &#8211; String or Number</li>
@@ -1358,6 +1369,7 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
 <li><strong>amount</strong> &#8211; String or Number</li>
+<li><strong>customIdentifier</strong> &#8211; String or Number</li>
 <li><strong>customerId</strong> &#8211; String or Number</li>
 <li><strong>fundingSubmerchantId</strong> &#8211; String or Number</li>
 <li><strong>fundsTransferId</strong> &#8211; String or Number</li>
@@ -1384,6 +1396,7 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
 <li><strong>amount</strong> &#8211; String or Number</li>
+<li><strong>customIdentifier</strong> &#8211; String or Number</li>
 <li><strong>customerId</strong> &#8211; String or Number</li>
 <li><strong>fundingSubmerchantId</strong> &#8211; String or Number</li>
 <li><strong>fundsTransferId</strong> &#8211; String or Number</li>
@@ -1462,6 +1475,7 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
 <li><strong>amount</strong> &#8211; String or Number</li>
+<li><strong>customIdentifier</strong> &#8211; String or Number</li>
 <li><strong>customerId</strong> &#8211; String or Number</li>
 <li><strong>fundingSubmerchantId</strong> &#8211; String or Number</li>
 <li><strong>fundsTransferId</strong> &#8211; String or Number</li>
@@ -1488,6 +1502,7 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
 <li><strong>amount</strong> &#8211; String or Number</li>
+<li><strong>customIdentifier</strong> &#8211; String or Number</li>
 <li><strong>customerId</strong> &#8211; String or Number</li>
 <li><strong>fundingSubmerchantId</strong> &#8211; String or Number</li>
 <li><strong>fundsTransferId</strong> &#8211; String or Number</li>
@@ -1538,16 +1553,20 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <li><strong>mpos</strong> &#8211; String or Number</li>
 <li><strong>orderId</strong> &#8211; String or Number</li>
 <li><strong>orderSource</strong> &#8211; String or Number</li>
+<li><strong>originalNetworkTransactionId</strong> &#8211; String or Number</li>
+<li><strong>originalTransactionAmount</strong> &#8211; String or Number</li>
 <li><strong>payPalNotes</strong> &#8211; String or Number</li>
 <li><strong>payPalOrderComplete</strong> &#8211; String or Number</li>
 <li><strong>paypage</strong> &#8211; String or Number</li>
 <li><strong>paypal</strong> &#8211; String or Number</li>
 <li><a class="reference internal" href="#vantivsdk.fields.pos" title="vantivsdk.fields.pos"><strong>pos</strong></a> &#8211; instance of <a class="reference internal" href="#vantivsdk.fields.pos" title="vantivsdk.fields.pos"><code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.pos</span></code></a></li>
 <li><a class="reference internal" href="#vantivsdk.fields.processingInstructions" title="vantivsdk.fields.processingInstructions"><strong>processingInstructions</strong></a> &#8211; instance of <a class="reference internal" href="#vantivsdk.fields.processingInstructions" title="vantivsdk.fields.processingInstructions"><code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.processingInstructions</span></code></a></li>
+<li><strong>processingType</strong> &#8211; String or Number</li>
 <li><strong>recurringRequest</strong> &#8211; String or Number</li>
 <li><strong>recyclingRequest</strong> &#8211; String or Number</li>
 <li><a class="reference internal" href="#Configuration.reportGroup" title="Configuration.reportGroup"><strong>reportGroup</strong></a> &#8211; String or Number</li>
 <li><strong>secondaryAmount</strong> &#8211; String or Number</li>
+<li><strong>sepaDirectDebit</strong> &#8211; String or Number</li>
 <li><strong>shipToAddress</strong> &#8211; instance of <a class="reference internal" href="#vantivsdk.fields.contact" title="vantivsdk.fields.contact"><code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.contact</span></code></a></li>
 <li><strong>surchargeAmount</strong> &#8211; String or Number</li>
 <li><strong>taxType</strong> &#8211; String or Number</li>
@@ -1600,6 +1619,7 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
 <li><strong>accountInfo</strong> &#8211; String or Number</li>
 <li><strong>amount</strong> &#8211; String or Number</li>
+<li><strong>customIdentifier</strong> &#8211; String or Number</li>
 <li><strong>customerId</strong> &#8211; String or Number</li>
 <li><strong>fundingSubmerchantId</strong> &#8211; String or Number</li>
 <li><strong>fundsTransferId</strong> &#8211; String or Number</li>
@@ -1628,6 +1648,7 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
 <li><strong>accountInfo</strong> &#8211; String or Number</li>
 <li><strong>amount</strong> &#8211; String or Number</li>
+<li><strong>customIdentifier</strong> &#8211; String or Number</li>
 <li><strong>customerId</strong> &#8211; String or Number</li>
 <li><strong>fundingSubmerchantId</strong> &#8211; String or Number</li>
 <li><strong>fundsTransferId</strong> &#8211; String or Number</li>
@@ -1707,6 +1728,7 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
 <li><strong>accountInfo</strong> &#8211; String or Number</li>
 <li><strong>amount</strong> &#8211; String or Number</li>
+<li><strong>customIdentifier</strong> &#8211; String or Number</li>
 <li><strong>customerId</strong> &#8211; String or Number</li>
 <li><strong>fundingSubmerchantId</strong> &#8211; String or Number</li>
 <li><strong>fundsTransferId</strong> &#8211; String or Number</li>
@@ -1735,6 +1757,7 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
 <li><strong>accountInfo</strong> &#8211; String or Number</li>
 <li><strong>amount</strong> &#8211; String or Number</li>
+<li><strong>customIdentifier</strong> &#8211; String or Number</li>
 <li><strong>customerId</strong> &#8211; String or Number</li>
 <li><strong>fundingSubmerchantId</strong> &#8211; String or Number</li>
 <li><strong>fundsTransferId</strong> &#8211; String or Number</li>
@@ -1802,12 +1825,12 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 
 </div></blockquote>
 </div>
-<div class="section" id="ctd-anon-31">
-<h3>CTD_ANON_31<a class="headerlink" href="#ctd-anon-31" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="ctd-anon-32">
+<h3>CTD_ANON_32<a class="headerlink" href="#ctd-anon-32" title="Permalink to this headline">¶</a></h3>
 <blockquote>
 <div><dl class="class">
-<dt id="vantivsdk.fields.CTD_ANON_31">
-<em class="property">class </em><code class="descclassname">vantivsdk.fields.</code><code class="descname">CTD_ANON_31</code><a class="headerlink" href="#vantivsdk.fields.CTD_ANON_31" title="Permalink to this definition">¶</a></dt>
+<dt id="vantivsdk.fields.CTD_ANON_32">
+<em class="property">class </em><code class="descclassname">vantivsdk.fields.</code><code class="descname">CTD_ANON_32</code><a class="headerlink" href="#vantivsdk.fields.CTD_ANON_32" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2093,7 +2116,7 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
 <li><a class="reference internal" href="#vantivsdk.fields.authentication" title="vantivsdk.fields.authentication"><strong>authentication</strong></a> &#8211; instance of <a class="reference internal" href="#vantivsdk.fields.authentication" title="vantivsdk.fields.authentication"><code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.authentication</span></code></a></li>
 <li><strong>recurringTransaction</strong> &#8211; instance of</li>
-<li><strong>transaction</strong> &#8211; instance of <code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.registerTokenRequest</span></code>,  <code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.updateCardValidationNumOnToken</span></code>,</li>
+<li><strong>transaction</strong> &#8211; instance of <code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.updateCardValidationNumOnToken</span></code>,  <code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.registerTokenRequest</span></code>,</li>
 <li><strong>version</strong> &#8211; String or Number</li>
 </ul>
 </td>
@@ -2177,7 +2200,7 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <li><strong>saleAmount</strong> &#8211; String or Number</li>
 <li><strong>submerchantCreditAmount</strong> &#8211; String or Number</li>
 <li><strong>submerchantDebitAmount</strong> &#8211; String or Number</li>
-<li><strong>transaction</strong> &#8211; instance of <code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.registerTokenRequest</span></code>,  <code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.updateCardValidationNumOnToken</span></code>,</li>
+<li><strong>transaction</strong> &#8211; instance of <code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.updateCardValidationNumOnToken</span></code>,  <code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.registerTokenRequest</span></code>,</li>
 <li><strong>unloadAmount</strong> &#8211; String or Number</li>
 <li><strong>vendorCreditAmount</strong> &#8211; String or Number</li>
 <li><strong>vendorDebitAmount</strong> &#8211; String or Number</li>
@@ -2377,6 +2400,7 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <li><strong>cardValidationNum</strong> &#8211; String or Number</li>
 <li><strong>expDate</strong> &#8211; String or Number</li>
 <li><strong>number</strong> &#8211; String or Number</li>
+<li><strong>pin</strong> &#8211; String or Number</li>
 <li><strong>track</strong> &#8211; String or Number</li>
 <li><strong>type</strong> &#8211; String or Number</li>
 </ul>
@@ -2983,7 +3007,7 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <li><a class="reference internal" href="#Configuration.merchantId" title="Configuration.merchantId"><strong>merchantId</strong></a> &#8211; String or Number</li>
 <li><strong>merchantSdk</strong> &#8211; String or Number</li>
 <li><strong>recurringTransaction</strong> &#8211; instance of</li>
-<li><strong>transaction</strong> &#8211; instance of <code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.registerTokenRequest</span></code>,  <code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.updateCardValidationNumOnToken</span></code>,</li>
+<li><strong>transaction</strong> &#8211; instance of <code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.updateCardValidationNumOnToken</span></code>,  <code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.registerTokenRequest</span></code>,</li>
 <li><strong>version</strong> &#8211; String or Number</li>
 </ul>
 </td>
@@ -3059,6 +3083,52 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <li><strong>ksn</strong> &#8211; String or Number</li>
 <li><strong>track1Status</strong> &#8211; String or Number</li>
 <li><strong>track2Status</strong> &#8211; String or Number</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div></blockquote>
+</div>
+<div class="section" id="networkfield">
+<h3>networkField<a class="headerlink" href="#networkfield" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><dl class="class">
+<dt id="vantivsdk.fields.networkField">
+<em class="property">class </em><code class="descclassname">vantivsdk.fields.</code><code class="descname">networkField</code><a class="headerlink" href="#vantivsdk.fields.networkField" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fieldName</strong> &#8211; String or Number</li>
+<li><strong>fieldNumber</strong> &#8211; String or Number</li>
+<li><strong>fieldValue</strong> &#8211; String or Number</li>
+<li><a class="reference internal" href="#vantivsdk.fields.networkSubField" title="vantivsdk.fields.networkSubField"><strong>networkSubField</strong></a> &#8211; instance of <a class="reference internal" href="#vantivsdk.fields.networkSubField" title="vantivsdk.fields.networkSubField"><code class="xref py py-class docutils literal"><span class="pre">vantivsdk.fields.networkSubField</span></code></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div></blockquote>
+</div>
+<div class="section" id="networksubfield">
+<h3>networkSubField<a class="headerlink" href="#networksubfield" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><dl class="class">
+<dt id="vantivsdk.fields.networkSubField">
+<em class="property">class </em><code class="descclassname">vantivsdk.fields.</code><code class="descname">networkSubField</code><a class="headerlink" href="#vantivsdk.fields.networkSubField" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fieldNumber</strong> &#8211; String or Number</li>
+<li><strong>fieldValue</strong> &#8211; String or Number</li>
 </ul>
 </td>
 </tr>
@@ -3276,6 +3346,33 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <li><strong>orderId</strong> &#8211; String or Number</li>
 <li><strong>paypageRegistrationId</strong> &#8211; String or Number</li>
 <li><a class="reference internal" href="#Configuration.reportGroup" title="Configuration.reportGroup"><strong>reportGroup</strong></a> &#8211; String or Number</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div></blockquote>
+</div>
+<div class="section" id="sepadirectdebittype">
+<h3>sepaDirectDebitType<a class="headerlink" href="#sepadirectdebittype" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><dl class="class">
+<dt id="vantivsdk.fields.sepaDirectDebitType">
+<em class="property">class </em><code class="descclassname">vantivsdk.fields.</code><code class="descname">sepaDirectDebitType</code><a class="headerlink" href="#vantivsdk.fields.sepaDirectDebitType" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>iban</strong> &#8211; String or Number</li>
+<li><strong>mandateProvider</strong> &#8211; String or Number</li>
+<li><strong>mandateReference</strong> &#8211; String or Number</li>
+<li><strong>mandateSignatureDate</strong> &#8211; String or Number</li>
+<li><strong>mandateUrl</strong> &#8211; String or Number</li>
+<li><strong>preferredLanguage</strong> &#8211; String or Number</li>
+<li><strong>sequenceType</strong> &#8211; String or Number</li>
 </ul>
 </td>
 </tr>
@@ -3563,7 +3660,7 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Vantiv eCommerce Python SDKv2 documentation 10.1!</a><ul>
+<li><a class="reference internal" href="#">Vantiv eCommerce Python SDKv2 documentation 10.6!</a><ul>
 <li><a class="reference internal" href="#example">EXAMPLE</a></li>
 <li><a class="reference internal" href="#api">API</a><ul>
 <li><a class="reference internal" href="#batch-stream">batch.stream</a></li>
@@ -3621,7 +3718,7 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 </li>
 <li><a class="reference internal" href="#complex-types">Complex Types</a><ul>
 <li><a class="reference internal" href="#ctd-anon-15">CTD_ANON_15</a></li>
-<li><a class="reference internal" href="#ctd-anon-31">CTD_ANON_31</a></li>
+<li><a class="reference internal" href="#ctd-anon-32">CTD_ANON_32</a></li>
 <li><a class="reference internal" href="#rfrrequest">RFRRequest</a></li>
 <li><a class="reference internal" href="#accountinfotype">accountInfoType</a></li>
 <li><a class="reference internal" href="#accountupdatefilerequestdata">accountUpdateFileRequestData</a></li>
@@ -3670,6 +3767,8 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <li><a class="reference internal" href="#litlerequest">litleRequest</a></li>
 <li><a class="reference internal" href="#merchantdatatype">merchantDataType</a></li>
 <li><a class="reference internal" href="#mpostype">mposType</a></li>
+<li><a class="reference internal" href="#networkfield">networkField</a></li>
+<li><a class="reference internal" href="#networksubfield">networkSubField</a></li>
 <li><a class="reference internal" href="#paypal">payPal</a></li>
 <li><a class="reference internal" href="#pos">pos</a></li>
 <li><a class="reference internal" href="#processinginstructions">processingInstructions</a></li>
@@ -3680,6 +3779,7 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
 <li><a class="reference internal" href="#recyclingrequesttype">recyclingRequestType</a></li>
 <li><a class="reference internal" href="#recyclingtype">recyclingType</a></li>
 <li><a class="reference internal" href="#registertokenrequesttype">registerTokenRequestType</a></li>
+<li><a class="reference internal" href="#sepadirectdebittype">sepaDirectDebitType</a></li>
 <li><a class="reference internal" href="#transactiontype">transactionType</a></li>
 <li><a class="reference internal" href="#transactiontypeoptionreportgroup">transactionTypeOptionReportGroup</a></li>
 <li><a class="reference internal" href="#transactiontypewithreportgroup">transactionTypeWithReportGroup</a></li>
@@ -3724,7 +3824,7 @@ RFRRequest cannot exist in the same instance with any other transactions.</p>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-        <li class="nav-item nav-item-0"><a href="#">Vantiv eCommerce Python SDKv2 10.1.b0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="#">Vantiv eCommerce Python SDKv2 10.6.b0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
