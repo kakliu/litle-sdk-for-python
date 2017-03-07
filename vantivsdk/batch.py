@@ -72,6 +72,7 @@ _supported_transaction_types = {
     # '': ['numExtCaptures', 'extCaptureAmount'],
     'physicalCheckDebit': ['numPhysicalCheckDebit', 'physicalCheckDebitAmount'],
     'physicalCheckCredit': ['numPhysicalCheckCredit', 'physicalCheckCreditAmount'],
+    'fundingInstructionVoid': ['numFundingInstructionVoid', ''],
 }
 
 _batch_attributes_num_dict = dict()
