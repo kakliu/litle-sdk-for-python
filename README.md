@@ -34,7 +34,7 @@ Setup
 
 Using pip 
 
->pip install LitleSdkPython
+>pip install VantiveCommerceSDKv2
 
 Without Pip
 
@@ -53,16 +53,16 @@ Without Pip
 3) Create a python file similar to:
 
 ```python
-#Example for SDK v2 9.10.beta
+#Example for SDKv2
 from __future__ import print_function
 
-from litle_sdk_python import *
+from vantivsdk import *
 
 # Initial Configuration object. If you have saved configuration in '.vantiv_python_sdk.conf' at system environment
 # variable: VANTIV_SDK_CONFIG or user home directory, the saved configuration will be automatically load.
 conf = utils.Configuration()
 
-# Configuration has following attributes for online request:
+# Configuration need following attributes for online request:
 # attributes = default value
 # user = ''
 # password = ''
@@ -116,6 +116,30 @@ response = online.request(transaction, conf)
 
 print('Message: %s' % response['authorizationResponse']['message'])
 print('LitleTransaction ID: %s' % response['authorizationResponse']['litleTxnId'])
+
+# Configuration need following attributes for batch request:
+# attributes = default value
+# sftp_username = ''
+# sftp_password = ''
+# sftp_url = ''
+# batch_requests_path = '/tmp/vantiv_sdk_batch_request'
+# batch_response_path = '/tmp/vantiv_sdk_batch_response'
+# fast_url = ''
+# fast_ssl = True
+# fast_port = ''
+# id = ''
+
+# Initial batch transactions container class
+transactions = batch.Transactions()
+
+# Add transaction to batch transactions container
+transactions.add(transaction)
+
+# Sent batch to server via socket and get response as dict
+response = batch.stream(transactions, conf)
+
+print('Message: %s' % response['batchResponse']['authorizationResponse']['message'])
+print('LitleTransaction ID: %s' % response['batchResponse']['authorizationResponse']['litleTxnId'])
 ```
 NOTE: you may need to edit the proxy to to work for your system
 

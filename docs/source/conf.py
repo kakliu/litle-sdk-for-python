@@ -23,7 +23,7 @@ package_root = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(_
 
 sys.path.insert(0, package_root)
 
-from litle_sdk_python import utils
+from vantivsdk import utils
 
 # -- General configuration ------------------------------------------------
 
@@ -53,7 +53,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Vantiv eCommerce Python SDK'
+project = u'Vantiv eCommerce Python SDKv2'
 copyright = u'2017, Vantiv eCommerce'
 author = u'Vantiv eCommerce'
 
@@ -106,7 +106,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'VantiveCommercePythonSDKdoc'
+htmlhelp_basename = 'VantiveCommercePythonSDKv2doc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -132,7 +132,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'VantiveCommercePythonSDK.tex', u'Vantiv eCommerce Python SDK Documentation',
+    (master_doc, 'VantiveCommercePythonSDKv2.tex', u'Vantiv eCommerce Python SDKv2 Documentation',
      u'Vantiv eCommerce', 'manual'),
 ]
 
@@ -141,7 +141,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'vantivecommercepythonsdk', u'Vantiv eCommerce Python SDK Documentation',
+    (master_doc, 'vantivecommercepythonsdkv2', u'Vantiv eCommerce Python SDKv2 Documentation',
      [author], 1)
 ]
 
@@ -151,7 +151,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'VantiveCommercePythonSDK', u'Vantiv eCommerce Python SDK Documentation',
-     author, 'VantiveCommercePythonSDK', 'One line description of project.',
+    (master_doc, 'VantiveCommercePythonSDKv2', u'Vantiv eCommerce Python SDKv2 Documentation',
+     author, 'VantiveCommercePythonSDKv2', 'One line description of project.',
      'Miscellaneous'),
 ]

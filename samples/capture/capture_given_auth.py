@@ -31,7 +31,7 @@ sys.path.insert(0, package_root)
 
 import datetime
 
-from litle_sdk_python import *
+from vantivsdk import *
 
 # Initial Configuration object. If you have saved configuration in '.vantiv_python_sdk.conf' at system environment
 # variable: VANTIV_SDK_CONFIG or user home directory, the saved configuration will be automatically load.

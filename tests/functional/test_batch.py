@@ -29,7 +29,7 @@ import unittest
 package_root = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.insert(0, package_root)
 
-from litle_sdk_python import *
+from vantivsdk import *
 
 import datetime
 

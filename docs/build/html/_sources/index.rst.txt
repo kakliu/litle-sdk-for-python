@@ -1,49 +1,142 @@
-Vantiv eCommerce Python SDK's documentation 11.0!
+Vantiv eCommerce Python SDKv2 documentation 9.10!
 ==================================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-Batch
+EXAMPLE
+-------
+.. code-block:: python
+   :linenos:
+
+    #Example for SDKv2
+    from __future__ import print_function
+
+    from vantivsdk import *
+
+    # Initial Configuration object. If you have saved configuration in '.vantiv_python_sdk.conf' at system environment
+    # variable: VANTIV_SDK_CONFIG or user home directory, the saved configuration will be automatically load.
+    conf = utils.Configuration()
+
+    # Configuration need following attributes for online request:
+    # attributes = default value
+    # user = ''
+    # password = ''
+    # merchantId = ''
+    # reportGroup = 'Default Report Group'
+    # url = 'https://www.testlitle.com/sandbox/communicator/online'
+    # proxy = ''
+    # print_xml = False
+
+    # Initial Transaction.
+    transaction = fields.authorization()
+    transaction.orderId = '1'
+    transaction.amount = 10010
+    transaction.orderSource = 'ecommerce'
+    transaction.id = 'ThisIsRequiredby11'
+
+    # Create contact object
+    contact = fields.contact()
+    contact.name = 'John & Mary Smith'
+    contact.addressLine1 = '1 Main St.'
+    contact.city = 'Burlington'
+    contact.state = 'MA'
+    contact.zip = '01803-3747'
+    contact.country = 'USA'
+    # The type of billToAddress is contact
+    transaction.billToAddress = contact
+
+    # Create cardType object
+    card = fields.cardType()
+    card.number = '4100000000000000'
+    card.expDate = '1215'
+    card.cardValidationNum = '349'
+    card.type = 'VI'
+    # The type of card is cardType
+    transaction.card = card
+
+    # detail tax
+    enhancedData = fields.enhancedData()
+    enhancedData.customerReference = 'Litle'
+    enhancedData.deliveryType = 'TBD'
+    detailTax = fields.detailTax()
+    detailTax.taxAmount = 100
+    detailTax2 = fields.detailTax()
+    detailTax2.taxAmount = 200
+    # pyxb cannot bind multi occurs item, have to use pyxb.BIND
+    enhancedData = pyxb.BIND(enhancedData.customerReference, enhancedData.deliveryType, detailTax, detailTax2)
+    transaction.enhancedData = enhancedData
+
+    # Send request to server and get response as dict
+    response = online.request(transaction, conf)
+
+    print('Message: %s' % response['authorizationResponse']['message'])
+    print('LitleTransaction ID: %s' % response['authorizationResponse']['litleTxnId'])
+
+    # Configuration need following attributes for batch request:
+    # attributes = default value
+    # sftp_username = ''
+    # sftp_password = ''
+    # sftp_url = ''
+    # batch_requests_path = '/tmp/vantiv_sdk_batch_request'
+    # batch_response_path = '/tmp/vantiv_sdk_batch_response'
+    # fast_url = ''
+    # fast_ssl = True
+    # fast_port = ''
+    # id = ''
+
+    # Initial batch transactions container class
+    transactions = batch.Transactions()
+
+    # Add transaction to batch transactions container
+    transactions.add(transaction)
+
+    # Sent batch to server via socket and get response as dict
+    response = batch.stream(transactions, conf)
+
+    print('Message: %s' % response['batchResponse']['authorizationResponse']['message'])
+    print('LitleTransaction ID: %s' % response['batchResponse']['authorizationResponse']['litleTxnId'])
+
+API
 ------
 batch.stream
 ............
-    .. autofunction:: litle_sdk_python.batch.stream
+    .. autofunction:: vantivsdk.batch.stream
 
 batch.download
 ..............
-    .. autofunction:: litle_sdk_python.batch.download
+    .. autofunction:: vantivsdk.batch.download
 
 batch.submit
 ............
-    .. autofunction:: litle_sdk_python.batch.submit
+    .. autofunction:: vantivsdk.batch.submit
 
 batch.retrieve
 ..............
-    .. autofunction:: litle_sdk_python.batch.retrieve
+    .. autofunction:: vantivsdk.batch.retrieve
 
 batch.Transactions
 ..................
-    .. autoclass:: litle_sdk_python.batch.Transactions
+    .. autoclass:: vantivsdk.batch.Transactions
         :members:
 
-Configuration
--------------
-    .. autoclass:: litle_sdk_python.utils.Configuration
-        :members:
+online.request
+..............
+    .. autofunction:: vantivsdk.online.request
 
-Online
-------
-    .. autofunction:: litle_sdk_python.online.request
+utils.Configuration
+...................
+    .. autoclass:: vantivsdk.utils.Configuration
+        :members:
 
 Transactions
 ------------
 accountUpdate
 .............
-    .. py:class:: litle_sdk_python.fields.accountUpdate
+    .. py:class:: vantivsdk.fields.accountUpdate
 
-        :var cardOrToken: String or Number
+        :var cardOrToken: instance of :py:class:`vantivsdk.fields.card`,  :py:class:`vantivsdk.fields.token`, 
         :var customerId: String or Number
         :var id: String or Number
         :var orderId: String or Number
@@ -51,36 +144,29 @@ accountUpdate
 
 activate
 ........
-    .. py:class:: litle_sdk_python.fields.activate
+    .. py:class:: vantivsdk.fields.activate
 
         :var amount: String or Number
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
+        :var card: instance of :py:class:`vantivsdk.fields.cardType`
         :var customerId: String or Number
         :var id: String or Number
         :var orderId: String or Number
         :var orderSource: String or Number
         :var reportGroup: String or Number
-        :var virtualGiftCard: String or Number
+        :var virtualGiftCard: instance of :py:class:`vantivsdk.fields.virtualGiftCardType`
 
 activateReversal
 ................
-    .. py:class:: litle_sdk_python.fields.activateReversal
+    .. py:class:: vantivsdk.fields.activateReversal
 
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
         :var customerId: String or Number
         :var id: String or Number
         :var litleTxnId: String or Number
-        :var originalAmount: String or Number
-        :var originalRefCode: String or Number
-        :var originalSequenceNumber: String or Number
-        :var originalSystemTraceId: String or Number
-        :var originalTxnTime: String or Number
         :var reportGroup: String or Number
-        :var virtualGiftCardBin: String or Number
 
 authReversal
 ............
-    .. py:class:: litle_sdk_python.fields.authReversal
+    .. py:class:: vantivsdk.fields.authReversal
 
         :var actionReason: String or Number
         :var amount: String or Number
@@ -93,25 +179,25 @@ authReversal
 
 authorization
 .............
-    .. py:class:: litle_sdk_python.fields.authorization
+    .. py:class:: vantivsdk.fields.authorization
 
         :var advancedFraudChecks: String or Number
         :var allowPartialAuth: String or Number
-        :var amexAggregatorData: instance of :py:class:`litle_sdk_python.fields.amexAggregatorData`
+        :var amexAggregatorData: instance of :py:class:`vantivsdk.fields.amexAggregatorData`
         :var amount: String or Number
         :var applepay: String or Number
-        :var billMeLaterRequest: instance of :py:class:`litle_sdk_python.fields.billMeLaterRequest`
-        :var billToAddress: instance of :py:class:`litle_sdk_python.fields.contact`
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
+        :var billMeLaterRequest: instance of :py:class:`vantivsdk.fields.billMeLaterRequest`
+        :var billToAddress: instance of :py:class:`vantivsdk.fields.contact`
+        :var card: instance of :py:class:`vantivsdk.fields.cardType`
         :var cardholderAuthentication: String or Number
-        :var customBilling: instance of :py:class:`litle_sdk_python.fields.customBilling`
+        :var customBilling: instance of :py:class:`vantivsdk.fields.customBilling`
         :var customerId: String or Number
-        :var customerInfo: instance of :py:class:`litle_sdk_python.fields.customerInfo`
+        :var customerInfo: instance of :py:class:`vantivsdk.fields.customerInfo`
         :var debtRepayment: String or Number
-        :var enhancedData: instance of :py:class:`litle_sdk_python.fields.enhancedData`
+        :var enhancedData: instance of :py:class:`vantivsdk.fields.enhancedData`
         :var filtering: String or Number
         :var fraudFilterOverride: String or Number
-        :var healthcareIIAS: instance of :py:class:`litle_sdk_python.fields.healthcareIIAS`
+        :var healthcareIIAS: instance of :py:class:`vantivsdk.fields.healthcareIIAS`
         :var id: String or Number
         :var litleTxnId: String or Number
         :var merchantData: String or Number
@@ -122,24 +208,24 @@ authorization
         :var originalTransactionAmount: String or Number
         :var paypage: String or Number
         :var paypal: String or Number
-        :var pos: instance of :py:class:`litle_sdk_python.fields.pos`
-        :var processingInstructions: instance of :py:class:`litle_sdk_python.fields.processingInstructions`
+        :var pos: instance of :py:class:`vantivsdk.fields.pos`
+        :var processingInstructions: instance of :py:class:`vantivsdk.fields.processingInstructions`
         :var processingType: String or Number
         :var recurringRequest: String or Number
         :var recyclingRequest: String or Number
         :var reportGroup: String or Number
         :var secondaryAmount: String or Number
-        :var shipToAddress: instance of :py:class:`litle_sdk_python.fields.contact`
+        :var shipToAddress: instance of :py:class:`vantivsdk.fields.contact`
         :var surchargeAmount: String or Number
         :var taxType: String or Number
-        :var token: instance of :py:class:`litle_sdk_python.fields.cardTokenType`
-        :var wallet: instance of :py:class:`litle_sdk_python.fields.wallet`
+        :var token: instance of :py:class:`vantivsdk.fields.cardTokenType`
+        :var wallet: instance of :py:class:`vantivsdk.fields.wallet`
 
 balanceInquiry
 ..............
-    .. py:class:: litle_sdk_python.fields.balanceInquiry
+    .. py:class:: vantivsdk.fields.balanceInquiry
 
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
+        :var card: instance of :py:class:`vantivsdk.fields.cardType`
         :var customerId: String or Number
         :var id: String or Number
         :var orderId: String or Number
@@ -148,36 +234,36 @@ balanceInquiry
 
 capture
 .......
-    .. py:class:: litle_sdk_python.fields.capture
+    .. py:class:: vantivsdk.fields.capture
 
         :var amount: String or Number
-        :var customBilling: instance of :py:class:`litle_sdk_python.fields.customBilling`
+        :var customBilling: instance of :py:class:`vantivsdk.fields.customBilling`
         :var customerId: String or Number
-        :var enhancedData: instance of :py:class:`litle_sdk_python.fields.enhancedData`
+        :var enhancedData: instance of :py:class:`vantivsdk.fields.enhancedData`
         :var id: String or Number
         :var litleTxnId: String or Number
         :var partial: String or Number
         :var payPalNotes: String or Number
         :var payPalOrderComplete: String or Number
         :var pin: String or Number
-        :var processingInstructions: instance of :py:class:`litle_sdk_python.fields.processingInstructions`
+        :var processingInstructions: instance of :py:class:`vantivsdk.fields.processingInstructions`
         :var reportGroup: String or Number
         :var surchargeAmount: String or Number
 
 captureGivenAuth
 ................
-    .. py:class:: litle_sdk_python.fields.captureGivenAuth
+    .. py:class:: vantivsdk.fields.captureGivenAuth
 
-        :var amexAggregatorData: instance of :py:class:`litle_sdk_python.fields.amexAggregatorData`
+        :var amexAggregatorData: instance of :py:class:`vantivsdk.fields.amexAggregatorData`
         :var amount: String or Number
-        :var authInformation: instance of :py:class:`litle_sdk_python.fields.authInformation`
-        :var billMeLaterRequest: instance of :py:class:`litle_sdk_python.fields.billMeLaterRequest`
-        :var billToAddress: instance of :py:class:`litle_sdk_python.fields.contact`
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
-        :var customBilling: instance of :py:class:`litle_sdk_python.fields.customBilling`
+        :var authInformation: instance of :py:class:`vantivsdk.fields.authInformation`
+        :var billMeLaterRequest: instance of :py:class:`vantivsdk.fields.billMeLaterRequest`
+        :var billToAddress: instance of :py:class:`vantivsdk.fields.contact`
+        :var card: instance of :py:class:`vantivsdk.fields.cardType`
+        :var customBilling: instance of :py:class:`vantivsdk.fields.customBilling`
         :var customerId: String or Number
         :var debtRepayment: String or Number
-        :var enhancedData: instance of :py:class:`litle_sdk_python.fields.enhancedData`
+        :var enhancedData: instance of :py:class:`vantivsdk.fields.enhancedData`
         :var id: String or Number
         :var merchantData: String or Number
         :var mpos: String or Number
@@ -186,29 +272,29 @@ captureGivenAuth
         :var originalNetworkTransactionId: String or Number
         :var originalTransactionAmount: String or Number
         :var paypage: String or Number
-        :var pos: instance of :py:class:`litle_sdk_python.fields.pos`
-        :var processingInstructions: instance of :py:class:`litle_sdk_python.fields.processingInstructions`
+        :var pos: instance of :py:class:`vantivsdk.fields.pos`
+        :var processingInstructions: instance of :py:class:`vantivsdk.fields.processingInstructions`
         :var processingType: String or Number
         :var reportGroup: String or Number
         :var secondaryAmount: String or Number
-        :var shipToAddress: instance of :py:class:`litle_sdk_python.fields.contact`
+        :var shipToAddress: instance of :py:class:`vantivsdk.fields.contact`
         :var surchargeAmount: String or Number
         :var taxType: String or Number
-        :var token: instance of :py:class:`litle_sdk_python.fields.cardTokenType`
+        :var token: instance of :py:class:`vantivsdk.fields.cardTokenType`
 
 credit
 ......
-    .. py:class:: litle_sdk_python.fields.credit
+    .. py:class:: vantivsdk.fields.credit
 
         :var actionReason: String or Number
-        :var amexAggregatorData: instance of :py:class:`litle_sdk_python.fields.amexAggregatorData`
+        :var amexAggregatorData: instance of :py:class:`vantivsdk.fields.amexAggregatorData`
         :var amount: String or Number
-        :var billMeLaterRequest: instance of :py:class:`litle_sdk_python.fields.billMeLaterRequest`
-        :var billToAddress: instance of :py:class:`litle_sdk_python.fields.contact`
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
-        :var customBilling: instance of :py:class:`litle_sdk_python.fields.customBilling`
+        :var billMeLaterRequest: instance of :py:class:`vantivsdk.fields.billMeLaterRequest`
+        :var billToAddress: instance of :py:class:`vantivsdk.fields.contact`
+        :var card: instance of :py:class:`vantivsdk.fields.cardType`
+        :var customBilling: instance of :py:class:`vantivsdk.fields.customBilling`
         :var customerId: String or Number
-        :var enhancedData: instance of :py:class:`litle_sdk_python.fields.enhancedData`
+        :var enhancedData: instance of :py:class:`vantivsdk.fields.enhancedData`
         :var id: String or Number
         :var litleTxnId: String or Number
         :var merchantData: String or Number
@@ -219,19 +305,19 @@ credit
         :var paypage: String or Number
         :var paypal: String or Number
         :var pin: String or Number
-        :var pos: instance of :py:class:`litle_sdk_python.fields.pos`
-        :var processingInstructions: instance of :py:class:`litle_sdk_python.fields.processingInstructions`
+        :var pos: instance of :py:class:`vantivsdk.fields.pos`
+        :var processingInstructions: instance of :py:class:`vantivsdk.fields.processingInstructions`
         :var reportGroup: String or Number
         :var secondaryAmount: String or Number
         :var surchargeAmount: String or Number
         :var taxType: String or Number
-        :var token: instance of :py:class:`litle_sdk_python.fields.cardTokenType`
+        :var token: instance of :py:class:`vantivsdk.fields.cardTokenType`
 
 deactivate
 ..........
-    .. py:class:: litle_sdk_python.fields.deactivate
+    .. py:class:: vantivsdk.fields.deactivate
 
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
+        :var card: instance of :py:class:`vantivsdk.fields.cardType`
         :var customerId: String or Number
         :var id: String or Number
         :var orderId: String or Number
@@ -240,43 +326,31 @@ deactivate
 
 deactivateReversal
 ..................
-    .. py:class:: litle_sdk_python.fields.deactivateReversal
+    .. py:class:: vantivsdk.fields.deactivateReversal
 
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
         :var customerId: String or Number
         :var id: String or Number
         :var litleTxnId: String or Number
-        :var originalRefCode: String or Number
-        :var originalSequenceNumber: String or Number
-        :var originalSystemTraceId: String or Number
-        :var originalTxnTime: String or Number
         :var reportGroup: String or Number
 
 depositReversal
 ...............
-    .. py:class:: litle_sdk_python.fields.depositReversal
+    .. py:class:: vantivsdk.fields.depositReversal
 
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
         :var customerId: String or Number
         :var id: String or Number
         :var litleTxnId: String or Number
-        :var originalAmount: String or Number
-        :var originalRefCode: String or Number
-        :var originalSequenceNumber: String or Number
-        :var originalSystemTraceId: String or Number
-        :var originalTxnTime: String or Number
         :var reportGroup: String or Number
 
 echeckCredit
 ............
-    .. py:class:: litle_sdk_python.fields.echeckCredit
+    .. py:class:: vantivsdk.fields.echeckCredit
 
         :var amount: String or Number
-        :var billToAddress: instance of :py:class:`litle_sdk_python.fields.contact`
-        :var customBilling: instance of :py:class:`litle_sdk_python.fields.customBilling`
-        :var customIdentifier: String or Number
+        :var billToAddress: instance of :py:class:`vantivsdk.fields.contact`
+        :var customBilling: instance of :py:class:`vantivsdk.fields.customBilling`
         :var customerId: String or Number
-        :var echeckOrEcheckToken: String or Number
+        :var echeckOrEcheckToken: instance of :py:class:`vantivsdk.fields.echeckToken`,  :py:class:`vantivsdk.fields.echeck`, 
         :var id: String or Number
         :var litleTxnId: String or Number
         :var merchantData: String or Number
@@ -287,11 +361,11 @@ echeckCredit
 
 echeckPreNoteCredit
 ...................
-    .. py:class:: litle_sdk_python.fields.echeckPreNoteCredit
+    .. py:class:: vantivsdk.fields.echeckPreNoteCredit
 
-        :var billToAddress: instance of :py:class:`litle_sdk_python.fields.contact`
+        :var billToAddress: instance of :py:class:`vantivsdk.fields.contact`
         :var customerId: String or Number
-        :var echeck: instance of :py:class:`litle_sdk_python.fields.echeckType`
+        :var echeck: instance of :py:class:`vantivsdk.fields.echeckType`
         :var id: String or Number
         :var merchantData: String or Number
         :var orderId: String or Number
@@ -300,11 +374,11 @@ echeckPreNoteCredit
 
 echeckPreNoteSale
 .................
-    .. py:class:: litle_sdk_python.fields.echeckPreNoteSale
+    .. py:class:: vantivsdk.fields.echeckPreNoteSale
 
-        :var billToAddress: instance of :py:class:`litle_sdk_python.fields.contact`
+        :var billToAddress: instance of :py:class:`vantivsdk.fields.contact`
         :var customerId: String or Number
-        :var echeck: instance of :py:class:`litle_sdk_python.fields.echeckType`
+        :var echeck: instance of :py:class:`vantivsdk.fields.echeckType`
         :var id: String or Number
         :var merchantData: String or Number
         :var orderId: String or Number
@@ -313,11 +387,10 @@ echeckPreNoteSale
 
 echeckRedeposit
 ...............
-    .. py:class:: litle_sdk_python.fields.echeckRedeposit
+    .. py:class:: vantivsdk.fields.echeckRedeposit
 
-        :var customIdentifier: String or Number
         :var customerId: String or Number
-        :var echeckOrEcheckToken: String or Number
+        :var echeckOrEcheckToken: instance of :py:class:`vantivsdk.fields.echeckToken`,  :py:class:`vantivsdk.fields.echeck`, 
         :var id: String or Number
         :var litleTxnId: String or Number
         :var merchantData: String or Number
@@ -325,14 +398,13 @@ echeckRedeposit
 
 echeckSale
 ..........
-    .. py:class:: litle_sdk_python.fields.echeckSale
+    .. py:class:: vantivsdk.fields.echeckSale
 
         :var amount: String or Number
-        :var billToAddress: instance of :py:class:`litle_sdk_python.fields.contact`
-        :var customBilling: instance of :py:class:`litle_sdk_python.fields.customBilling`
-        :var customIdentifier: String or Number
+        :var billToAddress: instance of :py:class:`vantivsdk.fields.contact`
+        :var customBilling: instance of :py:class:`vantivsdk.fields.customBilling`
         :var customerId: String or Number
-        :var echeckOrEcheckToken: String or Number
+        :var echeckOrEcheckToken: instance of :py:class:`vantivsdk.fields.echeckToken`,  :py:class:`vantivsdk.fields.echeck`, 
         :var id: String or Number
         :var litleTxnId: String or Number
         :var merchantData: String or Number
@@ -340,18 +412,19 @@ echeckSale
         :var orderSource: String or Number
         :var reportGroup: String or Number
         :var secondaryAmount: String or Number
-        :var shipToAddress: instance of :py:class:`litle_sdk_python.fields.contact`
+        :var shipToAddress: instance of :py:class:`vantivsdk.fields.contact`
         :var verify: String or Number
 
 echeckVerification
 ..................
-    .. py:class:: litle_sdk_python.fields.echeckVerification
+    .. py:class:: vantivsdk.fields.echeckVerification
 
         :var amount: String or Number
-        :var billToAddress: instance of :py:class:`litle_sdk_python.fields.contact`
+        :var billToAddress: instance of :py:class:`vantivsdk.fields.contact`
         :var customerId: String or Number
-        :var echeckOrEcheckToken: String or Number
+        :var echeckOrEcheckToken: instance of :py:class:`vantivsdk.fields.echeckToken`,  :py:class:`vantivsdk.fields.echeck`, 
         :var id: String or Number
+        :var litleTxnId: String or Number
         :var merchantData: String or Number
         :var orderId: String or Number
         :var orderSource: String or Number
@@ -359,7 +432,7 @@ echeckVerification
 
 echeckVoid
 ..........
-    .. py:class:: litle_sdk_python.fields.echeckVoid
+    .. py:class:: vantivsdk.fields.echeckVoid
 
         :var customerId: String or Number
         :var id: String or Number
@@ -368,101 +441,49 @@ echeckVoid
 
 forceCapture
 ............
-    .. py:class:: litle_sdk_python.fields.forceCapture
+    .. py:class:: vantivsdk.fields.forceCapture
 
-        :var amexAggregatorData: instance of :py:class:`litle_sdk_python.fields.amexAggregatorData`
+        :var amexAggregatorData: instance of :py:class:`vantivsdk.fields.amexAggregatorData`
         :var amount: String or Number
-        :var billToAddress: instance of :py:class:`litle_sdk_python.fields.contact`
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
-        :var customBilling: instance of :py:class:`litle_sdk_python.fields.customBilling`
+        :var billToAddress: instance of :py:class:`vantivsdk.fields.contact`
+        :var card: instance of :py:class:`vantivsdk.fields.cardType`
+        :var customBilling: instance of :py:class:`vantivsdk.fields.customBilling`
         :var customerId: String or Number
         :var debtRepayment: String or Number
-        :var enhancedData: instance of :py:class:`litle_sdk_python.fields.enhancedData`
+        :var enhancedData: instance of :py:class:`vantivsdk.fields.enhancedData`
         :var id: String or Number
         :var merchantData: String or Number
         :var mpos: String or Number
         :var orderId: String or Number
         :var orderSource: String or Number
         :var paypage: String or Number
-        :var pos: instance of :py:class:`litle_sdk_python.fields.pos`
-        :var processingInstructions: instance of :py:class:`litle_sdk_python.fields.processingInstructions`
+        :var pos: instance of :py:class:`vantivsdk.fields.pos`
+        :var processingInstructions: instance of :py:class:`vantivsdk.fields.processingInstructions`
         :var processingType: String or Number
         :var reportGroup: String or Number
         :var secondaryAmount: String or Number
         :var surchargeAmount: String or Number
         :var taxType: String or Number
-        :var token: instance of :py:class:`litle_sdk_python.fields.cardTokenType`
+        :var token: instance of :py:class:`vantivsdk.fields.cardTokenType`
 
 fraudCheck
 ..........
-    .. py:class:: litle_sdk_python.fields.fraudCheck
+    .. py:class:: vantivsdk.fields.fraudCheck
 
         :var advancedFraudChecks: String or Number
         :var amount: String or Number
-        :var billToAddress: instance of :py:class:`litle_sdk_python.fields.contact`
+        :var billToAddress: instance of :py:class:`vantivsdk.fields.contact`
         :var customerId: String or Number
         :var id: String or Number
         :var reportGroup: String or Number
-        :var shipToAddress: instance of :py:class:`litle_sdk_python.fields.contact`
-
-fundingInstructionVoid
-......................
-    .. py:class:: litle_sdk_python.fields.fundingInstructionVoid
-
-        :var customerId: String or Number
-        :var id: String or Number
-        :var litleTxnId: String or Number
-        :var reportGroup: String or Number
-
-giftCardAuthReversal
-....................
-    .. py:class:: litle_sdk_python.fields.giftCardAuthReversal
-
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
-        :var customerId: String or Number
-        :var id: String or Number
-        :var litleTxnId: String or Number
-        :var originalAmount: String or Number
-        :var originalRefCode: String or Number
-        :var originalSequenceNumber: String or Number
-        :var originalSystemTraceId: String or Number
-        :var originalTxnTime: String or Number
-        :var reportGroup: String or Number
-
-giftCardCapture
-...............
-    .. py:class:: litle_sdk_python.fields.giftCardCapture
-
-        :var captureAmount: String or Number
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
-        :var customerId: String or Number
-        :var id: String or Number
-        :var litleTxnId: String or Number
-        :var originalAmount: String or Number
-        :var originalRefCode: String or Number
-        :var originalTxnTime: String or Number
-        :var partial: String or Number
-        :var reportGroup: String or Number
-
-giftCardCredit
-..............
-    .. py:class:: litle_sdk_python.fields.giftCardCredit
-
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
-        :var creditAmount: String or Number
-        :var customerId: String or Number
-        :var id: String or Number
-        :var litleTxnId: String or Number
-        :var orderId: String or Number
-        :var orderSource: String or Number
-        :var reportGroup: String or Number
+        :var shipToAddress: instance of :py:class:`vantivsdk.fields.contact`
 
 load
 ....
-    .. py:class:: litle_sdk_python.fields.load
+    .. py:class:: vantivsdk.fields.load
 
         :var amount: String or Number
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
+        :var card: instance of :py:class:`vantivsdk.fields.cardType`
         :var customerId: String or Number
         :var id: String or Number
         :var orderId: String or Number
@@ -471,22 +492,16 @@ load
 
 loadReversal
 ............
-    .. py:class:: litle_sdk_python.fields.loadReversal
+    .. py:class:: vantivsdk.fields.loadReversal
 
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
         :var customerId: String or Number
         :var id: String or Number
         :var litleTxnId: String or Number
-        :var originalAmount: String or Number
-        :var originalRefCode: String or Number
-        :var originalSequenceNumber: String or Number
-        :var originalSystemTraceId: String or Number
-        :var originalTxnTime: String or Number
         :var reportGroup: String or Number
 
 payFacCredit
 ............
-    .. py:class:: litle_sdk_python.fields.payFacCredit
+    .. py:class:: vantivsdk.fields.payFacCredit
 
         :var amount: String or Number
         :var customerId: String or Number
@@ -497,7 +512,7 @@ payFacCredit
 
 payFacDebit
 ...........
-    .. py:class:: litle_sdk_python.fields.payFacDebit
+    .. py:class:: vantivsdk.fields.payFacDebit
 
         :var amount: String or Number
         :var customerId: String or Number
@@ -508,7 +523,7 @@ payFacDebit
 
 physicalCheckCredit
 ...................
-    .. py:class:: litle_sdk_python.fields.physicalCheckCredit
+    .. py:class:: vantivsdk.fields.physicalCheckCredit
 
         :var amount: String or Number
         :var customerId: String or Number
@@ -519,7 +534,7 @@ physicalCheckCredit
 
 physicalCheckDebit
 ..................
-    .. py:class:: litle_sdk_python.fields.physicalCheckDebit
+    .. py:class:: vantivsdk.fields.physicalCheckDebit
 
         :var amount: String or Number
         :var customerId: String or Number
@@ -530,33 +545,29 @@ physicalCheckDebit
 
 queryTransaction
 ................
-    .. py:class:: litle_sdk_python.fields.queryTransaction
+    .. py:class:: vantivsdk.fields.queryTransaction
 
         :var customerId: String or Number
         :var id: String or Number
+        :var origAccountNumber: String or Number
         :var origActionType: String or Number
         :var origId: String or Number
         :var origLitleTxnId: String or Number
+        :var origOrderId: String or Number
         :var reportGroup: String or Number
 
 refundReversal
 ..............
-    .. py:class:: litle_sdk_python.fields.refundReversal
+    .. py:class:: vantivsdk.fields.refundReversal
 
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
         :var customerId: String or Number
         :var id: String or Number
         :var litleTxnId: String or Number
-        :var originalAmount: String or Number
-        :var originalRefCode: String or Number
-        :var originalSequenceNumber: String or Number
-        :var originalSystemTraceId: String or Number
-        :var originalTxnTime: String or Number
         :var reportGroup: String or Number
 
 reserveCredit
 .............
-    .. py:class:: litle_sdk_python.fields.reserveCredit
+    .. py:class:: vantivsdk.fields.reserveCredit
 
         :var amount: String or Number
         :var customerId: String or Number
@@ -567,7 +578,7 @@ reserveCredit
 
 reserveDebit
 ............
-    .. py:class:: litle_sdk_python.fields.reserveDebit
+    .. py:class:: vantivsdk.fields.reserveDebit
 
         :var amount: String or Number
         :var customerId: String or Number
@@ -578,26 +589,26 @@ reserveDebit
 
 sale
 ....
-    .. py:class:: litle_sdk_python.fields.sale
+    .. py:class:: vantivsdk.fields.sale
 
         :var advancedFraudChecks: String or Number
         :var allowPartialAuth: String or Number
-        :var amexAggregatorData: instance of :py:class:`litle_sdk_python.fields.amexAggregatorData`
+        :var amexAggregatorData: instance of :py:class:`vantivsdk.fields.amexAggregatorData`
         :var amount: String or Number
         :var applepay: String or Number
-        :var billMeLaterRequest: instance of :py:class:`litle_sdk_python.fields.billMeLaterRequest`
-        :var billToAddress: instance of :py:class:`litle_sdk_python.fields.contact`
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
+        :var billMeLaterRequest: instance of :py:class:`vantivsdk.fields.billMeLaterRequest`
+        :var billToAddress: instance of :py:class:`vantivsdk.fields.contact`
+        :var card: instance of :py:class:`vantivsdk.fields.cardType`
         :var cardholderAuthentication: String or Number
-        :var customBilling: instance of :py:class:`litle_sdk_python.fields.customBilling`
+        :var customBilling: instance of :py:class:`vantivsdk.fields.customBilling`
         :var customerId: String or Number
-        :var customerInfo: instance of :py:class:`litle_sdk_python.fields.customerInfo`
+        :var customerInfo: instance of :py:class:`vantivsdk.fields.customerInfo`
         :var debtRepayment: String or Number
-        :var enhancedData: instance of :py:class:`litle_sdk_python.fields.enhancedData`
+        :var enhancedData: instance of :py:class:`vantivsdk.fields.enhancedData`
         :var filtering: String or Number
-        :var fraudCheck: instance of :py:class:`litle_sdk_python.fields.fraudCheck`
+        :var fraudCheck: instance of :py:class:`vantivsdk.fields.fraudCheck`
         :var fraudFilterOverride: String or Number
-        :var healthcareIIAS: instance of :py:class:`litle_sdk_python.fields.healthcareIIAS`
+        :var healthcareIIAS: instance of :py:class:`vantivsdk.fields.healthcareIIAS`
         :var id: String or Number
         :var litleInternalRecurringRequest: String or Number
         :var litleTxnId: String or Number
@@ -611,37 +622,25 @@ sale
         :var payPalOrderComplete: String or Number
         :var paypage: String or Number
         :var paypal: String or Number
-        :var pos: instance of :py:class:`litle_sdk_python.fields.pos`
-        :var processingInstructions: instance of :py:class:`litle_sdk_python.fields.processingInstructions`
+        :var pos: instance of :py:class:`vantivsdk.fields.pos`
+        :var processingInstructions: instance of :py:class:`vantivsdk.fields.processingInstructions`
         :var processingType: String or Number
         :var recurringRequest: String or Number
         :var recyclingRequest: String or Number
         :var reportGroup: String or Number
         :var secondaryAmount: String or Number
-        :var sepaDirectDebit: String or Number
-        :var shipToAddress: instance of :py:class:`litle_sdk_python.fields.contact`
+        :var shipToAddress: instance of :py:class:`vantivsdk.fields.contact`
         :var surchargeAmount: String or Number
         :var taxType: String or Number
-        :var token: instance of :py:class:`litle_sdk_python.fields.cardTokenType`
-        :var wallet: instance of :py:class:`litle_sdk_python.fields.wallet`
-
-serviceStatusRequest
-....................
-    .. py:class:: litle_sdk_python.fields.serviceStatusRequest
-
-        :var customerId: String or Number
-        :var id: String or Number
-        :var pathId: String or Number
-        :var reportGroup: String or Number
-        :var serviceId: String or Number
+        :var token: instance of :py:class:`vantivsdk.fields.cardTokenType`
+        :var wallet: instance of :py:class:`vantivsdk.fields.wallet`
 
 submerchantCredit
 .................
-    .. py:class:: litle_sdk_python.fields.submerchantCredit
+    .. py:class:: vantivsdk.fields.submerchantCredit
 
         :var accountInfo: String or Number
         :var amount: String or Number
-        :var customIdentifier: String or Number
         :var customerId: String or Number
         :var fundingSubmerchantId: String or Number
         :var fundsTransferId: String or Number
@@ -651,11 +650,10 @@ submerchantCredit
 
 submerchantDebit
 ................
-    .. py:class:: litle_sdk_python.fields.submerchantDebit
+    .. py:class:: vantivsdk.fields.submerchantDebit
 
         :var accountInfo: String or Number
         :var amount: String or Number
-        :var customIdentifier: String or Number
         :var customerId: String or Number
         :var fundingSubmerchantId: String or Number
         :var fundsTransferId: String or Number
@@ -665,10 +663,10 @@ submerchantDebit
 
 unload
 ......
-    .. py:class:: litle_sdk_python.fields.unload
+    .. py:class:: vantivsdk.fields.unload
 
         :var amount: String or Number
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
+        :var card: instance of :py:class:`vantivsdk.fields.cardType`
         :var customerId: String or Number
         :var id: String or Number
         :var orderId: String or Number
@@ -677,22 +675,16 @@ unload
 
 unloadReversal
 ..............
-    .. py:class:: litle_sdk_python.fields.unloadReversal
+    .. py:class:: vantivsdk.fields.unloadReversal
 
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
         :var customerId: String or Number
         :var id: String or Number
         :var litleTxnId: String or Number
-        :var originalAmount: String or Number
-        :var originalRefCode: String or Number
-        :var originalSequenceNumber: String or Number
-        :var originalSystemTraceId: String or Number
-        :var originalTxnTime: String or Number
         :var reportGroup: String or Number
 
 vendorCredit
 ............
-    .. py:class:: litle_sdk_python.fields.vendorCredit
+    .. py:class:: vantivsdk.fields.vendorCredit
 
         :var accountInfo: String or Number
         :var amount: String or Number
@@ -705,7 +697,7 @@ vendorCredit
 
 vendorDebit
 ...........
-    .. py:class:: litle_sdk_python.fields.vendorDebit
+    .. py:class:: vantivsdk.fields.vendorDebit
 
         :var accountInfo: String or Number
         :var amount: String or Number
@@ -718,55 +710,55 @@ vendorDebit
 
 void
 ....
-    .. py:class:: litle_sdk_python.fields.void
+    .. py:class:: vantivsdk.fields.void
 
         :var customerId: String or Number
         :var id: String or Number
         :var litleTxnId: String or Number
-        :var processingInstructions: instance of :py:class:`litle_sdk_python.fields.processingInstructions`
+        :var processingInstructions: instance of :py:class:`vantivsdk.fields.processingInstructions`
         :var reportGroup: String or Number
 
 Complex Types
 -------------
 CTD_ANON_15
 ...........
-    .. py:class:: litle_sdk_python.fields.CTD_ANON_15
+    .. py:class:: vantivsdk.fields.CTD_ANON_15
 
         :var availableBalance: String or Number
         :var prepaidCardType: String or Number
         :var reloadable: String or Number
         :var type: String or Number
 
-CTD_ANON_32
+CTD_ANON_31
 ...........
-    .. py:class:: litle_sdk_python.fields.CTD_ANON_32
+    .. py:class:: vantivsdk.fields.CTD_ANON_31
 
-        :var transactionResponse: String or Number
+        :var transactionResponse: instance of
 
 RFRRequest
 ..........
-    .. py:class:: litle_sdk_python.fields.RFRRequest
+    .. py:class:: vantivsdk.fields.RFRRequest
 
-        :var accountUpdateFileRequestData: instance of :py:class:`litle_sdk_python.fields.accountUpdateFileRequestData`
+        :var accountUpdateFileRequestData: instance of :py:class:`vantivsdk.fields.accountUpdateFileRequestData`
         :var litleSessionId: String or Number
 
 accountInfoType
 ...............
-    .. py:class:: litle_sdk_python.fields.accountInfoType
+    .. py:class:: vantivsdk.fields.accountInfoType
 
         :var number: String or Number
         :var type: String or Number
 
 accountUpdateFileRequestData
 ............................
-    .. py:class:: litle_sdk_python.fields.accountUpdateFileRequestData
+    .. py:class:: vantivsdk.fields.accountUpdateFileRequestData
 
         :var merchantId: String or Number
         :var postDay: String or Number
 
 accountUpdater
 ..............
-    .. py:class:: litle_sdk_python.fields.accountUpdater
+    .. py:class:: vantivsdk.fields.accountUpdater
 
         :var extendedCardResponse: String or Number
         :var newAccountInfo: String or Number
@@ -780,7 +772,7 @@ accountUpdater
 
 advancedFraudChecksType
 .......................
-    .. py:class:: litle_sdk_python.fields.advancedFraudChecksType
+    .. py:class:: vantivsdk.fields.advancedFraudChecksType
 
         :var customAttribute1: String or Number
         :var customAttribute2: String or Number
@@ -791,7 +783,7 @@ advancedFraudChecksType
 
 advancedFraudResultsType
 ........................
-    .. py:class:: litle_sdk_python.fields.advancedFraudResultsType
+    .. py:class:: vantivsdk.fields.advancedFraudResultsType
 
         :var deviceReputationScore: String or Number
         :var deviceReviewStatus: String or Number
@@ -799,14 +791,14 @@ advancedFraudResultsType
 
 amexAggregatorData
 ..................
-    .. py:class:: litle_sdk_python.fields.amexAggregatorData
+    .. py:class:: vantivsdk.fields.amexAggregatorData
 
         :var sellerId: String or Number
         :var sellerMerchantCategoryCode: String or Number
 
 applepayHeaderType
 ..................
-    .. py:class:: litle_sdk_python.fields.applepayHeaderType
+    .. py:class:: vantivsdk.fields.applepayHeaderType
 
         :var applicationData: String or Number
         :var ephemeralPublicKey: String or Number
@@ -815,7 +807,7 @@ applepayHeaderType
 
 applepayType
 ............
-    .. py:class:: litle_sdk_python.fields.applepayType
+    .. py:class:: vantivsdk.fields.applepayType
 
         :var data: String or Number
         :var header: String or Number
@@ -824,32 +816,32 @@ applepayType
 
 authInformation
 ...............
-    .. py:class:: litle_sdk_python.fields.authInformation
+    .. py:class:: vantivsdk.fields.authInformation
 
         :var authAmount: String or Number
         :var authCode: String or Number
         :var authDate: String or Number
-        :var fraudResult: instance of :py:class:`litle_sdk_python.fields.fraudResult`
+        :var fraudResult: instance of :py:class:`vantivsdk.fields.fraudResult`
 
 authentication
 ..............
-    .. py:class:: litle_sdk_python.fields.authentication
+    .. py:class:: vantivsdk.fields.authentication
 
         :var password: String or Number
         :var user: String or Number
 
 baseRequest
 ...........
-    .. py:class:: litle_sdk_python.fields.baseRequest
+    .. py:class:: vantivsdk.fields.baseRequest
 
-        :var authentication: instance of :py:class:`litle_sdk_python.fields.authentication`
-        :var recurringTransaction: String or Number
-        :var transaction: String or Number
+        :var authentication: instance of :py:class:`vantivsdk.fields.authentication`
+        :var recurringTransaction: instance of
+        :var transaction: instance of :py:class:`vantivsdk.fields.registerTokenRequest`,  :py:class:`vantivsdk.fields.updateCardValidationNumOnToken`, 
         :var version: String or Number
 
 batchRequest
 ............
-    .. py:class:: litle_sdk_python.fields.batchRequest
+    .. py:class:: vantivsdk.fields.batchRequest
 
         :var activateAmount: String or Number
         :var authAmount: String or Number
@@ -862,9 +854,6 @@ batchRequest
         :var echeckVerificationAmount: String or Number
         :var extCaptureAmount: String or Number
         :var forceCaptureAmount: String or Number
-        :var giftCardAuthReversalOriginalAmount: String or Number
-        :var giftCardCaptureAmount: String or Number
-        :var giftCardCreditAmount: String or Number
         :var id: String or Number
         :var loadAmount: String or Number
         :var merchantId: String or Number
@@ -888,10 +877,6 @@ batchRequest
         :var numEcheckVerification: String or Number
         :var numExtCaptures: String or Number
         :var numForceCaptures: String or Number
-        :var numFundingInstructionVoid: String or Number
-        :var numGiftCardAuthReversals: String or Number
-        :var numGiftCardCaptures: String or Number
-        :var numGiftCardCredits: String or Number
         :var numLoads: String or Number
         :var numPayFacCredit: String or Number
         :var numPayFacDebit: String or Number
@@ -913,20 +898,20 @@ batchRequest
         :var payFacDebitAmount: String or Number
         :var physicalCheckCreditAmount: String or Number
         :var physicalCheckDebitAmount: String or Number
-        :var recurringTransaction: String or Number
+        :var recurringTransaction: instance of
         :var reserveCreditAmount: String or Number
         :var reserveDebitAmount: String or Number
         :var saleAmount: String or Number
         :var submerchantCreditAmount: String or Number
         :var submerchantDebitAmount: String or Number
-        :var transaction: String or Number
+        :var transaction: instance of :py:class:`vantivsdk.fields.registerTokenRequest`,  :py:class:`vantivsdk.fields.updateCardValidationNumOnToken`, 
         :var unloadAmount: String or Number
         :var vendorCreditAmount: String or Number
         :var vendorDebitAmount: String or Number
 
 billMeLaterRequest
 ..................
-    .. py:class:: litle_sdk_python.fields.billMeLaterRequest
+    .. py:class:: vantivsdk.fields.billMeLaterRequest
 
         :var authorizationSourcePlatform: String or Number
         :var bmlMerchantId: String or Number
@@ -946,13 +931,13 @@ billMeLaterRequest
 
 cancelSubscription
 ..................
-    .. py:class:: litle_sdk_python.fields.cancelSubscription
+    .. py:class:: vantivsdk.fields.cancelSubscription
 
         :var subscriptionId: String or Number
 
 cardAccountInfoType
 ...................
-    .. py:class:: litle_sdk_python.fields.cardAccountInfoType
+    .. py:class:: vantivsdk.fields.cardAccountInfoType
 
         :var expDate: String or Number
         :var number: String or Number
@@ -960,7 +945,7 @@ cardAccountInfoType
 
 cardPaypageType
 ...............
-    .. py:class:: litle_sdk_python.fields.cardPaypageType
+    .. py:class:: vantivsdk.fields.cardPaypageType
 
         :var cardValidationNum: String or Number
         :var expDate: String or Number
@@ -969,7 +954,7 @@ cardPaypageType
 
 cardTokenInfoType
 .................
-    .. py:class:: litle_sdk_python.fields.cardTokenInfoType
+    .. py:class:: vantivsdk.fields.cardTokenInfoType
 
         :var bin: String or Number
         :var expDate: String or Number
@@ -978,7 +963,7 @@ cardTokenInfoType
 
 cardTokenType
 .............
-    .. py:class:: litle_sdk_python.fields.cardTokenType
+    .. py:class:: vantivsdk.fields.cardTokenType
 
         :var cardValidationNum: String or Number
         :var expDate: String or Number
@@ -987,7 +972,7 @@ cardTokenType
 
 cardTokenTypeAU
 ...............
-    .. py:class:: litle_sdk_python.fields.cardTokenTypeAU
+    .. py:class:: vantivsdk.fields.cardTokenTypeAU
 
         :var bin: String or Number
         :var cardValidationNum: String or Number
@@ -997,7 +982,7 @@ cardTokenTypeAU
 
 cardType
 ........
-    .. py:class:: litle_sdk_python.fields.cardType
+    .. py:class:: vantivsdk.fields.cardType
 
         :var cardValidationNum: String or Number
         :var expDate: String or Number
@@ -1008,7 +993,7 @@ cardType
 
 contact
 .......
-    .. py:class:: litle_sdk_python.fields.contact
+    .. py:class:: vantivsdk.fields.contact
 
         :var addressLine1: String or Number
         :var addressLine2: String or Number
@@ -1027,7 +1012,7 @@ contact
 
 createAddOnType
 ...............
-    .. py:class:: litle_sdk_python.fields.createAddOnType
+    .. py:class:: vantivsdk.fields.createAddOnType
 
         :var addOnCode: String or Number
         :var amount: String or Number
@@ -1037,7 +1022,7 @@ createAddOnType
 
 createDiscountType
 ..................
-    .. py:class:: litle_sdk_python.fields.createDiscountType
+    .. py:class:: vantivsdk.fields.createDiscountType
 
         :var amount: String or Number
         :var discountCode: String or Number
@@ -1047,7 +1032,7 @@ createDiscountType
 
 createPlan
 ..........
-    .. py:class:: litle_sdk_python.fields.createPlan
+    .. py:class:: vantivsdk.fields.createPlan
 
         :var active: String or Number
         :var amount: String or Number
@@ -1061,7 +1046,7 @@ createPlan
 
 customBilling
 .............
-    .. py:class:: litle_sdk_python.fields.customBilling
+    .. py:class:: vantivsdk.fields.customBilling
 
         :var city: String or Number
         :var descriptor: String or Number
@@ -1070,7 +1055,7 @@ customBilling
 
 customerInfo
 ............
-    .. py:class:: litle_sdk_python.fields.customerInfo
+    .. py:class:: vantivsdk.fields.customerInfo
 
         :var customerCheckingAccount: String or Number
         :var customerRegistrationDate: String or Number
@@ -1088,19 +1073,19 @@ customerInfo
 
 deleteAddOnType
 ...............
-    .. py:class:: litle_sdk_python.fields.deleteAddOnType
+    .. py:class:: vantivsdk.fields.deleteAddOnType
 
         :var addOnCode: String or Number
 
 deleteDiscountType
 ..................
-    .. py:class:: litle_sdk_python.fields.deleteDiscountType
+    .. py:class:: vantivsdk.fields.deleteDiscountType
 
         :var discountCode: String or Number
 
 detailTax
 .........
-    .. py:class:: litle_sdk_python.fields.detailTax
+    .. py:class:: vantivsdk.fields.detailTax
 
         :var cardAcceptorTaxId: String or Number
         :var taxAmount: String or Number
@@ -1110,7 +1095,7 @@ detailTax
 
 driversLicenseInfo
 ..................
-    .. py:class:: litle_sdk_python.fields.driversLicenseInfo
+    .. py:class:: vantivsdk.fields.driversLicenseInfo
 
         :var dateOfBirth: String or Number
         :var licenseNumber: String or Number
@@ -1118,7 +1103,7 @@ driversLicenseInfo
 
 echeckAccountInfoType
 .....................
-    .. py:class:: litle_sdk_python.fields.echeckAccountInfoType
+    .. py:class:: vantivsdk.fields.echeckAccountInfoType
 
         :var accNum: String or Number
         :var accType: String or Number
@@ -1126,14 +1111,14 @@ echeckAccountInfoType
 
 echeckForTokenType
 ..................
-    .. py:class:: litle_sdk_python.fields.echeckForTokenType
+    .. py:class:: vantivsdk.fields.echeckForTokenType
 
         :var accNum: String or Number
         :var routingNum: String or Number
 
 echeckTokenInfoType
 ...................
-    .. py:class:: litle_sdk_python.fields.echeckTokenInfoType
+    .. py:class:: vantivsdk.fields.echeckTokenInfoType
 
         :var accType: String or Number
         :var litleToken: String or Number
@@ -1141,7 +1126,7 @@ echeckTokenInfoType
 
 echeckTokenType
 ...............
-    .. py:class:: litle_sdk_python.fields.echeckTokenType
+    .. py:class:: vantivsdk.fields.echeckTokenType
 
         :var accType: String or Number
         :var checkNum: String or Number
@@ -1150,7 +1135,7 @@ echeckTokenType
 
 echeckType
 ..........
-    .. py:class:: litle_sdk_python.fields.echeckType
+    .. py:class:: vantivsdk.fields.echeckType
 
         :var accNum: String or Number
         :var accType: String or Number
@@ -1160,17 +1145,17 @@ echeckType
 
 enhancedData
 ............
-    .. py:class:: litle_sdk_python.fields.enhancedData
+    .. py:class:: vantivsdk.fields.enhancedData
 
         :var customerReference: String or Number
         :var deliveryType: String or Number
         :var destinationCountryCode: String or Number
         :var destinationPostalCode: String or Number
-        :var detailTax: instance of :py:class:`litle_sdk_python.fields.detailTax`
+        :var detailTax: instance of :py:class:`vantivsdk.fields.detailTax`
         :var discountAmount: String or Number
         :var dutyAmount: String or Number
         :var invoiceReferenceNumber: String or Number
-        :var lineItemData: instance of :py:class:`litle_sdk_python.fields.lineItemData`
+        :var lineItemData: instance of :py:class:`vantivsdk.fields.lineItemData`
         :var orderDate: String or Number
         :var salesTax: String or Number
         :var shipFromPostalCode: String or Number
@@ -1179,7 +1164,7 @@ enhancedData
 
 filteringType
 .............
-    .. py:class:: litle_sdk_python.fields.filteringType
+    .. py:class:: vantivsdk.fields.filteringType
 
         :var chargeback: String or Number
         :var international: String or Number
@@ -1187,7 +1172,7 @@ filteringType
 
 fraudCheckType
 ..............
-    .. py:class:: litle_sdk_python.fields.fraudCheckType
+    .. py:class:: vantivsdk.fields.fraudCheckType
 
         :var authenticatedByMerchant: String or Number
         :var authenticationTransactionId: String or Number
@@ -1196,7 +1181,7 @@ fraudCheckType
 
 fraudResult
 ...........
-    .. py:class:: litle_sdk_python.fields.fraudResult
+    .. py:class:: vantivsdk.fields.fraudResult
 
         :var advancedAVSResult: String or Number
         :var advancedFraudResults: String or Number
@@ -1204,20 +1189,9 @@ fraudResult
         :var avsResult: String or Number
         :var cardValidationResult: String or Number
 
-giftCardCardType
-................
-    .. py:class:: litle_sdk_python.fields.giftCardCardType
-
-        :var cardValidationNum: String or Number
-        :var expDate: String or Number
-        :var number: String or Number
-        :var pin: String or Number
-        :var track: String or Number
-        :var type: String or Number
-
 healthcareAmounts
 .................
-    .. py:class:: litle_sdk_python.fields.healthcareAmounts
+    .. py:class:: vantivsdk.fields.healthcareAmounts
 
         :var RxAmount: String or Number
         :var clinicOtherAmount: String or Number
@@ -1227,17 +1201,17 @@ healthcareAmounts
 
 healthcareIIAS
 ..............
-    .. py:class:: litle_sdk_python.fields.healthcareIIAS
+    .. py:class:: vantivsdk.fields.healthcareIIAS
 
         :var IIASFlag: String or Number
-        :var healthcareAmounts: instance of :py:class:`litle_sdk_python.fields.healthcareAmounts`
+        :var healthcareAmounts: instance of :py:class:`vantivsdk.fields.healthcareAmounts`
 
 lineItemData
 ............
-    .. py:class:: litle_sdk_python.fields.lineItemData
+    .. py:class:: vantivsdk.fields.lineItemData
 
         :var commodityCode: String or Number
-        :var detailTax: instance of :py:class:`litle_sdk_python.fields.detailTax`
+        :var detailTax: instance of :py:class:`vantivsdk.fields.detailTax`
         :var itemDescription: String or Number
         :var itemDiscountAmount: String or Number
         :var itemSequenceNumber: String or Number
@@ -1251,7 +1225,7 @@ lineItemData
 
 litleInternalRecurringRequestType
 .................................
-    .. py:class:: litle_sdk_python.fields.litleInternalRecurringRequestType
+    .. py:class:: vantivsdk.fields.litleInternalRecurringRequestType
 
         :var finalPayment: String or Number
         :var recurringTxnId: String or Number
@@ -1259,30 +1233,30 @@ litleInternalRecurringRequestType
 
 litleOnlineRequest
 ..................
-    .. py:class:: litle_sdk_python.fields.litleOnlineRequest
+    .. py:class:: vantivsdk.fields.litleOnlineRequest
 
-        :var authentication: instance of :py:class:`litle_sdk_python.fields.authentication`
+        :var authentication: instance of :py:class:`vantivsdk.fields.authentication`
         :var loggedInUser: String or Number
         :var merchantId: String or Number
         :var merchantSdk: String or Number
-        :var recurringTransaction: String or Number
-        :var transaction: String or Number
+        :var recurringTransaction: instance of
+        :var transaction: instance of :py:class:`vantivsdk.fields.registerTokenRequest`,  :py:class:`vantivsdk.fields.updateCardValidationNumOnToken`, 
         :var version: String or Number
 
 litleRequest
 ............
-    .. py:class:: litle_sdk_python.fields.litleRequest
+    .. py:class:: vantivsdk.fields.litleRequest
 
-        :var RFRRequest: instance of :py:class:`litle_sdk_python.fields.RFRRequest`
-        :var authentication: instance of :py:class:`litle_sdk_python.fields.authentication`
-        :var batchRequest: instance of :py:class:`litle_sdk_python.fields.batchRequest`
+        :var RFRRequest: instance of :py:class:`vantivsdk.fields.RFRRequest`
+        :var authentication: instance of :py:class:`vantivsdk.fields.authentication`
+        :var batchRequest: instance of :py:class:`vantivsdk.fields.batchRequest`
         :var id: String or Number
         :var numBatchRequests: String or Number
         :var version: String or Number
 
 merchantDataType
 ................
-    .. py:class:: litle_sdk_python.fields.merchantDataType
+    .. py:class:: vantivsdk.fields.merchantDataType
 
         :var affiliate: String or Number
         :var campaign: String or Number
@@ -1290,7 +1264,7 @@ merchantDataType
 
 mposType
 ........
-    .. py:class:: litle_sdk_python.fields.mposType
+    .. py:class:: vantivsdk.fields.mposType
 
         :var encryptedTrack: String or Number
         :var formatId: String or Number
@@ -1298,34 +1272,18 @@ mposType
         :var track1Status: String or Number
         :var track2Status: String or Number
 
-networkField
-............
-    .. py:class:: litle_sdk_python.fields.networkField
-
-        :var fieldName: String or Number
-        :var fieldNumber: String or Number
-        :var fieldValue: String or Number
-        :var networkSubField: instance of :py:class:`litle_sdk_python.fields.networkSubField`
-
-networkSubField
-...............
-    .. py:class:: litle_sdk_python.fields.networkSubField
-
-        :var fieldNumber: String or Number
-        :var fieldValue: String or Number
-
 payPal
 ......
-    .. py:class:: litle_sdk_python.fields.payPal
+    .. py:class:: vantivsdk.fields.payPal
 
         :var payerEmail: String or Number
         :var payerId: String or Number
-        :var token: instance of :py:class:`litle_sdk_python.fields.cardTokenType`
+        :var token: instance of :py:class:`vantivsdk.fields.cardTokenType`
         :var transactionId: String or Number
 
 pos
 ...
-    .. py:class:: litle_sdk_python.fields.pos
+    .. py:class:: vantivsdk.fields.pos
 
         :var capability: String or Number
         :var cardholderId: String or Number
@@ -1335,19 +1293,19 @@ pos
 
 processingInstructions
 ......................
-    .. py:class:: litle_sdk_python.fields.processingInstructions
+    .. py:class:: vantivsdk.fields.processingInstructions
 
         :var bypassVelocityCheck: String or Number
 
 recurringRequestType
 ....................
-    .. py:class:: litle_sdk_python.fields.recurringRequestType
+    .. py:class:: vantivsdk.fields.recurringRequestType
 
         :var subscription: String or Number
 
 recurringSubscriptionType
 .........................
-    .. py:class:: litle_sdk_python.fields.recurringSubscriptionType
+    .. py:class:: vantivsdk.fields.recurringSubscriptionType
 
         :var amount: String or Number
         :var createAddOn: String or Number
@@ -1358,33 +1316,33 @@ recurringSubscriptionType
 
 recurringTransactionType
 ........................
-    .. py:class:: litle_sdk_python.fields.recurringTransactionType
+    .. py:class:: vantivsdk.fields.recurringTransactionType
 
 
 recycleAdviceType
 .................
-    .. py:class:: litle_sdk_python.fields.recycleAdviceType
+    .. py:class:: vantivsdk.fields.recycleAdviceType
 
         :var nextRecycleTime: String or Number
         :var recycleAdviceEnd: String or Number
 
 recyclingRequestType
 ....................
-    .. py:class:: litle_sdk_python.fields.recyclingRequestType
+    .. py:class:: vantivsdk.fields.recyclingRequestType
 
         :var recycleBy: String or Number
         :var recycleId: String or Number
 
 recyclingType
 .............
-    .. py:class:: litle_sdk_python.fields.recyclingType
+    .. py:class:: vantivsdk.fields.recyclingType
 
         :var recycleAdvice: String or Number
         :var recycleEngineActive: String or Number
 
 registerTokenRequestType
 ........................
-    .. py:class:: litle_sdk_python.fields.registerTokenRequestType
+    .. py:class:: vantivsdk.fields.registerTokenRequestType
 
         :var accountNumber: String or Number
         :var applepay: String or Number
@@ -1397,28 +1355,16 @@ registerTokenRequestType
         :var paypageRegistrationId: String or Number
         :var reportGroup: String or Number
 
-sepaDirectDebitType
-...................
-    .. py:class:: litle_sdk_python.fields.sepaDirectDebitType
-
-        :var iban: String or Number
-        :var mandateProvider: String or Number
-        :var mandateReference: String or Number
-        :var mandateSignatureDate: String or Number
-        :var mandateUrl: String or Number
-        :var preferredLanguage: String or Number
-        :var sequenceType: String or Number
-
 transactionType
 ...............
-    .. py:class:: litle_sdk_python.fields.transactionType
+    .. py:class:: vantivsdk.fields.transactionType
 
         :var customerId: String or Number
         :var id: String or Number
 
 transactionTypeOptionReportGroup
 ................................
-    .. py:class:: litle_sdk_python.fields.transactionTypeOptionReportGroup
+    .. py:class:: vantivsdk.fields.transactionTypeOptionReportGroup
 
         :var customerId: String or Number
         :var id: String or Number
@@ -1426,7 +1372,7 @@ transactionTypeOptionReportGroup
 
 transactionTypeWithReportGroup
 ..............................
-    .. py:class:: litle_sdk_python.fields.transactionTypeWithReportGroup
+    .. py:class:: vantivsdk.fields.transactionTypeWithReportGroup
 
         :var customerId: String or Number
         :var id: String or Number
@@ -1434,7 +1380,7 @@ transactionTypeWithReportGroup
 
 transactionTypeWithReportGroupAndPartial
 ........................................
-    .. py:class:: litle_sdk_python.fields.transactionTypeWithReportGroupAndPartial
+    .. py:class:: vantivsdk.fields.transactionTypeWithReportGroupAndPartial
 
         :var customerId: String or Number
         :var id: String or Number
@@ -1443,7 +1389,7 @@ transactionTypeWithReportGroupAndPartial
 
 updateAddOnType
 ...............
-    .. py:class:: litle_sdk_python.fields.updateAddOnType
+    .. py:class:: vantivsdk.fields.updateAddOnType
 
         :var addOnCode: String or Number
         :var amount: String or Number
@@ -1453,7 +1399,7 @@ updateAddOnType
 
 updateCardValidationNumOnToken_
 ...............................
-    .. py:class:: litle_sdk_python.fields.updateCardValidationNumOnToken_
+    .. py:class:: vantivsdk.fields.updateCardValidationNumOnToken_
 
         :var cardValidationNum: String or Number
         :var customerId: String or Number
@@ -1464,7 +1410,7 @@ updateCardValidationNumOnToken_
 
 updateDiscountType
 ..................
-    .. py:class:: litle_sdk_python.fields.updateDiscountType
+    .. py:class:: vantivsdk.fields.updateDiscountType
 
         :var amount: String or Number
         :var discountCode: String or Number
@@ -1474,18 +1420,18 @@ updateDiscountType
 
 updatePlan
 ..........
-    .. py:class:: litle_sdk_python.fields.updatePlan
+    .. py:class:: vantivsdk.fields.updatePlan
 
         :var active: String or Number
         :var planCode: String or Number
 
 updateSubscription
 ..................
-    .. py:class:: litle_sdk_python.fields.updateSubscription
+    .. py:class:: vantivsdk.fields.updateSubscription
 
-        :var billToAddress: instance of :py:class:`litle_sdk_python.fields.contact`
+        :var billToAddress: instance of :py:class:`vantivsdk.fields.contact`
         :var billingDate: String or Number
-        :var card: instance of :py:class:`litle_sdk_python.fields.cardType`
+        :var card: instance of :py:class:`vantivsdk.fields.cardType`
         :var createAddOn: String or Number
         :var createDiscount: String or Number
         :var deleteAddOn: String or Number
@@ -1493,20 +1439,20 @@ updateSubscription
         :var paypage: String or Number
         :var planCode: String or Number
         :var subscriptionId: String or Number
-        :var token: instance of :py:class:`litle_sdk_python.fields.cardTokenType`
+        :var token: instance of :py:class:`vantivsdk.fields.cardTokenType`
         :var updateAddOn: String or Number
         :var updateDiscount: String or Number
 
 virtualGiftCardType
 ...................
-    .. py:class:: litle_sdk_python.fields.virtualGiftCardType
+    .. py:class:: vantivsdk.fields.virtualGiftCardType
 
         :var accountNumberLength: String or Number
         :var giftCardBin: String or Number
 
 wallet
 ......
-    .. py:class:: litle_sdk_python.fields.wallet
+    .. py:class:: vantivsdk.fields.wallet
 
         :var walletSourceType: String or Number
         :var walletSourceTypeId: String or Number

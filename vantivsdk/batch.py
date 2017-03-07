@@ -172,7 +172,7 @@ def retrieve(filename, conf, return_format='dict', save_to_local=False, delete_r
     Args:
         filename: filename of file in outbound folder at remote server with '.asc' as extension.
         conf:  An instance of utils.Configuration.
-        return_format: Return format. The default is 'object'. Could be either 'object' or 'xml'.
+        return_format: Return format. The default is ‘dict’. Could be one of ‘dict’, ‘object’ or ‘xml’.
         save_to_local: whether save file to local. default is false.
         delete_remote: If delete the remote file after download. The default is False
         timeout: Timeout in second for ssh connection for sftp.
@@ -206,7 +206,7 @@ def stream(transactions, conf, return_format='dict', timeout_send=60, timeout_re
     Args:
         transactions: an instance of batch.Transactions.
         conf: An instance of utils.Configuration.
-        return_format: Return format. The default is 'object'. Could be either 'object' or 'xml'.
+        return_format: Return format. The default is ‘dict’. Could be one of ‘dict’, ‘object’ or ‘xml’.
         timeout_send: Positive int. Timeout in second for socket connection when sending.
         timeout_rev: Positive int. Timeout in second for socket connection when receiving.
 
@@ -295,9 +295,12 @@ def _stream_socket(xml_str, conf, timeout_send, timeout_rev):
             break
         # noinspection PyBroadException
         try:
-            data = s.recv(512)
+            data = s.recv(4096)
             if data:
                 str_array.append(data)
+                # break when got litleResponse close tag
+                if b'</litleResponse>' in data:
+                    break
                 start = time.time()
             else:
                 time.sleep(0.1)
@@ -498,10 +501,13 @@ def _create_batch_xml(transactions, conf):
         txn_count = 0
         txns_str = ''
         for txn in txns:
+            # Add default reportGroup to txn
+            if not txn.reportGroup:
+                txn.reportGroup = conf.reportGroup
             txn_count += 1
             type_name = type(txn).__name__
             attributes_num_dict[_class_transaction_dict[type_name][0]] += 1
-            if hasattr(txn, 'amount'):
+            if hasattr(txn, 'amount') and _class_transaction_dict[type_name][1]:
                 attributes_amount_dict[_class_transaction_dict[type_name][1]] += int(getattr(txn, 'amount'))
             txns_str += _obj_to_xml_element(txn)
             if txn_count == 20000:

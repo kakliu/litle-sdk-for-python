@@ -41,15 +41,15 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <xs:simpleType name="responseType">
+    <xs:simpleType name="string4Type">
         <xs:restriction base="xs:string">
-            <xs:maxLength value="3" />
+            <xs:maxLength value="4"/>
         </xs:restriction>
     </xs:simpleType>
 
-    <xs:simpleType name="string4Type">
+    <xs:simpleType name="responseType">
         <xs:restriction base="xs:string">
-            <xs:maxLength value="4" />
+            <xs:maxLength value="3"/>
         </xs:restriction>
     </xs:simpleType>
 
@@ -65,12 +65,6 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <xs:simpleType name="string36Type">
-        <xs:restriction base="xs:string">
-            <xs:maxLength value="36" />
-        </xs:restriction>
-    </xs:simpleType>
-
     <xs:simpleType name="string50Type">
         <xs:restriction base="xs:string">
             <xs:maxLength value="50" />
@@ -80,12 +74,6 @@
     <xs:simpleType name="string80Type">
         <xs:restriction base="xs:string">
             <xs:maxLength value="80" />
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="string128Type">
-        <xs:restriction base="xs:string">
-            <xs:maxLength value="128" />
         </xs:restriction>
     </xs:simpleType>
 
@@ -101,21 +89,6 @@
         </xs:restriction>
     </xs:simpleType>
     
-    
-    <xs:simpleType name="networkMessageValue">
-        <xs:restriction base="xs:string">
-            <xs:maxLength value="9999" />
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="stringMin1Max25CollapseWhiteSpaceType">
-        <xs:restriction base="xs:string">
-            <xs:minLength value="1" />
-            <xs:maxLength value="25" />
-            <xs:whiteSpace value="collapse"/>
-        </xs:restriction>
-    </xs:simpleType>
-
     <xs:simpleType name="cardNumberLast4Type">
         <xs:restriction base="xs:string">
             <xs:maxLength value="4" />
@@ -674,27 +647,6 @@
         </xs:sequence>
     </xs:complexType>
     
-    <xs:complexType name="giftCardCardType">
-       <xs:complexContent>
-            <xs:restriction base="xp:cardType">
-               <xs:sequence>
-		            <xs:choice>
-		                <xs:sequence>
-		                    <xs:element name="type" type="xp:methodOfPaymentTypeEnum" fixed="GC"/>
-		                    <xs:element name="number" type="xp:ccAccountNumberType" minOccurs="0"/>
-		                    <xs:element name="expDate" type="xp:expDateType" minOccurs="0" />
-		                </xs:sequence>
-		                <xs:sequence>
-		                    <xs:element name="track" type="xp:trackDataType" />
-		                </xs:sequence>
-		            </xs:choice>
-		            <xs:element name="cardValidationNum" type="xp:cvNumType" minOccurs="0" />
-		            <xs:element name="pin" type="xp:pinType" minOccurs="0" />
-		        </xs:sequence>
-            </xs:restriction>
-        </xs:complexContent>
-    </xs:complexType>    
-
     <xs:simpleType name="pinType">
         <xs:restriction base="xs:string">
             <xs:minLength value="4"/>
@@ -809,14 +761,8 @@
             <xs:maxLength value="200" />
         </xs:restriction>
     </xs:simpleType>
-    
-    <xs:simpleType name="string15Type">
-        <xs:restriction base="xs:string">
-            <xs:maxLength value="15" />
-        </xs:restriction>
-    </xs:simpleType>
-    
-     <xs:simpleType name="string30Type">
+
+    <xs:simpleType name="string30Type">
         <xs:restriction base="xs:string">
             <xs:maxLength value="30" />
         </xs:restriction>

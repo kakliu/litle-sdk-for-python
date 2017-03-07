@@ -32,7 +32,7 @@ import six
 package_root = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 sys.path.insert(0, package_root)
 
-from litle_sdk_python import utils
+from vantivsdk import utils
 
 def ask_user():
     attrs = [
@@ -51,6 +51,7 @@ def ask_user():
         'fast_ssl',
         'fast_port',
         'print_xml',
+        'id'
     ]
     attr_dict = {
         'user': '',
@@ -68,6 +69,7 @@ def ask_user():
         'fast_ssl': 'y',
         'fast_port': '',
         'print_xml': 'n',
+        'id': ''
     }
     attr_valid_dict = {
         'url': {
@@ -101,6 +103,7 @@ def ask_user():
         'fast_ssl': 'Using ssl for fast stream? y for Yes, n for No.',
         'fast_port': 'Please input fast port, using for batch stream',
         'print_xml': 'Do you want to print xml in console? y for Yes, n for No.',
+        'id': 'litleRequest id for batch'
     }
     print(CC.bpurple('Vantiv eCommerce Python SDK configuration!'))
     print('''

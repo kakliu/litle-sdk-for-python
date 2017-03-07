@@ -31,7 +31,7 @@ sys.path.insert(0, package_root)
 
 import pyxb
 
-from litle_sdk_python import *
+from vantivsdk import *
 
 conf = utils.Configuration()
 

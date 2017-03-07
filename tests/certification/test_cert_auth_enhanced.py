@@ -29,7 +29,7 @@ import unittest
 package_root = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.insert(0, package_root)
 
-from litle_sdk_python import *
+from vantivsdk import *
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 sys.path.insert(0, package_root)
@@ -37,9 +37,6 @@ sys.path.insert(0, package_root)
 import certification_test_conf
 
 conf = certification_test_conf.conf
-
-if __name__ == '__main__':
-    unittest.main()
 
 class TestCertEnhancedAuths(unittest.TestCase):
 
@@ -336,7 +333,7 @@ class TestCertEnhancedAuths(unittest.TestCase):
         self.assertEquals('Approved', response['authorizationResponse']['message'])
         # TODO Didn't return issuerCountry
         # enhancedAuthResponse is empty
-        self.assertEquals('BRA', response.transactionResponse.enhancedAuthResponse.issuerCountry)
+        self.assertEquals('BRA', response['authorizationResponse']['enhancedAuthResponse']['issuerCountry'])
 
 
     # Can't pass 26 - 31, <message>Merchant not certified/enabled for IIAS</message>
@@ -516,3 +513,7 @@ class TestCertEnhancedAuths(unittest.TestCase):
         self.assertEquals('010', response['authorizationResponse']['response'])
         self.assertEquals('Partially Approved', response['authorizationResponse']['message'])
         self.assertEquals('18699', response['authorizationResponse']['approvedAmount'])
+
+
+if __name__ == '__main__':
+    unittest.main()

@@ -29,7 +29,7 @@ import unittest
 package_root = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.insert(0, package_root)
 
-from litle_sdk_python import *
+from vantivsdk import *
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 sys.path.insert(0, package_root)
@@ -38,8 +38,6 @@ import certification_test_conf
 
 conf = certification_test_conf.conf
 
-if __name__ == '__main__':
-    unittest.main()
 
 
 class TestCertToken(unittest.TestCase):
@@ -361,3 +359,7 @@ class TestCertToken(unittest.TestCase):
                           response['echeckCreditResponse']['accountUpdater']['tokenMessage'])
         self.assertEquals('EC', response['echeckCreditResponse']['accountUpdater']['type'])
         self.assertEquals('999', response['echeckCreditResponse']['accountUpdater']['eCheckAccountSuffix'])
+
+
+if __name__ == '__main__':
+    unittest.main()

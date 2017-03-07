@@ -29,7 +29,7 @@ import sys
 
 package_root = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 sys.path.insert(0, package_root)
-from litle_sdk_python import utils
+from vantivsdk import utils
 
 # Require Python 2.7.9 or higher or Python 3.4 or higher
 if (sys.version_info[:3] < (2, 7 ,9)) or ((sys.version_info[0] == 3) and sys.version_info[:2] < (3, 4)):

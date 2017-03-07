@@ -37,7 +37,7 @@ import certification_test_conf
 
 conf = certification_test_conf.conf
 
-from litle_sdk_python import *
+from vantivsdk import *
 
 
 class TestCertAuths(unittest.TestCase):

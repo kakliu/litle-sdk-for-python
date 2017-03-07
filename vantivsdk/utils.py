@@ -51,7 +51,7 @@ class Configuration(object):
         print_xml (Str): Whether print request and response xml
     """
     VERSION = '9.10'
-    RELEASE = 'v2 9.10.beta'
+    RELEASE = '9.10.b0'
     MERCHANTSDK = 'Python ' + RELEASE
     _CONFIG_FILE_PATH = os.path.join(os.environ['VANTIV_SDK_CONFIG'], ".vantiv_python_sdk.conf") \
         if 'VANTIV_SDK_CONFIG' in os.environ else os.path.join(os.path.expanduser("~"), ".vantiv_python_sdk.conf")
@@ -92,6 +92,7 @@ class Configuration(object):
                 self.fast_ssl = config_json["fast_ssl"] if "fast_ssl" in config_json else self.fast_ssl
                 self.fast_port = config_json["fast_port"] if "fast_port" in config_json else ""
                 self.print_xml = config_json["print_xml"] if "print_xml" in config_json else self.print_xml
+                self.id = config_json["id"] if "id" in config_json else self.id
                 self.batch_requests_path = config_json["batch_requests_path"] if "batch_requests_path" in config_json \
                     else self.batch_requests_path
                 self.batch_response_path = config_json["batch_response_path"] if "batch_response_path" in config_json \

@@ -28,7 +28,7 @@ import unittest
 
 package_root = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.insert(0, package_root)
-from litle_sdk_python import *
+from vantivsdk import *
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 sys.path.insert(0, package_root)
@@ -36,9 +36,6 @@ sys.path.insert(0, package_root)
 import certification_test_conf
 
 conf = certification_test_conf.conf
-
-if __name__ == '__main__':
-    unittest.main()
 
 class TestCertEcheck(unittest.TestCase):
     def test_table_2_4_37(self):
@@ -393,3 +390,7 @@ class TestCertEcheck(unittest.TestCase):
         response = online.request(transaction, conf)
         self.assertEquals('360', response['echeckVoidResponse']['response'])
         self.assertEquals('No transaction found with specified litleTxnId', response['echeckVoidResponse']['message'])
+
+
+if __name__ == '__main__':
+    unittest.main()

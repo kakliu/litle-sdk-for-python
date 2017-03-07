@@ -24,12 +24,11 @@
 from __future__ import absolute_import, division, print_function
 
 import os
-import re
 import sys
 
 package_root = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 sys.path.insert(0, package_root)
-from litle_sdk_python import utils
+from vantivsdk import utils
 
 version = utils.Configuration().VERSION
 xsd_name = 'SchemaCombined_v%s.xsd' % version
@@ -46,7 +45,7 @@ os.system('pyxbgen -u %s -m fields' % xsd_abs_path)
 
 print('Copy filed.py to package')
 gen_field_py_abs_path = os.path.join(package_root, 'fields.py')
-target_field_py_abs_path = os.path.join(package_root, 'litle_sdk_python' ,'fields.py')
+target_field_py_abs_path = os.path.join(package_root, 'vantivsdk', 'fields.py')
 os.system('cp %s %s' % (gen_field_py_abs_path, target_field_py_abs_path))
 
 # Run postgen
