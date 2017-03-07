@@ -1,4 +1,4 @@
-Vantiv eCommerce Python SDKv2 documentation 9.10!
+Vantiv eCommerce Python SDKv2 documentation 10.1!
 ==================================================
 
 .. toctree::
@@ -136,7 +136,7 @@ accountUpdate
 .............
     .. py:class:: vantivsdk.fields.accountUpdate
 
-        :var cardOrToken: instance of :py:class:`vantivsdk.fields.card`,  :py:class:`vantivsdk.fields.token`, 
+        :var cardOrToken: instance of :py:class:`vantivsdk.fields.token`,  :py:class:`vantivsdk.fields.card`, 
         :var customerId: String or Number
         :var id: String or Number
         :var orderId: String or Number
@@ -204,13 +204,10 @@ authorization
         :var mpos: String or Number
         :var orderId: String or Number
         :var orderSource: String or Number
-        :var originalNetworkTransactionId: String or Number
-        :var originalTransactionAmount: String or Number
         :var paypage: String or Number
         :var paypal: String or Number
         :var pos: instance of :py:class:`vantivsdk.fields.pos`
         :var processingInstructions: instance of :py:class:`vantivsdk.fields.processingInstructions`
-        :var processingType: String or Number
         :var recurringRequest: String or Number
         :var recyclingRequest: String or Number
         :var reportGroup: String or Number
@@ -245,7 +242,6 @@ capture
         :var partial: String or Number
         :var payPalNotes: String or Number
         :var payPalOrderComplete: String or Number
-        :var pin: String or Number
         :var processingInstructions: instance of :py:class:`vantivsdk.fields.processingInstructions`
         :var reportGroup: String or Number
         :var surchargeAmount: String or Number
@@ -269,12 +265,9 @@ captureGivenAuth
         :var mpos: String or Number
         :var orderId: String or Number
         :var orderSource: String or Number
-        :var originalNetworkTransactionId: String or Number
-        :var originalTransactionAmount: String or Number
         :var paypage: String or Number
         :var pos: instance of :py:class:`vantivsdk.fields.pos`
         :var processingInstructions: instance of :py:class:`vantivsdk.fields.processingInstructions`
-        :var processingType: String or Number
         :var reportGroup: String or Number
         :var secondaryAmount: String or Number
         :var shipToAddress: instance of :py:class:`vantivsdk.fields.contact`
@@ -304,7 +297,6 @@ credit
         :var payPalNotes: String or Number
         :var paypage: String or Number
         :var paypal: String or Number
-        :var pin: String or Number
         :var pos: instance of :py:class:`vantivsdk.fields.pos`
         :var processingInstructions: instance of :py:class:`vantivsdk.fields.processingInstructions`
         :var reportGroup: String or Number
@@ -459,7 +451,6 @@ forceCapture
         :var paypage: String or Number
         :var pos: instance of :py:class:`vantivsdk.fields.pos`
         :var processingInstructions: instance of :py:class:`vantivsdk.fields.processingInstructions`
-        :var processingType: String or Number
         :var reportGroup: String or Number
         :var secondaryAmount: String or Number
         :var surchargeAmount: String or Number
@@ -477,6 +468,15 @@ fraudCheck
         :var id: String or Number
         :var reportGroup: String or Number
         :var shipToAddress: instance of :py:class:`vantivsdk.fields.contact`
+
+fundingInstructionVoid
+......................
+    .. py:class:: vantivsdk.fields.fundingInstructionVoid
+
+        :var customerId: String or Number
+        :var id: String or Number
+        :var litleTxnId: String or Number
+        :var reportGroup: String or Number
 
 load
 ....
@@ -616,15 +616,12 @@ sale
         :var mpos: String or Number
         :var orderId: String or Number
         :var orderSource: String or Number
-        :var originalNetworkTransactionId: String or Number
-        :var originalTransactionAmount: String or Number
         :var payPalNotes: String or Number
         :var payPalOrderComplete: String or Number
         :var paypage: String or Number
         :var paypal: String or Number
         :var pos: instance of :py:class:`vantivsdk.fields.pos`
         :var processingInstructions: instance of :py:class:`vantivsdk.fields.processingInstructions`
-        :var processingType: String or Number
         :var recurringRequest: String or Number
         :var recyclingRequest: String or Number
         :var reportGroup: String or Number
@@ -634,6 +631,16 @@ sale
         :var taxType: String or Number
         :var token: instance of :py:class:`vantivsdk.fields.cardTokenType`
         :var wallet: instance of :py:class:`vantivsdk.fields.wallet`
+
+serviceStatusRequest
+....................
+    .. py:class:: vantivsdk.fields.serviceStatusRequest
+
+        :var customerId: String or Number
+        :var id: String or Number
+        :var pathId: String or Number
+        :var reportGroup: String or Number
+        :var serviceId: String or Number
 
 submerchantCredit
 .................
@@ -877,6 +884,7 @@ batchRequest
         :var numEcheckVerification: String or Number
         :var numExtCaptures: String or Number
         :var numForceCaptures: String or Number
+        :var numFundingInstructionVoid: String or Number
         :var numLoads: String or Number
         :var numPayFacCredit: String or Number
         :var numPayFacDebit: String or Number
@@ -987,7 +995,6 @@ cardType
         :var cardValidationNum: String or Number
         :var expDate: String or Number
         :var number: String or Number
-        :var pin: String or Number
         :var track: String or Number
         :var type: String or Number
 

@@ -3,7 +3,7 @@
 <xs:schema targetNamespace="http://www.litle.com/schema" xmlns:xp="http://www.litle.com/schema"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
 
-    <xs:include schemaLocation="litleTransaction_v9.10.xsd"/>
+    <xs:include schemaLocation="litleTransaction_v10.1.xsd" />
 
     <xs:complexType name="baseRequest">
         <xs:sequence>
@@ -65,7 +65,6 @@
                         <xs:element name="message" type="xp:messageType" />
                         <xs:element name="recycling" type="xp:voidRecyclingResponseType" minOccurs="0" />
                     </xs:all>
-                    <xs:attribute name="duplicate" type="xs:boolean" use="optional"/>
 
                 </xs:extension>
             </xs:complexContent>
@@ -101,7 +100,6 @@
                         <xs:element name="postDate" type="xs:date" />
                         <xs:element name="message" type="xp:messageType" />
                     </xs:all>
-                    <xs:attribute name="duplicate" type="xs:boolean" use="optional"/>
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
@@ -112,7 +110,7 @@
             <xs:complexContent>
                 <xs:extension base="xp:transactionTypeWithReportGroup">
                     <xs:all>
-                        <xs:element name="litleTxnId" type="xp:litleIdType"/>
+                        <xs:element name="litleTxnId" type="xp:litleIdType" />
                     </xs:all>
                 </xs:extension>
             </xs:complexContent>
@@ -124,55 +122,55 @@
             <xs:complexContent>
                 <xs:extension base="xp:transactionTypeWithReportGroup">
                     <xs:all>
-                        <xs:element name="litleTxnId" type="xp:litleIdType"/>
+                        <xs:element name="litleTxnId" type="xp:litleIdType" />
                     </xs:all>
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
     </xs:element>
 
-    <xs:element name="activateReversal" substitutionGroup="xp:transaction">
+     <xs:element name="activateReversal" substitutionGroup="xp:transaction">
         <xs:complexType>
             <xs:complexContent>
                 <xs:extension base="xp:transactionTypeWithReportGroup">
                     <xs:all>
-                        <xs:element name="litleTxnId" type="xp:litleIdType"/>
+                        <xs:element name="litleTxnId" type="xp:litleIdType" />
                     </xs:all>
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
     </xs:element>
 
-    <xs:element name="deactivateReversal" substitutionGroup="xp:transaction">
+     <xs:element name="deactivateReversal" substitutionGroup="xp:transaction">
         <xs:complexType>
             <xs:complexContent>
                 <xs:extension base="xp:transactionTypeWithReportGroup">
                     <xs:all>
-                        <xs:element name="litleTxnId" type="xp:litleIdType"/>
+                        <xs:element name="litleTxnId" type="xp:litleIdType" />
                     </xs:all>
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
     </xs:element>
 
-    <xs:element name="loadReversal" substitutionGroup="xp:transaction">
+     <xs:element name="loadReversal" substitutionGroup="xp:transaction">
         <xs:complexType>
             <xs:complexContent>
                 <xs:extension base="xp:transactionTypeWithReportGroup">
                     <xs:all>
-                        <xs:element name="litleTxnId" type="xp:litleIdType"/>
+                        <xs:element name="litleTxnId" type="xp:litleIdType" />
                     </xs:all>
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
     </xs:element>
 
-    <xs:element name="unloadReversal" substitutionGroup="xp:transaction">
+     <xs:element name="unloadReversal" substitutionGroup="xp:transaction">
         <xs:complexType>
             <xs:complexContent>
                 <xs:extension base="xp:transactionTypeWithReportGroup">
                     <xs:all>
-                        <xs:element name="litleTxnId" type="xp:litleIdType"/>
+                        <xs:element name="litleTxnId" type="xp:litleIdType" />
                     </xs:all>
                 </xs:extension>
             </xs:complexContent>
@@ -187,7 +185,7 @@
                         <xs:element name="origId" type="xp:string25Type" minOccurs="1" />
                         <xs:element name="origActionType" type="xp:actionTypeEnum" minOccurs="1" />
                         <xs:element name="origLitleTxnId" type="xp:litleIdType" minOccurs="0" />
-                        <xs:element name="origOrderId" type="xp:string25Type" minOccurs="0"/>
+                        <xs:element name="origOrderId" type="xp:string25Type" minOccurs="0" />
                         <xs:element name="origAccountNumber" type="xp:ccAccountNumberType" minOccurs="0"/>
                     </xs:sequence>
                 </xs:extension>
@@ -231,6 +229,34 @@
                         <xs:element name="litleTxnId" type="xp:litleIdType" />
                          <xs:element name="response" type="xp:responseType" />
                         <xs:element name="message" type="xp:messageType" />
+                    </xs:all>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="serviceStatusRequest" substitutionGroup="xp:transaction">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="xp:transactionTypeWithReportGroup">
+                    <xs:all>
+                        <xs:element name="serviceId" type="xp:litleIdType" />
+                        <xs:element name="pathId" type="xp:litleIdType" />
+                    </xs:all>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="serviceStatusResponse" substitutionGroup="xp:transactionResponse">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="xp:transactionTypeWithReportGroup">
+                    <xs:all>
+                        <xs:element name="litleTxnId" type="xp:litleIdType" />
+                        <xs:element name="response" type="xp:responseType" />
+                        <xs:element name="responseTime" type="xs:dateTime" />
+                        <xs:element name="message" type="xs:string"/>
                     </xs:all>
                 </xs:extension>
             </xs:complexContent>
