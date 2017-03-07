@@ -12,7 +12,7 @@ if (sys.version_info[:3] < (2, 7, 9)) or ((sys.version_info[0] == 3) and sys.ver
 
 setup(
     name='VantiveCommerceSDKv2',
-    version='9.10.b0',
+    version='11.0.b0',
     description='Vantiv eCommerce Python SDKv2',
     author='Vantiv eCommerce',
     author_email='SDKSupport@vantiv.com',
@@ -71,7 +71,7 @@ About this SDK
 --------------
 The Vantiv eCommerce Python SDKv2 is a Python implementation of the `Vantiv eCommerce`_ XML API. This SDK was created to make it as easy as possible to connect to and process payments through Vantiv eCommerce. This SDK utilizes the HTTPS protocol to securely connect to Vantiv eCommerce.  Using the SDK requires coordination with the Vantiv eCommerce team to obtain credentials for accessing our systems.
 
-Each Python SDK release supports all of the functionality present in the associated Vantiv eCommerce XML version (e.g., SDKv2 9.10.x supports Vantiv eCommerce XML v9.10). Please see the online copy of our XSD for Vantiv eCommerce XML to get more details on what the Vantiv eCommerce payments engine supports .
+Each Python SDK release supports all of the functionality present in the associated Vantiv eCommerce XML version (e.g., SDKv2 11.0.x supports Vantiv eCommerce XML v11.0). Please see the online copy of our XSD for Vantiv eCommerce XML to get more details on what the Vantiv eCommerce payments engine supports .
 
 This SDK was implemented to support the Python programming language and was created by Vantiv eCommerce Its intended use is for online transaction processing utilizing your account on the Vantiv eCommerce payments engine.
 
