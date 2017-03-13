@@ -22,9 +22,29 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
-from __future__ import absolute_import
+import os
+import sys
+import unittest
+import random
 
-import run_test_utils
+package_root = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+sys.path.insert(0, package_root)
 
-tests_dir = ['certification', 'functional','unit']
-run_test_utils.run_tests(tests_dir)
+from vantivsdk import (utils)
+
+class TestUtils(unittest.TestCase):
+    def test_not_load_save(self):
+        conf_ori = utils.Configuration()
+        conf = utils.Configuration()
+        conf.proxy = 'TestCase %d' % random.randint(0,100)
+        conf.url = 'TestCase %d' % random.randint(0,100)
+        conf.save()
+        conf_new = utils.Configuration()
+        conf_ori.save()
+        self.assertEquals(conf.proxy, conf_new.proxy)
+        self.assertEquals(conf.url, conf_new.url)
+        self.assertNotEqual(conf_ori.url, conf_new.url)
+
+
+if __name__ == '__main__':
+    unittest.main()
