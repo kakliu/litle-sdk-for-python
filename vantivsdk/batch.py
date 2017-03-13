@@ -89,8 +89,8 @@ for key in _supported_transaction_types:
 _class_transaction_dict = dict()
 for key in _supported_transaction_types:
     obj = getattr(fields, key)()
-    typename = type(obj).__name__
-    _class_transaction_dict[typename] = _supported_transaction_types[key]
+    type_name = type(obj).__name__
+    _class_transaction_dict[type_name] = _supported_transaction_types[key]
 
 
 def submit(transactions, conf, filename='', timeout=60):
@@ -511,7 +511,7 @@ def _create_batch_xml(transactions, conf):
             txn_count += 1
             type_name = type(txn).__name__
             attributes_num_dict[_class_transaction_dict[type_name][0]] += 1
-            if hasattr(txn, 'amount') and _class_transaction_dict[type_name][1]:
+            if hasattr(txn, 'amount') and getattr(txn, 'amount') and _class_transaction_dict[type_name][1]:
                 attributes_amount_dict[_class_transaction_dict[type_name][1]] += int(getattr(txn, 'amount'))
             txns_str += _obj_to_xml_element(txn)
             if txn_count == 20000:
@@ -620,7 +620,6 @@ class Transactions(object):
         Raises:
             Exceptions.
         """
-
         # A Batch should not exceed 1,000,000 transactions.
         if len(self._transactions) > 1000000:
             raise utils.VantivException('A session should not exceed 1,000,000 transactions.')
@@ -638,7 +637,7 @@ class Transactions(object):
         else:
             if self._RFRRequest:
                 raise utils.VantivException('cannot mix transactions and RFRRequest')
-            if typename in _class_transaction_dict:
+            if type_name in _class_transaction_dict:
                 if transaction not in self._transactions:
                     # Add transaction
                     self._transactions.add(transaction)
