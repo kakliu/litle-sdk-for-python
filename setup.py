@@ -17,7 +17,7 @@ setup(
     author='Vantiv eCommerce',
     author_email='SDKSupport@vantiv.com',
     url='https://developer.vantiv.com/community/ecommerce',
-    packages=['litle_sdk_python', 'scripts'],
+    packages=['vantivsdk', 'scripts'],
     install_requires=[
         'PyXB==1.2.5',
         'paramiko>=1.14.0',
