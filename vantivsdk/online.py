@@ -26,6 +26,7 @@ from __future__ import absolute_import, print_function
 
 import requests
 import xmltodict
+import six
 
 from . import (fields, utils)
 
@@ -53,6 +54,9 @@ def request(transaction, conf, return_format='dict', timeout=30):
 
     if not isinstance(conf, utils.Configuration):
         raise utils.VantivException('conf must be an instance of utils.Configuration')
+
+    if not isinstance(timeout, six.integer_types) or timeout < 0:
+        raise utils.VantivException('timeout must be an positive int')
 
     request_xml = _create_request_xml(transaction, conf)
     response_xml = _http_post(request_xml, conf, timeout)
