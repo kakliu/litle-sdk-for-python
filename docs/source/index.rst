@@ -136,7 +136,7 @@ accountUpdate
 .............
     .. py:class:: vantivsdk.fields.accountUpdate
 
-        :var cardOrToken: instance of :py:class:`vantivsdk.fields.token`,  :py:class:`vantivsdk.fields.card`, 
+        :var cardOrToken: instance of :py:class:`vantivsdk.fields.card`,  :py:class:`vantivsdk.fields.token`, 
         :var customerId: String or Number
         :var id: String or Number
         :var orderId: String or Number
@@ -185,7 +185,7 @@ authorization
         :var allowPartialAuth: String or Number
         :var amexAggregatorData: instance of :py:class:`vantivsdk.fields.amexAggregatorData`
         :var amount: String or Number
-        :var applepay: String or Number
+        :var applepay: instance of :py:class:`vantivsdk.fields.applepayType`
         :var billMeLaterRequest: instance of :py:class:`vantivsdk.fields.billMeLaterRequest`
         :var billToAddress: instance of :py:class:`vantivsdk.fields.contact`
         :var card: instance of :py:class:`vantivsdk.fields.cardType`
@@ -201,13 +201,13 @@ authorization
         :var id: String or Number
         :var litleTxnId: String or Number
         :var merchantData: String or Number
-        :var mpos: String or Number
+        :var mpos: instance of :py:class:`vantivsdk.fields.mposType`
         :var orderId: String or Number
         :var orderSource: String or Number
         :var originalNetworkTransactionId: String or Number
         :var originalTransactionAmount: String or Number
-        :var paypage: String or Number
-        :var paypal: String or Number
+        :var paypage: instance of :py:class:`vantivsdk.fields.cardPaypageType`
+        :var paypal: instance of :py:class:`vantivsdk.fields.payPal`
         :var pos: instance of :py:class:`vantivsdk.fields.pos`
         :var processingInstructions: instance of :py:class:`vantivsdk.fields.processingInstructions`
         :var processingType: String or Number
@@ -231,6 +231,12 @@ balanceInquiry
         :var orderId: String or Number
         :var orderSource: String or Number
         :var reportGroup: String or Number
+
+cancelSubscription
+..................
+    .. py:class:: vantivsdk.fields.cancelSubscription
+
+        :var subscriptionId: String or Number
 
 capture
 .......
@@ -266,12 +272,12 @@ captureGivenAuth
         :var enhancedData: instance of :py:class:`vantivsdk.fields.enhancedData`
         :var id: String or Number
         :var merchantData: String or Number
-        :var mpos: String or Number
+        :var mpos: instance of :py:class:`vantivsdk.fields.mposType`
         :var orderId: String or Number
         :var orderSource: String or Number
         :var originalNetworkTransactionId: String or Number
         :var originalTransactionAmount: String or Number
-        :var paypage: String or Number
+        :var paypage: instance of :py:class:`vantivsdk.fields.cardPaypageType`
         :var pos: instance of :py:class:`vantivsdk.fields.pos`
         :var processingInstructions: instance of :py:class:`vantivsdk.fields.processingInstructions`
         :var processingType: String or Number
@@ -281,6 +287,20 @@ captureGivenAuth
         :var surchargeAmount: String or Number
         :var taxType: String or Number
         :var token: instance of :py:class:`vantivsdk.fields.cardTokenType`
+
+createPlan
+..........
+    .. py:class:: vantivsdk.fields.createPlan
+
+        :var active: String or Number
+        :var amount: String or Number
+        :var description: String or Number
+        :var intervalType: String or Number
+        :var name: String or Number
+        :var numberOfPayments: String or Number
+        :var planCode: String or Number
+        :var trialIntervalType: String or Number
+        :var trialNumberOfIntervals: String or Number
 
 credit
 ......
@@ -298,12 +318,12 @@ credit
         :var id: String or Number
         :var litleTxnId: String or Number
         :var merchantData: String or Number
-        :var mpos: String or Number
+        :var mpos: instance of :py:class:`vantivsdk.fields.mposType`
         :var orderId: String or Number
         :var orderSource: String or Number
         :var payPalNotes: String or Number
-        :var paypage: String or Number
-        :var paypal: String or Number
+        :var paypage: instance of :py:class:`vantivsdk.fields.cardPaypageType`
+        :var paypal: instance of :py:class:`vantivsdk.fields.payPal`
         :var pin: String or Number
         :var pos: instance of :py:class:`vantivsdk.fields.pos`
         :var processingInstructions: instance of :py:class:`vantivsdk.fields.processingInstructions`
@@ -453,10 +473,10 @@ forceCapture
         :var enhancedData: instance of :py:class:`vantivsdk.fields.enhancedData`
         :var id: String or Number
         :var merchantData: String or Number
-        :var mpos: String or Number
+        :var mpos: instance of :py:class:`vantivsdk.fields.mposType`
         :var orderId: String or Number
         :var orderSource: String or Number
-        :var paypage: String or Number
+        :var paypage: instance of :py:class:`vantivsdk.fields.cardPaypageType`
         :var pos: instance of :py:class:`vantivsdk.fields.pos`
         :var processingInstructions: instance of :py:class:`vantivsdk.fields.processingInstructions`
         :var processingType: String or Number
@@ -595,7 +615,7 @@ sale
         :var allowPartialAuth: String or Number
         :var amexAggregatorData: instance of :py:class:`vantivsdk.fields.amexAggregatorData`
         :var amount: String or Number
-        :var applepay: String or Number
+        :var applepay: instance of :py:class:`vantivsdk.fields.applepayType`
         :var billMeLaterRequest: instance of :py:class:`vantivsdk.fields.billMeLaterRequest`
         :var billToAddress: instance of :py:class:`vantivsdk.fields.contact`
         :var card: instance of :py:class:`vantivsdk.fields.cardType`
@@ -610,19 +630,19 @@ sale
         :var fraudFilterOverride: String or Number
         :var healthcareIIAS: instance of :py:class:`vantivsdk.fields.healthcareIIAS`
         :var id: String or Number
-        :var ideal: String or Number
+        :var ideal: instance of :py:class:`vantivsdk.fields.idealType`
         :var litleInternalRecurringRequest: String or Number
         :var litleTxnId: String or Number
         :var merchantData: String or Number
-        :var mpos: String or Number
+        :var mpos: instance of :py:class:`vantivsdk.fields.mposType`
         :var orderId: String or Number
         :var orderSource: String or Number
         :var originalNetworkTransactionId: String or Number
         :var originalTransactionAmount: String or Number
         :var payPalNotes: String or Number
         :var payPalOrderComplete: String or Number
-        :var paypage: String or Number
-        :var paypal: String or Number
+        :var paypage: instance of :py:class:`vantivsdk.fields.cardPaypageType`
+        :var paypal: instance of :py:class:`vantivsdk.fields.payPal`
         :var pos: instance of :py:class:`vantivsdk.fields.pos`
         :var processingInstructions: instance of :py:class:`vantivsdk.fields.processingInstructions`
         :var processingType: String or Number
@@ -630,7 +650,7 @@ sale
         :var recyclingRequest: String or Number
         :var reportGroup: String or Number
         :var secondaryAmount: String or Number
-        :var sepaDirectDebit: String or Number
+        :var sepaDirectDebit: instance of :py:class:`vantivsdk.fields.sepaDirectDebitType`
         :var shipToAddress: instance of :py:class:`vantivsdk.fields.contact`
         :var surchargeAmount: String or Number
         :var taxType: String or Number
@@ -641,7 +661,7 @@ submerchantCredit
 .................
     .. py:class:: vantivsdk.fields.submerchantCredit
 
-        :var accountInfo: String or Number
+        :var accountInfo: instance of :py:class:`vantivsdk.fields.echeckType`
         :var amount: String or Number
         :var customerId: String or Number
         :var fundingSubmerchantId: String or Number
@@ -654,7 +674,7 @@ submerchantDebit
 ................
     .. py:class:: vantivsdk.fields.submerchantDebit
 
-        :var accountInfo: String or Number
+        :var accountInfo: instance of :py:class:`vantivsdk.fields.echeckType`
         :var amount: String or Number
         :var customerId: String or Number
         :var fundingSubmerchantId: String or Number
@@ -684,11 +704,36 @@ unloadReversal
         :var litleTxnId: String or Number
         :var reportGroup: String or Number
 
+updatePlan
+..........
+    .. py:class:: vantivsdk.fields.updatePlan
+
+        :var active: String or Number
+        :var planCode: String or Number
+
+updateSubscription
+..................
+    .. py:class:: vantivsdk.fields.updateSubscription
+
+        :var billToAddress: instance of :py:class:`vantivsdk.fields.contact`
+        :var billingDate: String or Number
+        :var card: instance of :py:class:`vantivsdk.fields.cardType`
+        :var createAddOn: String or Number
+        :var createDiscount: String or Number
+        :var deleteAddOn: String or Number
+        :var deleteDiscount: String or Number
+        :var paypage: instance of :py:class:`vantivsdk.fields.cardPaypageType`
+        :var planCode: String or Number
+        :var subscriptionId: String or Number
+        :var token: instance of :py:class:`vantivsdk.fields.cardTokenType`
+        :var updateAddOn: String or Number
+        :var updateDiscount: String or Number
+
 vendorCredit
 ............
     .. py:class:: vantivsdk.fields.vendorCredit
 
-        :var accountInfo: String or Number
+        :var accountInfo: instance of :py:class:`vantivsdk.fields.echeckType`
         :var amount: String or Number
         :var customerId: String or Number
         :var fundingSubmerchantId: String or Number
@@ -701,7 +746,7 @@ vendorDebit
 ...........
     .. py:class:: vantivsdk.fields.vendorDebit
 
-        :var accountInfo: String or Number
+        :var accountInfo: instance of :py:class:`vantivsdk.fields.echeckType`
         :var amount: String or Number
         :var customerId: String or Number
         :var fundingSubmerchantId: String or Number
@@ -763,14 +808,14 @@ accountUpdater
     .. py:class:: vantivsdk.fields.accountUpdater
 
         :var extendedCardResponse: String or Number
-        :var newAccountInfo: String or Number
-        :var newCardInfo: String or Number
-        :var newCardTokenInfo: String or Number
-        :var newTokenInfo: String or Number
-        :var originalAccountInfo: String or Number
-        :var originalCardInfo: String or Number
-        :var originalCardTokenInfo: String or Number
-        :var originalTokenInfo: String or Number
+        :var newAccountInfo: instance of :py:class:`vantivsdk.fields.echeckAccountInfoType`
+        :var newCardInfo: instance of :py:class:`vantivsdk.fields.cardAccountInfoType`
+        :var newCardTokenInfo: instance of :py:class:`vantivsdk.fields.cardTokenInfoType`
+        :var newTokenInfo: instance of :py:class:`vantivsdk.fields.echeckTokenInfoType`
+        :var originalAccountInfo: instance of :py:class:`vantivsdk.fields.echeckAccountInfoType`
+        :var originalCardInfo: instance of :py:class:`vantivsdk.fields.cardAccountInfoType`
+        :var originalCardTokenInfo: instance of :py:class:`vantivsdk.fields.cardTokenInfoType`
+        :var originalTokenInfo: instance of :py:class:`vantivsdk.fields.echeckTokenInfoType`
 
 advancedFraudChecksType
 .......................
@@ -825,92 +870,6 @@ authInformation
         :var authDate: String or Number
         :var fraudResult: instance of :py:class:`vantivsdk.fields.fraudResult`
 
-authentication
-..............
-    .. py:class:: vantivsdk.fields.authentication
-
-        :var password: String or Number
-        :var user: String or Number
-
-baseRequest
-...........
-    .. py:class:: vantivsdk.fields.baseRequest
-
-        :var authentication: instance of :py:class:`vantivsdk.fields.authentication`
-        :var recurringTransaction: instance of
-        :var transaction: instance of :py:class:`vantivsdk.fields.registerTokenRequest`,  :py:class:`vantivsdk.fields.updateCardValidationNumOnToken`, 
-        :var version: String or Number
-
-batchRequest
-............
-    .. py:class:: vantivsdk.fields.batchRequest
-
-        :var activateAmount: String or Number
-        :var authAmount: String or Number
-        :var authReversalAmount: String or Number
-        :var captureAmount: String or Number
-        :var captureGivenAuthAmount: String or Number
-        :var creditAmount: String or Number
-        :var echeckCreditAmount: String or Number
-        :var echeckSalesAmount: String or Number
-        :var echeckVerificationAmount: String or Number
-        :var extCaptureAmount: String or Number
-        :var forceCaptureAmount: String or Number
-        :var id: String or Number
-        :var loadAmount: String or Number
-        :var merchantId: String or Number
-        :var merchantSdk: String or Number
-        :var numAccountUpdates: String or Number
-        :var numActivates: String or Number
-        :var numAuthReversals: String or Number
-        :var numAuths: String or Number
-        :var numBalanceInquirys: String or Number
-        :var numCancelSubscriptions: String or Number
-        :var numCaptureGivenAuths: String or Number
-        :var numCaptures: String or Number
-        :var numCreatePlans: String or Number
-        :var numCredits: String or Number
-        :var numDeactivates: String or Number
-        :var numEcheckCredit: String or Number
-        :var numEcheckPreNoteCredit: String or Number
-        :var numEcheckPreNoteSale: String or Number
-        :var numEcheckRedeposit: String or Number
-        :var numEcheckSales: String or Number
-        :var numEcheckVerification: String or Number
-        :var numExtCaptures: String or Number
-        :var numForceCaptures: String or Number
-        :var numLoads: String or Number
-        :var numPayFacCredit: String or Number
-        :var numPayFacDebit: String or Number
-        :var numPhysicalCheckCredit: String or Number
-        :var numPhysicalCheckDebit: String or Number
-        :var numReserveCredit: String or Number
-        :var numReserveDebit: String or Number
-        :var numSales: String or Number
-        :var numSubmerchantCredit: String or Number
-        :var numSubmerchantDebit: String or Number
-        :var numTokenRegistrations: String or Number
-        :var numUnloads: String or Number
-        :var numUpdateCardValidationNumOnTokens: String or Number
-        :var numUpdatePlans: String or Number
-        :var numUpdateSubscriptions: String or Number
-        :var numVendorCredit: String or Number
-        :var numVendorDebit: String or Number
-        :var payFacCreditAmount: String or Number
-        :var payFacDebitAmount: String or Number
-        :var physicalCheckCreditAmount: String or Number
-        :var physicalCheckDebitAmount: String or Number
-        :var recurringTransaction: instance of
-        :var reserveCreditAmount: String or Number
-        :var reserveDebitAmount: String or Number
-        :var saleAmount: String or Number
-        :var submerchantCreditAmount: String or Number
-        :var submerchantDebitAmount: String or Number
-        :var transaction: instance of :py:class:`vantivsdk.fields.registerTokenRequest`,  :py:class:`vantivsdk.fields.updateCardValidationNumOnToken`, 
-        :var unloadAmount: String or Number
-        :var vendorCreditAmount: String or Number
-        :var vendorDebitAmount: String or Number
-
 billMeLaterRequest
 ..................
     .. py:class:: vantivsdk.fields.billMeLaterRequest
@@ -930,12 +889,6 @@ billMeLaterRequest
         :var termsAndConditions: String or Number
         :var virtualAuthenticationKeyData: String or Number
         :var virtualAuthenticationKeyPresenceIndicator: String or Number
-
-cancelSubscription
-..................
-    .. py:class:: vantivsdk.fields.cancelSubscription
-
-        :var subscriptionId: String or Number
 
 cardAccountInfoType
 ...................
@@ -1031,20 +984,6 @@ createDiscountType
         :var endDate: String or Number
         :var name: String or Number
         :var startDate: String or Number
-
-createPlan
-..........
-    .. py:class:: vantivsdk.fields.createPlan
-
-        :var active: String or Number
-        :var amount: String or Number
-        :var description: String or Number
-        :var intervalType: String or Number
-        :var name: String or Number
-        :var numberOfPayments: String or Number
-        :var planCode: String or Number
-        :var trialIntervalType: String or Number
-        :var trialNumberOfIntervals: String or Number
 
 customBilling
 .............
@@ -1248,7 +1187,7 @@ litleOnlineRequest
         :var merchantId: String or Number
         :var merchantSdk: String or Number
         :var recurringTransaction: instance of
-        :var transaction: instance of :py:class:`vantivsdk.fields.registerTokenRequest`,  :py:class:`vantivsdk.fields.updateCardValidationNumOnToken`, 
+        :var transaction: instance of :py:class:`vantivsdk.fields.updateCardValidationNumOnToken`,  :py:class:`vantivsdk.fields.registerTokenRequest`, 
         :var version: String or Number
 
 litleRequest
@@ -1322,11 +1261,6 @@ recurringSubscriptionType
         :var planCode: String or Number
         :var startDate: String or Number
 
-recurringTransactionType
-........................
-    .. py:class:: vantivsdk.fields.recurringTransactionType
-
-
 recycleAdviceType
 .................
     .. py:class:: vantivsdk.fields.recycleAdviceType
@@ -1353,12 +1287,12 @@ registerTokenRequestType
     .. py:class:: vantivsdk.fields.registerTokenRequestType
 
         :var accountNumber: String or Number
-        :var applepay: String or Number
+        :var applepay: instance of :py:class:`vantivsdk.fields.applepayType`
         :var cardValidationNum: String or Number
         :var customerId: String or Number
-        :var echeckForToken: String or Number
+        :var echeckForToken: instance of :py:class:`vantivsdk.fields.echeckForTokenType`
         :var id: String or Number
-        :var mpos: String or Number
+        :var mpos: instance of :py:class:`vantivsdk.fields.mposType`
         :var orderId: String or Number
         :var paypageRegistrationId: String or Number
         :var reportGroup: String or Number
@@ -1374,38 +1308,6 @@ sepaDirectDebitType
         :var mandateUrl: String or Number
         :var preferredLanguage: String or Number
         :var sequenceType: String or Number
-
-transactionType
-...............
-    .. py:class:: vantivsdk.fields.transactionType
-
-        :var customerId: String or Number
-        :var id: String or Number
-
-transactionTypeOptionReportGroup
-................................
-    .. py:class:: vantivsdk.fields.transactionTypeOptionReportGroup
-
-        :var customerId: String or Number
-        :var id: String or Number
-        :var reportGroup: String or Number
-
-transactionTypeWithReportGroup
-..............................
-    .. py:class:: vantivsdk.fields.transactionTypeWithReportGroup
-
-        :var customerId: String or Number
-        :var id: String or Number
-        :var reportGroup: String or Number
-
-transactionTypeWithReportGroupAndPartial
-........................................
-    .. py:class:: vantivsdk.fields.transactionTypeWithReportGroupAndPartial
-
-        :var customerId: String or Number
-        :var id: String or Number
-        :var partial: String or Number
-        :var reportGroup: String or Number
 
 updateAddOnType
 ...............
@@ -1437,31 +1339,6 @@ updateDiscountType
         :var endDate: String or Number
         :var name: String or Number
         :var startDate: String or Number
-
-updatePlan
-..........
-    .. py:class:: vantivsdk.fields.updatePlan
-
-        :var active: String or Number
-        :var planCode: String or Number
-
-updateSubscription
-..................
-    .. py:class:: vantivsdk.fields.updateSubscription
-
-        :var billToAddress: instance of :py:class:`vantivsdk.fields.contact`
-        :var billingDate: String or Number
-        :var card: instance of :py:class:`vantivsdk.fields.cardType`
-        :var createAddOn: String or Number
-        :var createDiscount: String or Number
-        :var deleteAddOn: String or Number
-        :var deleteDiscount: String or Number
-        :var paypage: String or Number
-        :var planCode: String or Number
-        :var subscriptionId: String or Number
-        :var token: instance of :py:class:`vantivsdk.fields.cardTokenType`
-        :var updateAddOn: String or Number
-        :var updateDiscount: String or Number
 
 virtualGiftCardType
 ...................
