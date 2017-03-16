@@ -227,6 +227,49 @@ class TestSale(unittest.TestCase):
         response = online.request(transaction, conf)
         self.assertEquals('000', response['saleResponse']['response'])
 
+    def test_sale_with_sepa_direct_debit(self):
+        transaction = fields.sale()
+        transaction.id = '12345'
+        transaction.reportGroup = 'Default'
+        transaction.orderId = '67890'
+        transaction.amount = 10000
+        transaction.orderSource = 'ecommerce'
+        transaction.processingType = 'initialInstallment'
+        transaction.originalNetworkTransactionId = '9876543210'
+        transaction.originalTransactionAmount = 53698
+        transaction.id = 'ThisIsID'
+
+        sepaDirectDebit = fields.sepaDirectDebitType()
+        sepaDirectDebit.iban = 'SepaDirectDebit Iban'
+        sepaDirectDebit.mandateProvider = 'Merchant'
+        sepaDirectDebit.sequenceType = 'OneTime'
+        transaction.sepaDirectDebit = sepaDirectDebit
+
+        response = online.request(transaction, conf)
+        self.assertEquals('000', response['saleResponse']['response'])
+        self.assertEquals('http://redirect.url.vantiv.com',
+                          response['saleResponse']['sepaDirectDebitResponse']['redirectUrl'])
+
+    def test_sale_with_ideal(self):
+        transaction = fields.sale()
+        transaction.id = '12345'
+        transaction.reportGroup = 'Default'
+        transaction.orderId = '67890'
+        transaction.amount = 10000
+        transaction.orderSource = 'ecommerce'
+        transaction.processingType = 'initialInstallment'
+        transaction.originalNetworkTransactionId = '9876543210'
+        transaction.originalTransactionAmount = 53698
+        transaction.id = 'ThisIsID'
+
+        ideal = fields.idealType()
+        ideal.preferredLanguage = 'AD'
+        transaction.ideal = ideal
+
+        response = online.request(transaction, conf)
+        self.assertEquals('000', response['saleResponse']['response'])
+        self.assertEquals('http://redirect.url.vantiv.com',
+                          response['saleResponse']['idealResponse']['redirectUrl'])
 
 if __name__ == '__main__':
     unittest.main()
