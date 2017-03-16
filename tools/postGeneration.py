@@ -221,11 +221,11 @@ Transactions
     with open(_path_to_edited_xsd, 'r') as xsd_file:
         lines = xsd_file.readlines()
         # element_head = re.compile('<xs:element name="(\w+)">')
-        element_head = re.compile('<xs:element name="(\w+)".*>')
+        element_head = re.compile('<xs:element\s*name=\"(\w+)\".*>')
         complex_type_head = re.compile('<xs:complexType>')
-        txns_head = re.compile('<xs:element name="(\w+)" substitutionGroup="(xp:transaction|xp:recurringTransaction)">')
-        abstract_class = re.compile('<xs:element name="(\w+)".*?abstract="true".*?/>')
-        elem_complex = re.compile('<xs:element name="(\w+)".*?type="xp:(\w+)"/>')
+        txns_head = re.compile('<xs:element name=\"(\w+)\"\s*substitutionGroup=\"(xp:transaction|xp:recurringTransaction)\"\s*>')
+        abstract_class = re.compile('<xs:element\s*name=\"(\w+)\".*?abstract=\"true\".*?/>')
+        elem_complex = re.compile('<xs:element\s*name=\"(\w+)\"\s*type=\"xp:(\w+)\"\s*\/>')
         lines_index = -1
         for line in lines:
             lines_index += 1
@@ -276,8 +276,11 @@ Transactions
         # dir() not attributes
         no_attr_list = ['Factory', 'append', 'content', 'extend', 'orderedContent', 'reset', 'toDOM', 'toxml',
                         'validateBinding', 'value', 'wildcardAttributeMap', 'wildcardElements', 'xsdConstraintsOK']
+        skip_class_name =['authentication','baseRequest','batchRequest','recurringTransactionType','transactionType',
+                          'transactionTypeOptionReportGroup','transactionTypeWithReportGroup',
+                          'transactionTypeWithReportGroupAndPartial']
         for k in clsmembers:
-            if 'Response' not in clsmembers[k]:
+            if 'Response' not in clsmembers[k] and clsmembers[k] not in skip_class_name:
                 obj = getattr(fields, clsmembers[k])()
                 attrs = dir(obj)
                 for x in dir(obj):
