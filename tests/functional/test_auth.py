@@ -35,7 +35,6 @@ from vantivsdk import *
 
 conf = utils.Configuration()
 
-
 class TestAuth(unittest.TestCase):
     def test_simple_auth_with_card(self):
         authorization = fields.authorization()
