@@ -22,7 +22,7 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import, print_function, unicode_literals
 
 import json
 import os
@@ -132,10 +132,8 @@ def obj_to_xml(obj):
         xml = obj.toxml('utf-8')
     except pyxb.ValidationError as e:
         raise VantivException(e.details())
-    # convert byte string to u string in python3
-    xml = xml.decode()
-    xml = xml.replace('ns1:', '')
-    xml = xml.replace(':ns1', '')
+    xml = xml.replace(b'ns1:', b'')
+    xml = xml.replace(b':ns1', b'')
     return xml
 
 

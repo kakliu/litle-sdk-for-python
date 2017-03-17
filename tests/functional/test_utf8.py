@@ -37,7 +37,7 @@ conf = utils.Configuration()
 class TestUTF8(unittest.TestCase):
     def test_simple_auth_with_utf8(self):
         authorization = fields.authorization()
-        authorization.reportGroup = 'русский中文'
+        authorization.reportGroup = u'русский中文'
         authorization.orderId = '12344'
         authorization.amount = 106
         authorization.orderSource = 'ecommerce'
@@ -52,6 +52,7 @@ class TestUTF8(unittest.TestCase):
 
         response = online.request(authorization, conf)
         self.assertEquals('000', response['authorizationResponse']['response'])
+        self.assertEquals(u'русский中文', response['authorizationResponse']['@reportGroup'])
 
 
 if __name__ == '__main__':

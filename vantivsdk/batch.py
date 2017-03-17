@@ -22,7 +22,7 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 #
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import, print_function, unicode_literals
 
 import datetime
 import os
@@ -285,7 +285,7 @@ def _stream_socket(xml_str, conf, timeout_send, timeout_rev):
     except:
         raise utils.VantivException("Cannot connect to vantiv")
 
-    s.sendall(xml_str.encode())
+    s.sendall(xml_str.encode('utf-8'))
 
     s.settimeout(0.0)
     str_array = []
@@ -390,7 +390,7 @@ def _get_file_from_sftp(filename, conf, delete_remote, timeout):
         if delete_remote:
             sftp.remove(remote_path_asc)
         transport.close()
-    except FileNotFoundError:
+    except Exception:
         try:
             transport.close()
         except:
@@ -425,7 +425,7 @@ def _get_file_str_from_sftp(filename, conf, delete_remote, timeout):
         if delete_remote:
             sftp.remove(remote_path_asc)
         transport.close()
-    except FileNotFoundError:
+    except Exception:
         try:
             transport.close()
         except:
@@ -568,9 +568,9 @@ def _obj_to_xml_element(_obj):
         xml string
     """
     xml = utils.obj_to_xml(_obj)
-    xml = xml.replace('<?xml version="1.0" encoding="utf-8"?>', '')
-    xml = xml.replace(' xmlns="http://www.litle.com/schema"', '')
-    return xml
+    xml = xml.replace(b'<?xml version="1.0" encoding="utf-8"?>', b'')
+    xml = xml.replace(b' xmlns="http://www.litle.com/schema"', b'')
+    return xml.decode('utf-8')
 
 
 class Transactions(object):
