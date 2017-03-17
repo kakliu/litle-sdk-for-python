@@ -22,7 +22,7 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 #
-from __future__ import absolute_import, print_function
+from __future__ import absolute_import, print_function, unicode_literals
 
 import requests
 import xmltodict
@@ -92,7 +92,7 @@ def _create_request_xml(transaction, conf):
     request_xml = utils.obj_to_xml(request_obj)
 
     if conf.print_xml:
-        print('Request XML:\n', request_xml, '\n')
+        print('Request XML:\n', request_xml.decode('utf-8'), '\n')
 
     return request_xml
 
@@ -169,7 +169,7 @@ def _http_post(post_data, conf, timeout):
     headers = {'Content-type': 'application/xml','charset':'utf-8'}
     proxies = {'https': conf.proxy} if (conf.proxy is not None and conf.proxy != '') else None
     try:
-        response = requests.post(conf.url, data=post_data.encode(), headers=headers, proxies=proxies, timeout=timeout)
+        response = requests.post(conf.url, data=post_data, headers=headers, proxies=proxies, timeout=timeout)
     except requests.RequestException:
         raise utils.VantivException("Error with Https Request, Please Check Proxy and Url configuration")
     if response.status_code != 200:
