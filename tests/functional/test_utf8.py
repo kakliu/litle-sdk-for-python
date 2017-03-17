@@ -34,7 +34,7 @@ from vantivsdk import *
 conf = utils.Configuration()
 
 
-class TestAuth(unittest.TestCase):
+class TestUTF8(unittest.TestCase):
     def test_simple_auth_with_utf8(self):
         authorization = fields.authorization()
         authorization.reportGroup = 'русский中文'
