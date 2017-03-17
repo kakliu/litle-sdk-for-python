@@ -166,10 +166,10 @@ def _http_post(post_data, conf, timeout):
     Raise:
         VantivException
     """
-    headers = {'Content-type': 'application/xml'}
+    headers = {'Content-type': 'application/xml','charset':'utf-8'}
     proxies = {'https': conf.proxy} if (conf.proxy is not None and conf.proxy != '') else None
     try:
-        response = requests.post(conf.url, data=post_data, headers=headers, proxies=proxies, timeout=timeout)
+        response = requests.post(conf.url, data=post_data.encode(), headers=headers, proxies=proxies, timeout=timeout)
     except requests.RequestException:
         raise utils.VantivException("Error with Https Request, Please Check Proxy and Url configuration")
     if response.status_code != 200:

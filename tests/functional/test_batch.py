@@ -137,7 +137,7 @@ class TestBatch(unittest.TestCase):
         authorization = fields.authorization()
         authorization.orderId = '1'
         authorization.amount = 10010
-        authorization.reportGroup = 'Planets'
+        authorization.reportGroup = 'русский中文'
         authorization.orderSource = 'ecommerce'
         authorization.card = card
         authorization.billtoaddress = billtoaddress
